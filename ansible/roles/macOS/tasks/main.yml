@@ -1,0 +1,6 @@
+---
+
+- name: "store home directory"
+  shell: echo ~/
+  register: home
+  become: false

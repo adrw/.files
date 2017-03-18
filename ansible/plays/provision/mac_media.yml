@@ -1,0 +1,9 @@
+---
+
+- hosts: mac
+  roles:
+    - macOS
+    - zsh
+    - homebrew
+  become: no
+  become_method: sudo

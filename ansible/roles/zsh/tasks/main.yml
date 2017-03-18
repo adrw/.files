@@ -1,0 +1,25 @@
+---
+
+- name: "install oh-my-zsh"
+  shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  become: false
+
+- name: "store .zshrc location"
+  shell: echo ~/.zshrc
+  register: shellrc
+  become: false
+
+- assert:
+    that:
+      - shellrc.stdout.find('zshrc') != -1
+    msg: "shellrc is ~/.zshrc"
+
+- name: "store zshrc as variable"
+  shell: cat {{ shellrc.stdout }}
+  register: shellrc_file
+  become: false
+
+- assert:
+    that:
+      - shellrc_file.stdout.find('oh-my-zsh') != -1
+    msg: "oh-my-zsh isn't in {{ shellrc.stdout }}"

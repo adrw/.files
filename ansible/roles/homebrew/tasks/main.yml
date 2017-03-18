@@ -1,1 +1,25 @@
 ---
+
+- name: path time
+  when: shellrc_file.stdout.find('{{ homebrew__path }}') == -1
+  shell: echo '{{ homebrew__path }}' >> {{ shellrc.stdout }}
+  become: false
+
+- name: turn off homebrew analytics
+  when: shellrc_file.stdout.find('{{ homebrew__no_analytics }}') == -1
+  shell: echo '{{ homebrew__no_analytics }}' >> {{ shellrc.stdout }}
+  become: false
+
+- name: force homebrew no-insecure-redirect and require-sha
+  when: shellrc_file.stdout.find('{{ homebrew__no_insecure_redirect }}') == -1
+  shell: echo '{{ homebrew__no_insecure_redirect }}' >> {{ shellrc.stdout }}
+  become: false
+
+- name: turn off homebrew analytics
+  when: shellrc_file.stdout.find('{{ homebrew__require_sha }}') == -1
+  shell: echo '{{ homebrew__require_sha }}' >> {{ shellrc.stdout }}
+  become: false
+    
+- homebrew_tap: "tap={{ item }} state=present"
+  with_items: "{{ homebrew_taps }}"
+  become: false
