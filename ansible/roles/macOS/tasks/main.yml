@@ -4,3 +4,30 @@
   shell: echo ~/
   register: home
   become: false
+
+- name: set computer name
+  shell: scutil --set ComputerName {{ computer__name }}
+  become: true
+
+- name: set localhost name
+  shell: scutil --set LocalHostName {{ local__hostname }}
+  become: true
+
+- name: check filevault full disk encryption status
+  shell: fdesetup isactive
+  register: filevault_status
+  become: false
+
+- assert: 
+    that: filevault_status.stdout.find('true') != -1
+    msg: "Filevault is not on"
+
+- name: seed /dev/random before enabling filevault
+  when: filevault_status.stdout.find('true') == -1
+  shell: echo "{{ fde__seed }}" >> /dev/random
+  become: false
+
+- name: enable filevault
+  when: filevault_status.stdout.find('true') == -1
+  shell: fdesetup enable
+  become: true
