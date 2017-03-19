@@ -3,7 +3,8 @@
 - hosts: macbox
   connection: local
   roles:
-    - macOS
+    - macOS_security
+    - macOS_preferences
     - zsh
     - homebrew
   become: yes

@@ -1,6 +1,6 @@
 ---
 
-- name: path time
+- name: save homebrew path to zshrc
   when: shellrc_file.stdout.find('{{ homebrew__path }}') == -1
   shell: echo '{{ homebrew__path }}' >> {{ shellrc.stdout }}
   become: false

@@ -1,0 +1,63 @@
+---
+
+- name: "store home directory"
+  shell: echo ~/
+  register: home
+  become: false
+
+- name: set computer name
+  shell: scutil --set ComputerName {{ computer__name }}
+  become: true
+
+- name: set localhost name
+  shell: scutil --set LocalHostName {{ local__hostname }}
+  become: true
+
+- name: check filevault full disk encryption status
+  shell: fdesetup isactive
+  register: filevault_status
+  become: false
+
+- assert: 
+    that: filevault_status.stdout.find('true') != -1
+    msg: "Filevault is not on"
+
+- name: seed /dev/random before enabling filevault
+  when: filevault_status.stdout.find('true') == -1
+  shell: echo "{{ fde__seed }}" >> /dev/random
+  become: false
+
+- name: enable filevault
+  when: filevault_status.stdout.find('true') == -1
+  shell: fdesetup enable
+  become: true
+
+- name: clear filevault key when hibernate/sleep
+  shell: sudo pmset -a destroyfvkeyonstandby 1
+  become: true
+- shell: sudo pmset -a hibernatemode 25
+  become: true
+- shell: sudo pmset -a powernap 0
+  become: true
+- shell: sudo pmset -a standby 0
+  become: true
+- shell: sudo pmset -a standbydelay 0
+  become: true
+- shell: sudo pmset -a autopoweroff 0
+  become: true
+
+- name: enable firewall, logging, and stealth mode
+  shell: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+  become: true
+- shell: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+  become: true
+- shell: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+  become: true
+
+- name: stop built-in and downloaded software from firewall auto-whitelist
+  shell: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
+  become: true
+- shell: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
+  become: true
+
+

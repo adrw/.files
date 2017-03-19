@@ -9,7 +9,7 @@ See [`drduh macOS Security and Privacy Guide`](https://github.com/drduh/macOS-Se
 1. On Mac, hold `option` down on restart, then choose the USB Recovery partition.
 1. Use Disk Utility to restore USB Macintosh HD back to Mac hard drive Macintosh HD.
 1. Restart into Mac, create temp account, don't agree to location, siri, or diagnostics
-1. Once through Mac setup flow and on desktop, logout of temp account, login to pre-made admin account, and delete temp account. Continue setup and install with admin account, use other for every day use.
+1. Once through Mac setup flow and on desktop, logout of temp account, login to pre-made admin account, and delete temp account. Continue setup and install with admin account, use other for every day use. 
 
 Setup
 ---

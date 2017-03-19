@@ -1,6 +1,7 @@
 ---
 
-- hosts: mac
+- hosts: macbox
+  connection: local
   roles:
     - macOS
     - zsh
