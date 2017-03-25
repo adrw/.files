@@ -1,0 +1,20 @@
+---
+
+- homebrew:
+    name: dockutil
+    state: present
+  become: false
+  ignore_errors: true
+
+- name: wipe
+  shell: dockutil --remove '{{ item }}'
+  ignore_errors: true
+  with_items: dockitems_to_remove
+
+- name: if item exists, add to dock
+  shell: dockutil --find '{{ item.name }}' || dockutil --add '{{ item.path }}'
+  with_items: dockitems_to_persist
+
+- name: fix order
+  shell: dockutil --move '{{ item.name }}' --position {{ item.pos }}
+  with_items: dockitems_to_persist
