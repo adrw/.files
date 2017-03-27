@@ -20,4 +20,4 @@ if [[ ! -x ~/.homebrew/bin/ansible ]]; then
   brew install ansible
 fi
 
-cd ~/.files/ansible && ansible-playbook --ask-sudo-pass -i inventories/macbox/hosts plays/provision/mac_dev.yml -e "home=/Users/me"
+cd ~/.files/ansible && ansible-playbook --ask-sudo-pass -i inventories/macbox/hosts plays/provision/mac_dev.yml -e "home=/Users/me mas_email= mas_password="

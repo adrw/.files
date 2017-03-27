@@ -28,13 +28,14 @@
   become: true
 
 - name: check filevault full disk encryption status
-  shell: fdesetup isactive
+  command: fdesetup isactive
   register: filevault_status
+  failed_when: "'FAILED' in filevault_status.stderr"
   become: false
 
-- assert:
-    that: filevault_status.stdout.find('true') != -1
-    msg: "Filevault is not on"
+# - assert:
+#     that: filevault_status.stdout.find('true') != -1
+#     msg: "Filevault is not on"
 
 - name: seed /dev/random before enabling filevault
   when: filevault_status.stdout.find('true') == -1
@@ -44,6 +45,8 @@
 - name: enable filevault
   when: filevault_status.stdout.find('true') == -1
   shell: fdesetup enable
+  register: fdesetup_enable_status
+  failed_when: "'FAILED' in fdesetup_enable_status.stderr"
   become: true
 
 - name: clear filevault key when hibernate/sleep

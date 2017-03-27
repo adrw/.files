@@ -13,7 +13,8 @@
   become: false
 
 - name: Sign in to MAS with given email
-  shell: mas signin "{{ mas_email }}"
+  when: mas_account_result.stdout.find('Already')
+  shell: mas signin "{{ mas_email }}" "{{ mas_password }}"
   become: false
 
 

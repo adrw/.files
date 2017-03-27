@@ -7,12 +7,14 @@
     - zsh
     - homebrew
     - git
-    # - mas
+    - tmux
+    - vim
+    - mas
+    - dockutil
     # - 1password
     # - atom
     # - iterm2
     # - sublime-text
-    # - dockutil
   # become: yes
   # become_method: sudo
 
@@ -44,7 +46,9 @@
     mas_email: ""
     mas_password: ""
     mas_installed_app_ids: [] # Deprecated
-    mas_installed_apps: []
+    mas_installed_apps:
+        - { id: 420212497, name: "Byword (2.8)" }
+        - { id: 417375580, name: "BetterSnapTool" }
       # - { id: 425264550, name: "Blackmagic Disk Speed Test (3.0)" }
       # - { id: 411643860, name: "DaisyDisk (4.3.2)" }
       # - { id: 498486288, name: "Quick Resizer (1.9)" }
