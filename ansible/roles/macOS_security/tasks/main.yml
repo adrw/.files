@@ -6,11 +6,13 @@
   become: false
 
 - name: set computer name
-  shell: scutil --set ComputerName {{ computer_name }}
+  shell: scutil --set ComputerName "{{ local_hostname }}"
   become: true
-
 - name: set localhost name
-  shell: scutil --set LocalHostName {{ local_hostname }}
+  shell: scutil --set LocalHostName "{{ local_hostname }}"
+  become: true
+- name: set localhost name
+  shell: defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "{{ local_hostname }}"
   become: true
 
 - name: enable firewall, logging, and stealth mode

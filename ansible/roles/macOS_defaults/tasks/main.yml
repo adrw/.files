@@ -1,0 +1,71 @@
+---
+# osx.sh - https://github.com/donnemartin/dev-setup/blob/master/osx.sh
+# - osx_defaults:
+#     domain:
+#     key:
+#     type:
+#     value:
+#     state:
+
+- name: expand save panel
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: NSNavPanelExpandedStateForSaveMode
+    type: bool
+    value: true
+    state: present
+- osx_defaults:
+    domain: NSGlobalDomain
+    key: NSNavPanelExpandedStateForSaveMode2
+    type: bool
+    value: true
+    state: present
+
+- name: expand print panel
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: PMPrintingExpandedStateForPrint
+    type: bool
+    value: true
+    state: present
+- osx_defaults:
+    domain: NSGlobalDomain
+    key: PMPrintingExpandedStateForPrint2
+    type: bool
+    value: true
+    state: present
+
+- name: save to disk (not iCloud)
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: NSDocumentSaveNewDocumentsToCloud
+    type: bool
+    value: false
+    state: present
+
+- name: quit printer app once print job complete
+  osx_defaults:
+    domain: com.apple.print.PrintingPrefs
+    key: "Quit When Finished"
+    type: bool
+    value: true
+    state: present
+
+- name: check software updates daily
+  osx_defaults:
+    domain: com.apple.SoftwareUpdate
+    key: ScheduleFrequency
+    type: int
+    value: 1
+    state: present
+# 
+# - name: set wallpaper
+#   file:
+#     - path: "{{ home }}/Library/Application Support/Dock/desktoppicture.db"
+#     - state: absent
+#   become: true
+#
+# - shell: rm -rf /System/Library/CoreServices/DefaultDesktop.jpg
+#   become: true
+# - shell: ln -s "{{ desktop_picture_path }}" /System/Library/CoreServices/DefaultDesktop.jpg
+#   become: true

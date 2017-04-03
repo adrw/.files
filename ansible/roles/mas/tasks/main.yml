@@ -1,47 +1,43 @@
 ---
 # https://github.com/geerlingguy/ansible-role-mas
 
-- name: Ensure MAS is installed.
+- name: Ensure MAS is installed
   homebrew: name=mas state=present
   become: false
 
-- name: Get MAS account status
+- name: Get MAS sign in status
   shell: 'mas account'
   register: mas_account_result
   failed_when: mas_account_result.rc > 1
   changed_when: false
   become: false
 
-- name: Sign in to MAS with given email
-  when: mas_account_result.stdout.find('Already')
-  shell: mas signin "{{ mas_email }}" "{{ mas_password }}"
+- name: Sign in to MAS when email and password are provided
+  shell: 'mas signin "{{ mas_email }}" "{{ mas_password }}"'
+  register: mas_signin_result
+  when: mas_account_result.rc == 1 and mas_email != '' and mas_password != '' and not mas_signin_dialog
   become: false
 
+- name: Sign in to MAS when email is provided, and complete password and 2FA using dialog
+  shell: 'mas signin "{{ mas_email }}" "{{ mas_password }}" --dialog'
+  register: mas_signin_result
+  when: mas_signin_dialog and mas_account_result.rc == 1 and mas_email != ''
+  become: false
 
-# - name: Sign in to MAS when email and password are provided.
-#   shell: 'mas signin "{{ mas_email }}" "{{ mas_password }}"'
-#   register: mas_signin_result
-#   when: mas_account_result.rc == 1 and mas_email != '' and mas_password != '' and not mas_signin_dialog
-#
-# - name: Sign in to MAS when email is provided, and complete password and 2FA using dialog.
-#   shell: 'mas signin "{{ mas_email }}" "{{ mas_password }}" --dialog'
-#   register: mas_signin_result
-#   when: mas_signin_dialog and mas_account_result.rc == 1 and mas_email != ''
-
-- name: List installed MAS apps.
+- name: List installed MAS apps
   command: mas list
   register: mas_list
-  always_run: yes
+  check_mode: no
   changed_when: false
   become: false
 
-- name: Ensure configured MAS apps are installed.
+- name: Ensure configured MAS apps are installed
   command: mas install "{{ item.id|default(item) }}"
   with_items: "{{ mas_installed_apps + mas_installed_app_ids }}"
   when: "'{{ item.id|default(item) }}' not in mas_list.stdout"
   become: false
 
-- name: Upgrade all apps (if configured).
+- name: Upgrade all apps (if configured)
   command: mas upgrade
   when: mas_upgrade_all_apps
   become: false
