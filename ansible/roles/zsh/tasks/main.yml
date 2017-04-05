@@ -5,14 +5,14 @@
   become: false
 
 - name: "store .zshrc location"
-  shell: echo ~/.zshrc
+  shell: echo {{ home }}/.zshrc
   register: shellrc
   become: false
 
 - assert:
     that:
       - shellrc.stdout.find('zshrc') != -1
-    msg: "shellrc is ~/.zshrc"
+    msg: "shellrc is {{ home }}/.zshrc"
 
 - name: "store zshrc as variable"
   shell: cat {{ shellrc.stdout }}
@@ -23,3 +23,67 @@
     that:
       - shellrc_file.stdout.find('oh-my-zsh') != -1
     msg: "oh-my-zsh isn't in {{ shellrc.stdout }}"
+
+# - name: "check if autosuggestions"
+#   stat:
+#     path: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+#   register: autosuggestions_exists
+#
+# - name: "install autosuggestions"
+#   shell: git clone git://github.com/zsh-users/zsh-autosuggestions {{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+#   when: autosuggestions_exists.stat.isdir is not defined
+#   become: false
+#
+# - name: "store zshrc as variable"
+#   shell: cat {{ shellrc.stdout }}
+#   register: shellrc_file
+#   become: false
+#
+# - name: "remove default plugin from .zshrc"
+#   lineinfile:
+#     dest: "{{ home }}/.zshrc"
+#     state: absent
+#     regexp: "^{{ zsh__default_plugin }}"
+#   become: false
+#
+# - name: "add autosuggestions to .zshrc"
+#   lineinfile:
+#     dest: "{{ home }}/.zshrc"
+#     state: present
+#     regexp: "^{{ zsh__pre_plugin }}"
+#     insertafter: "^{{ zsh__pre_plugin }}"
+#     line: "{{ zsh__plugin }}"
+#   when: shellrc_file.stdout.find('{{ zsh__plugin }}') == -1
+#   become: false
+
+- name: "check if Powerlevel9k"
+  stat:
+    path: "{{ home }}/.oh-my-zsh/custom/themes/powerlevel9k"
+  register: powershell_exists
+
+- name: "install Powerlevel9k"
+  shell: git clone https://github.com/bhilburn/powerlevel9k.git {{ home }}/.oh-my-zsh/custom/themes/powerlevel9k
+  when: powershell_exists.stat.isdir is not defined
+  become: false
+
+- name: "store zshrc as variable"
+  shell: cat {{ shellrc.stdout }}
+  register: shellrc_file
+  become: false
+
+- name: "remove default theme from .zshrc"
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: absent
+    regexp: "^{{ zsh__default_theme }}"
+  become: false
+
+- name: "add Powerlevel9k to .zshrc"
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    regexp: "^{{ zsh__pre_theme }}"
+    insertafter: "^{{ zsh__pre_theme }}"
+    line: "{{ zsh__theme }}"
+  when: shellrc_file.stdout.find('{{ zsh__theme }}') == -1
+  become: false

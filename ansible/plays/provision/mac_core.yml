@@ -9,9 +9,9 @@
     - git
     - tmux
     - vim
-    - mas
+    # - mas
     - dockutil
-    # - 1password
+    - macOS_defaults
     # - atom
     # - iterm2
     # - sublime-text
@@ -35,15 +35,40 @@
       - tmux
       - yarn
     homebrew_cask_apps:
+      - 1password
+      - alfred
+      - appcleaner
       - atom
+      - backblaze
+      - backblaze-downloader
+      - bartender
       - calibre
+      - coda
+      - docker
+      - dropbox
+      - flux
+      - google-chrome
+      - google-chrome-canary
       - handbrake
       - handbrakebatch
       - imagealpha
+      - ipartition
       - iterm2
+      # - keybase
+      - kdiff3
+      - nylas-mail
+      - microsoft-office
       - musicbrainz-picard
-      -
-
+      - skype
+      - slack
+      - spectacle
+      - switch
+      - synology-assistant
+      - the-unarchiver
+      - torbrowser
+      - transmission
+      - viscosity
+      - vlc
     mas_email: ""
     mas_password: ""
     mas_installed_app_ids: [] # Deprecated
@@ -51,44 +76,46 @@
       - { id: 824183456, name: "Affinity Photo" }
       - { id: 824171161, name: "Affinity Designer" }
       - { id: 979047768, name: "Browserism for Chrome" }
-      - { id: 417375580, name: "BetterSnapTool" }
       - { id: 420212497, name: "Byword (2.8)" }
       - { id: 975937182, name: "Fantastical 2 - Calendar and Reminders" }
       - { id: 424389933, name: "Final Cut Pro" }
-      - { id: 424389933, name: "Final Cut Pro" }
-    # - { id: 425264550, name: "Blackmagic Disk Speed Test (3.0)" }
-    # - { id: 411643860, name: "DaisyDisk (4.3.2)" }
-    # - { id: 498486288, name: "Quick Resizer (1.9)" }
-    # - { id: 497799835, name: "Xcode (8.1)" }
+      - { id: 402989379, name: "iStudiez Pro - Homework, Schedule, Grades" }
+      - { id: 409201541, name: "Pages" }
     mas_upgrade_all_apps: no
-    mas_signin_dialog: no
+    mas_signin_dialog: yes
 
     dockitems_to_persist:
       - name: Messages
         path: "/Applications/Messages.app"
         pos: 2
+      - name: Nylas Mail
+        path: "/Applications/Nylas Mail.app"
+        pos: 3
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 3
+        pos: 4
+      - name: Google Chrome Canary
+        path: "/Applications/Google Chrome Canary.app"
+        pos: 5
       - name: TorBrowser
         path: "/Applications/TorBrowser.app"
-        pos: 4
+        pos: 6
       - name: Atom
         path: /Applications/Atom.app
-        pos: 5
+        pos: 7
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 6
+        pos: 8
       - name: Microsoft Word
         path: /Applications/Microsoft Word.app
-        pos: 7
+        pos: 9
       - name: Microsoft Excel
         path: /Applications/Microsoft Excel.app
-        pos: 8
+        pos: 10
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 9
+        pos: 11
 
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 10
+        pos: 12
