@@ -10,7 +10,7 @@
     - tmux
     - vim
     # - mas
-    - dockutil
+    # - dockutil
     - macOS_defaults
     # - atom
     # - iterm2
@@ -27,6 +27,7 @@
       - caskroom/cask
       - caskroom/cask
       - caskroom/versions
+      - caskroom/fonts
     homebrew_installed_packages:
       - dockutil
       - htop
@@ -69,6 +70,11 @@
       - transmission
       - viscosity
       - vlc
+      # fonts
+      - font-fira-code
+      - font-fira-mono-for-powerline
+      - font-fontawesome
+
     mas_email: ""
     mas_password: ""
     mas_installed_app_ids: [] # Deprecated
