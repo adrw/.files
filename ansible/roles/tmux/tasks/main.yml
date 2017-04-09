@@ -1,9 +1,13 @@
 ---
 
-  - file:
-      src: "{{ roles_dir }}/tmux/files/.tmux.conf"
-      dest: "{{ home }}/.tmux.conf"
-      state: link
-      force: yes
-    # with_items:
-    #   - { src: '.gitconfig', dest: '{{ home }}' }
+- file:
+    src: "{{ roles_dir }}/tmux/files/.tmux.conf"
+    dest: "{{ home }}/.tmux.conf"
+    state: link
+    force: yes
+
+- file:
+    src: "{{ roles_dir }}/tmux/files/.tmux.conf.local"
+    dest: "{{ home }}/.tmux.conf.local"
+    state: link
+    force: yes

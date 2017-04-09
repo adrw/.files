@@ -24,6 +24,8 @@
       - shellrc_file.stdout.find('oh-my-zsh') != -1
     msg: "oh-my-zsh isn't in {{ shellrc.stdout }}"
 
+# Below from https://gist.github.com/kevin-smets/8568070
+
 - name: "check if Powerlevel9k"
   stat:
     path: "{{ home }}/.oh-my-zsh/custom/themes/powerlevel9k"
@@ -70,20 +72,15 @@
     line: "{{ zsh__autosuggestions_plugin }}"
   become: false
 
-- name: "check if syntax"
+- name: "check if syntax_highlighting"
   stat:
-    path: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    path: "{{ zsh__syntax_highlighting }}"
   register: syntax_exists
 
-- name: "install syntax"
-  shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git {{ home }}/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-  when: syntax_exists.stat.isdir is not defined
-  become: false
-
-- name: "add syntax to .zshrc"
+- name: "add syntax_highlighting to .zshrc"
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
-    insertafter: "{{ zsh__plugin_prefix }}"
-    line: "{{ zsh__syntax_plugin }}"
+    line: "{{ zsh__syntax_highlighting }}"
+  when: syntax_exists
   become: false

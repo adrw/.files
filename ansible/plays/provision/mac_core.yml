@@ -4,8 +4,8 @@
   connection: local
   roles:
     # - macOS_security
-    - zsh
     - homebrew
+    - zsh
     - git
     - tmux
     - vim
@@ -29,12 +29,14 @@
       - caskroom/versions
       - caskroom/fonts
     homebrew_installed_packages:
+      - archey
       - dockutil
       - htop
       - mas
       - node
       - tmux
       - yarn
+      - zsh-syntax-highlighting
     homebrew_cask_apps:
       - 1password
       - alfred

@@ -10,4 +10,5 @@ zsh__pre_plugin: "# Example format: plugins=(rails git textmate ruby lighthouse)
 zsh__plugin_prefix: 'plugins='
 zsh__default_plugin: 'plugins=(git)'
 zsh__autosuggestions_plugin: 'plugins=(zsh-autosuggestions)'
-zsh__syntax_plugin: 'plugins=(zsh-syntax-highlighting)'
+
+zsh__syntax_highlighting: 'source {{ home }}/.homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
