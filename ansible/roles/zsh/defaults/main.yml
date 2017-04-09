@@ -1,9 +1,13 @@
 ---
 
 zsh__pre_theme: "# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes"
+zsh__theme_prefix: 'ZSH_THEME='
 zsh__default_theme: 'ZSH_THEME="robbyrussell"'
-zsh__theme: ZSH_THEME="powerlevel9k/powerlevel9k"
+zsh__powerlevel_theme: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
+zsh__default_user: "DEFAULT_USER='{{ home | win_basename}}'"
 
-# zsh__pre_plugin: "# Add wisely, as too many plugins slow down shell startup."
-# zsh__default_plugin: "plugins=(git)"
-# zsh__plugin: "plugins=(git zsh-autosuggestions)"
+zsh__pre_plugin: "# Example format: plugins=(rails git textmate ruby lighthouse)"
+zsh__plugin_prefix: 'plugins='
+zsh__default_plugin: 'plugins=(git)'
+zsh__autosuggestions_plugin: 'plugins=(zsh-autosuggestions)'
+zsh__syntax_plugin: 'plugins=(zsh-syntax-highlighting)'

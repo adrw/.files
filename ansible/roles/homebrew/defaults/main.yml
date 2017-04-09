@@ -1,6 +1,7 @@
 ---
 
 homebrew__path: 'PATH=$PATH:{{ home }}/.homebrew/sbin:{{ home }}/.homebrew/bin'
+homebrew__path_prefix: 'PATH='
 homebrew__no_analytics: 'export HOMEBREW_NO_ANALYTICS=1'
 homebrew__no_insecure_redirect: 'export HOMEBREW_NO_INSECURE_REDIRECT=1'
 homebrew__require_sha: 'export HOMEBREW_CASK_OPTS=--require-sha'

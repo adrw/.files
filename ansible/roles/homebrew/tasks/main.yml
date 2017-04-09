@@ -1,23 +1,36 @@
 ---
 
 - name: save homebrew path to zshrc
-  when: shellrc_file.stdout.find('{{ homebrew__path }}') == -1
-  shell: echo '{{ homebrew__path }}' >> {{ shellrc.stdout }}
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    regexp: "^{{ homebrew__path_prefix }}"
+    line: "{{ homebrew__path }}"
   become: false
 
 - name: turn off homebrew analytics
-  when: shellrc_file.stdout.find('{{ homebrew__no_analytics }}') == -1
-  shell: echo '{{ homebrew__no_analytics }}' >> {{ shellrc.stdout }}
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    regexp: "^{{ homebrew__no_analytics }}"
+    line: "{{ homebrew__no_analytics }}"
   become: false
 
 - name: force homebrew no-insecure-redirect
-  when: shellrc_file.stdout.find('{{ homebrew__no_insecure_redirect }}') == -1
-  shell: echo '{{ homebrew__no_insecure_redirect }}' >> {{ shellrc.stdout }}
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    regexp: "^{{ homebrew__no_insecure_redirect }}"
+    line: "{{ homebrew__no_insecure_redirect }}"
   become: false
 
 - name: require-sha
-  when: homebrew_cask_require_sha and shellrc_file.stdout.find('{{ homebrew__require_sha }}') == -1
-  shell: echo '{{ homebrew__require_sha }}' >> {{ shellrc.stdout }}
+  when: homebrew_cask_require_sha
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    regexp: "^{{ homebrew__require_sha }}"
+    line: "{{ homebrew__require_sha }}"
   become: false
 
 # https://github.com/geerlingguy/ansible-role-homebrew
