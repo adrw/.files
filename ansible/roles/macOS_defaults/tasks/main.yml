@@ -1,9 +1,0 @@
----
-
-- file:
-    path: '{{ roles_dir }}/macOS_defaults/files/.macos'
-    mode: "u+x,g+x,o+x"
-
-- name: run .macos script
-  shell: '{{ roles_dir }}/macOS_defaults/files/.macos'
-  become: true

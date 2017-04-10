@@ -1,0 +1,61 @@
+---
+
+- file:
+    path: '{{ roles_dir }}/macos/files/.macos'
+    mode: "u+x,g+x,o+x"
+  become: false
+
+- name: run .macos script
+  shell: '{{ roles_dir }}/macos/files/.macos'
+  become: true
+
+- name: download original.macos
+  get_url:
+    url: "{{ original_macos_url }}"
+    dest: "{{ roles_dir }}/macos/files/{{ original_macos_file }}"
+    mode: 0440
+  ignore_errors: true
+  when: cache_libraries
+  become: false
+
+- name: ensure system integrity protection
+  command: csrutil status
+  register: sip_status
+  failed_when: "'disabled' in sip_status.stderr"
+  become: false
+- assert:
+    that: sip_status.stdout.find('enabled') != -1
+    msg: "System Integrity Protection is disabled"
+
+- name: check filevault full disk encryption status
+  command: fdesetup isactive
+  register: filevault_status
+  failed_when: "'FAILED' in filevault_status.stderr"
+  become: false
+- name: seed /dev/random before enabling filevault
+  when: filevault_status.stdout.find('true') == -1
+  shell: echo "{{ fde_seed }}" >> /dev/random
+  become: false
+- assert:
+    that: filevault_status.stdout.find('true') != -1
+    msg: "Filevault is not on"
+
+- name: clear filevault key when hibernate/sleep
+  shell: pmset -a destroyfvkeyonstandby 1
+  when: filevault_auto_evict
+  become: true
+- shell: pmset -a hibernatemode 25
+  when: filevault_auto_evict
+  become: true
+- shell: pmset -a powernap 0
+  when: filevault_auto_evict
+  become: true
+- shell: pmset -a standby 0
+  when: filevault_auto_evict
+  become: true
+- shell: pmset -a standbydelay 0
+  when: filevault_auto_evict
+  become: true
+- shell: pmset -a autopoweroff 0
+  when: filevault_auto_evict
+  become: true

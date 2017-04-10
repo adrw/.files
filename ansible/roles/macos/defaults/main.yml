@@ -1,6 +1,8 @@
 ---
 
-computer_name: mbp
-local_hostname: mbp
+original_macos_url: https://raw.githubusercontent.com/mathiasbynens/dotfiles/master/.macos
+original_macos_file: original.macos
+desktop_picture_path: /Library/Desktop Pictures/El Capitan 2.jpg
+
 fde_seed: "Etiaminarcueuurnasemperelementumegetsedsem.Inidultricesneque,etcursusleo.Sedinconvallisaugue,sitametdignissimpurus.Phasellustempornonturpisegetposuere.Donecligulasapien,aliquetaliberoat,variusmalesuadaturpis.Doneceuiaculislorem.Morbiegetturpissem.Curabiturfringilla,nullaegetsollicitudinornare,sapienrisuscursusarcu,eufermentumerosurnaintellus.Morbisedlacusacestefficiturluctusutquisest.Utpurusnibh,faucibusutpharetraconsequat,viverraeunisl.Aliquamatarcumollisjustofringillavariusmolestienectellus.Aliquamtortoripsum,malesuadavitaeorciid,gravidamollisquam."
 filevault_auto_evict: false

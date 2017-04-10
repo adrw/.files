@@ -30,10 +30,10 @@
     filevault_auto_evict: true
     cache_libraries: true
 
-    homebrew_prefix: "{{ home }}/"
-    homebrew_install_path: "{{ homebrew_prefix }}/.homebrew"
-    homebrew_brew_bin_path: "{{ home }}/.homebrew/bin"
     homebrew_cask_require_sha: false
+    homebrew_prefix: "/usr/local"
+    homebrew_install_path: "/usr/local"
+    homebrew_brew_bin_path: "/usr/local/bin"
     homebrew_taps:
       - homebrew/core
       - caskroom/cask
@@ -56,36 +56,36 @@
       - alfred
       - appcleaner
       - atom
-      - autodmg
-      - backblaze
-      - backblaze-downloader
-      - bartender
-      - calibre
+      # - autodmg
+      # - backblaze
+      # - backblaze-downloader
+      # - bartender
+      # - calibre
       - coda
       - docker
       - dropbox
       - flux
       - google-chrome
       - google-chrome-canary
-      - handbrake
-      - handbrakebatch
-      - imagealpha
-      - ipartition
+      # - handbrake
+      # - handbrakebatch
+      # - imagealpha
+      # - ipartition
       - iterm2
       # - keybase
-      - kdiff3
-      - nylas-mail
+      # - kdiff3
+      # - nylas-mail
       - microsoft-office
-      - musicbrainz-picard
-      - skype
+      # - musicbrainz-picard
+      # - skype
       - slack
       - spectacle
-      - switch
-      - synology-assistant
+      # - switch
+      # - synology-assistant
       - the-unarchiver
       - torbrowser
-      - transmission
-      - viscosity
+      # - transmission
+      # - viscosity
       - vlc
     # fonts
       - font-fira-code
@@ -96,13 +96,13 @@
     mas_password: ""
     mas_installed_app_ids: [] # Deprecated
     mas_installed_apps:
-      - { id: 824183456, name: "Affinity Photo" }
-      - { id: 824171161, name: "Affinity Designer" }
+      # - { id: 824183456, name: "Affinity Photo" }
+      # - { id: 824171161, name: "Affinity Designer" }
       - { id: 979047768, name: "Browserism for Chrome" }
       - { id: 420212497, name: "Byword (2.8)" }
       - { id: 975937182, name: "Fantastical 2 - Calendar and Reminders" }
-      - { id: 424389933, name: "Final Cut Pro" }
-      - { id: 402989379, name: "iStudiez Pro - Homework, Schedule, Grades" }
+      # - { id: 424389933, name: "Final Cut Pro" }
+      # - { id: 402989379, name: "iStudiez Pro - Homework, Schedule, Grades" }
       - { id: 409201541, name: "Pages" }
     mas_upgrade_all_apps: no
     mas_signin_dialog: yes

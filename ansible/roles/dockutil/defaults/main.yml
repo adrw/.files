@@ -1,6 +1,7 @@
 ---
 
 dockitems_to_remove:
+  - Siri
   - Launchpad
   - Mail
   - Safari

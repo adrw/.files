@@ -1,3 +1,4 @@
 ---
 
 block_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts
+block_hosts_file: block.hosts

@@ -11,4 +11,4 @@ zsh__plugin_prefix: 'plugins='
 zsh__default_plugin: 'plugins=(git)'
 zsh__autosuggestions_plugin: 'plugins=(zsh-autosuggestions)'
 
-zsh__syntax_highlighting: 'source {{ home }}/.homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+zsh__syntax_highlighting: 'source {{ homebrew_install_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'

@@ -1,5 +1,9 @@
 ---
 
+- name: install theme
+  shell: open {{ roles_dir }}/iterm2/files/Solarized-High-Contrast-Dark.itermcolors
+  become: false
+
 # customizations, profile, default font size
 
 # Install the Solarized Dark theme for iTerm

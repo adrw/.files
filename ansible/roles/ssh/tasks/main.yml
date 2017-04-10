@@ -1,6 +1,11 @@
 ---
 
 - file:
+    path: "{{ home }}/.ssh/"
+    state: directory
+    recurse: yes
+
+- file:
     src: "{{ roles_dir }}/ssh/files/config"
     dest: "{{ home }}/.ssh/config"
     state: link

@@ -1,2 +1,3 @@
 ---
+- include: provision/mac_core.yml
 - include: provision/mac_dev.yml

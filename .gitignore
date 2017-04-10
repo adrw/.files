@@ -1,2 +1,5 @@
 .DS_store
 *.retry
+block.hosts
+original.macos
+homecall.original.sh
