@@ -1,3 +1,14 @@
 ---
 
 # install packages with atom install
+
+# UI: Solarized Seti
+# Syntax: ptx-solarized-dark-syntax
+# Packages
+# language-babel
+# language-docker
+# language-javascript-jsx
+# linter
+# linter-eslint
+
+# https://github.com/tonsky/FiraCode/wiki/Atom-instructions

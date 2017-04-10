@@ -1,0 +1,19 @@
+---
+
+- name: download malware/ad blocked hosts
+  get_url:
+    url: "{{ block_hosts_url }}"
+    dest: "{{ roles_dir }}/etchosts/files/block_hosts"
+    mode: 0440
+  become: false
+- name: install blacklist to hosts file
+  copy:
+    src: "{{ roles_dir }}/etchosts/files/block_hosts"
+    dest: /etc/hosts
+    force: yes
+  become: true
+- name: remove blacklist
+  file:
+    path: "{{ roles_dir }}/etchosts/files/block_hosts"
+    state: absent
+  become: false

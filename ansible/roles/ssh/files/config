@@ -1,0 +1,5 @@
+Host *
+  PasswordAuthentication no
+  ChallengeResponseAuthentication no
+  HashKnownHosts yes
+  UseKeyChain no

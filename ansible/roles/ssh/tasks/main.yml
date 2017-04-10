@@ -1,0 +1,7 @@
+---
+
+- file:
+    src: "{{ roles_dir }}/ssh/files/config"
+    dest: "{{ home }}/.ssh/config"
+    state: link
+    force: yes

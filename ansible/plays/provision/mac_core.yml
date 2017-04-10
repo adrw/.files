@@ -3,9 +3,12 @@
 - hosts: macbox
   connection: local
   roles:
-    # - macOS_security
+    - macOS_security
+    - etchosts
     - homebrew
     - zsh
+    # - gpg
+    - ssh
     - git
     - tmux
     - vim
@@ -21,6 +24,7 @@
 
   vars:
     roles_dir: "{{ home }}/.files/ansible/roles"
+    filevault_auto_evict: true
     homebrew_cask_require_sha: false
     homebrew_taps:
       - homebrew/core
@@ -31,9 +35,12 @@
     homebrew_installed_packages:
       - archey
       - dockutil
+      # - gnupg2 requires java...
       - htop
       - mas
       - node
+      - openssl
+      - privoxy
       - tmux
       - yarn
       - zsh-syntax-highlighting

@@ -1,0 +1,13 @@
+---
+
+- file:
+    src: "{{ roles_dir }}/gpg/files/gpg.conf"
+    dest: "{{ home }}/.gnupg/gpg.conf"
+    state: link
+    force: yes
+
+# copy gpg.conf to ~/.gnupg/gpg.conf
+#
+# $ curl -O https://sks-keyservers.net/sks-keyservers.netCA.pem
+#
+# $ sudo mv sks-keyservers.netCA.pem /etc

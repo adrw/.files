@@ -1,6 +1,6 @@
 ---
 
-homebrew__path: 'PATH=$PATH:{{ home }}/.homebrew/sbin:{{ home }}/.homebrew/bin'
+homebrew__path: 'PATH={{ home }}/.homebrew/sbin:{{ home }}/.homebrew/bin:$PATH'
 homebrew__path_prefix: 'PATH='
 homebrew__no_analytics: 'export HOMEBREW_NO_ANALYTICS=1'
 homebrew__no_insecure_redirect: 'export HOMEBREW_NO_INSECURE_REDIRECT=1'
