@@ -8,7 +8,27 @@ function show_help {
   echo "-p {ansible playbook}               mac_core                      mac_dev"
   echo "-m {mac app store email}            \"\""
   echo "-n {mac app store password}         \"\""
+  echo "-s {run security setup}"
   exit 0
+}
+
+function secure_setup {
+  name=mbp
+
+  # set computer name (as done via System Preferences → Sharing)
+  sudo scutil --set ComputerName "$name"
+  sudo scutil --set HostName "$name"
+  sudo scutil --set LocalHostName "$name"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$name"
+
+  # enable firewall, logging, and stealth mode
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+
+  # stop firewall auto-whitelist by all software
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
 }
 
 set -e
@@ -22,7 +42,7 @@ MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 
 echo "Running with options..."
-while getopts "h?d:b:i:p:m:n:" opt; do
+while getopts "h?d:b:i:p:m:n:s" opt; do
     case "$opt" in
     h|\?)
         show_help
@@ -46,6 +66,9 @@ while getopts "h?d:b:i:p:m:n:" opt; do
     n)  echo "  - MAS_PASSWORD $MAS_PASSWORD => $OPTARG"
         MAS_PASSWORD=$OPTARG
         ;;
+    s)  echo "  - running secure_setup routine"
+        secure_setup
+        ;;
     esac
 done
 
@@ -54,9 +77,6 @@ shift $((OPTIND-1))
 echo "Leftovers: $@"
 echo ""
 echo "[BEGIN] ************************************************************************"
-${HOME}/.files/ansible/roles/macos/files/custom.macos
-echo "custom.macos [FIN] *************************************************************"
-echo ""
 
 if [[ ! -x /usr/bin/gcc ]]; then
   xcode-select --install
@@ -80,3 +100,4 @@ echo "xcode-select, git, homebrew, ansible [FIN] *******************************
 echo ""
 cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
 echo "ansible-playbook [FIN] *********************************************************"
+exit 0
