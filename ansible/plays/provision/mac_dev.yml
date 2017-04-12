@@ -31,9 +31,6 @@
     cache_libraries: true
 
     homebrew_cask_require_sha: false
-    homebrew_prefix: "/usr/local"
-    homebrew_install_path: "/usr/local"
-    homebrew_brew_bin_path: "/usr/local/bin"
     homebrew_taps:
       - homebrew/core
       - caskroom/cask
@@ -94,7 +91,6 @@
 
     mas_email: ""
     mas_password: ""
-    mas_installed_app_ids: [] # Deprecated
     mas_installed_apps:
       # - { id: 824183456, name: "Affinity Photo" }
       # - { id: 824171161, name: "Affinity Designer" }
@@ -108,30 +104,27 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
+      - name: Slack
+        path: "/Applications/Slack.app"
+        pos: 3
       - name: Messages
         path: "/Applications/Messages.app"
-        pos: 3
+        pos: 4
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 4
+        pos: 5
       - name: Google Chrome Canary
         path: "/Applications/Google Chrome Canary.app"
-        pos: 5
+        pos: 6
       - name: TorBrowser
         path: "/Applications/TorBrowser.app"
-        pos: 6
+        pos: 7
       - name: Atom
         path: /Applications/Atom.app
-        pos: 7
+        pos: 8
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 8
-      - name: Microsoft Word
-        path: /Applications/Microsoft Word.app
         pos: 9
-      - name: Microsoft Excel
-        path: /Applications/Microsoft Excel.app
-        pos: 10
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 11
+        pos: 10

@@ -30,9 +30,6 @@
     filevault_auto_evict: true
     cache_libraries: true
 
-    homebrew_prefix: "{{ home }}/"
-    homebrew_install_path: "{{ homebrew_prefix }}/.homebrew"
-    homebrew_brew_bin_path: "{{ home }}/.homebrew/bin"
     homebrew_cask_require_sha: false
     homebrew_taps:
       - homebrew/core
@@ -94,7 +91,6 @@
 
     mas_email: ""
     mas_password: ""
-    mas_installed_app_ids: [] # Deprecated
     mas_installed_apps:
       - { id: 824183456, name: "Affinity Photo" }
       - { id: 824171161, name: "Affinity Designer" }
@@ -110,27 +106,24 @@
     dockitems_to_persist:
       - name: Messages
         path: "/Applications/Messages.app"
-        pos: 3
+        pos: 4
       - name: Nylas Mail
         path: "/Applications/Nylas Mail.app"
-        pos: 4
+        pos: 5
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 5
+        pos: 6
       - name: Google Chrome Canary
         path: "/Applications/Google Chrome Canary.app"
-        pos: 6
+        pos: 7
       - name: TorBrowser
         path: "/Applications/TorBrowser.app"
-        pos: 7
+        pos: 8
       - name: Atom
         path: /Applications/Atom.app
-        pos: 8
+        pos: 9
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 9
-      - name: Microsoft Word
-        path: /Applications/Microsoft Word.app
         pos: 10
       - name: Microsoft Excel
         path: /Applications/Microsoft Excel.app

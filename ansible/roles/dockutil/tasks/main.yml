@@ -15,7 +15,6 @@
   with_items: "{{dockitems_to_persist}}"
   become: false
 
-
 - name: fix order
   shell: dockutil --move "{{ item.name }}" --position {{ item.pos }}
   with_items: "{{dockitems_to_persist}}"

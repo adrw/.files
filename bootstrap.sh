@@ -13,13 +13,15 @@ function show_help {
 }
 
 function secure_setup {
-  name=mbp
+  # randomize MAC address
+  sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
+  networksetup -setairportpower airport off
 
   # set computer name (as done via System Preferences → Sharing)
-  sudo scutil --set ComputerName "$name"
-  sudo scutil --set HostName "$name"
-  sudo scutil --set LocalHostName "$name"
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$name"
+  sudo scutil --set ComputerName "$MAC_NAME"
+  sudo scutil --set HostName "$MAC_NAME"
+  sudo scutil --set LocalHostName "$MAC_NAME"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$MAC_NAME"
 
   # enable firewall, logging, and stealth mode
   /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
@@ -29,6 +31,9 @@ function secure_setup {
   # stop firewall auto-whitelist by all software
   /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
   /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
+
+  networksetup -setairportpower airport on
+  sleep 5
 }
 
 set -e
@@ -40,8 +45,10 @@ INVENTORY=macbox/hosts              # -i
 PLAY=mac_core                       # -p
 MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
+read -p "MAC_NAME: " MAC_NAME
 
 echo "Running with options..."
+echo "  - MAC_NAME $MAC_NAME"
 while getopts "h?d:b:i:p:m:n:s" opt; do
     case "$opt" in
     h|\?)
@@ -96,8 +103,21 @@ if [[ ! -x $HOMEBREW_DIR/bin/ansible ]]; then
   brew install ansible
 fi
 
+if [[ ! -d $MAIN_DIR ]]; then
+  git clone https://github.com/andrewparadi/.files.git $MAIN_DIR
+else
+  cd $MAIN_DIR
+  git fetch --all
+  git reset --hard origin/master
+  git checkout origin/master
+fi
+
+# chmod -R 774 $MAIN_DIR
+# chmod +x $MAIN_DIR/bin/shuttle.sh
+# ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
+
 echo "xcode-select, git, homebrew, ansible [FIN] *************************************"
 echo ""
-cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} homebrew_prefix=${HOMEBREW_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
 echo "ansible-playbook [FIN] *********************************************************"
 exit 0

@@ -9,16 +9,16 @@ See [`drduh macOS Security and Privacy Guide`](https://github.com/drduh/macOS-Se
 1. On Mac, hold `option` down on restart, then choose the USB Recovery partition.
 1. Use Disk Utility to restore USB Macintosh HD back to Mac hard drive Macintosh HD.
 1. Restart into Mac, create temp account, don't agree to location, siri, or diagnostics
-1. Once through Mac setup flow and on desktop, logout of temp account, login to pre-made admin account, and delete temp account. Continue setup and install with admin account, use other for every day use. 
+1. Once through Mac setup flow and on desktop, logout of temp account, login to pre-made admin account, and delete temp account. Continue setup and install with admin account, use other for every day use.
 
 Setup
 ---
 1. Change system `ComputerName` and `LocalHostName` to remove personal information
 
   ```
-  $ sudo scutil --set ComputerName mbp
+  $ sudo scutil --set ComputerName { name }
 
-  $ sudo scutil --set LocalHostName mbp
+  $ sudo scutil --set LocalHostName { name }
   ```
 
 1. Manually seed entropy with random letters then `crtl-d` using `cat > /dev/random`
@@ -70,7 +70,7 @@ Homebrew
 1. Use [`main.sh`](../main.sh) script to install
   - [`oh-my-zsh`](http://ohmyz.sh/) as default shell
   - [`mac-defaults.sh`](./scripts/mac-defaults.sh) to change Mac settings (show all files, increase keyboard repeate rate...)
-  - [`copy-dotfiles.sh`](./scripts/copy-dotfiles.sh) to move `.vimrc` 
+  - [`copy-dotfiles.sh`](./scripts/copy-dotfiles.sh) to move `.vimrc`
   - [Homebrew](https://brew.sh/) into `~/homebrew` folder to maintain security of `/usr/local` [(more)](https://github.com/Homebrew/brew/blob/master/docs/Installation.md#installation)
   - [`install.sh`](./scripts/install.sh) install dev tools, apps through brew cask, and apps through mac app store
 
@@ -82,9 +82,3 @@ Generate SSH Keys
 DNS
 ---
 1. Append consolidated host file for broad low level blocking of ad and malware networks
-
-
-
-
-
-

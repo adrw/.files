@@ -6,6 +6,7 @@ dockitems_to_remove:
   - Mail
   - Safari
   - Contacts
+  - Calendar
   - Notes
   - Reminders
   - Maps
@@ -16,7 +17,6 @@ dockitems_to_remove:
   - iBooks
   - App Store
   - System Preferences
-  - Calendar
 
 dockitems_to_persist:
   # - name: Messages

@@ -8,12 +8,8 @@ Non Cask Apps
 - JPEGmini?
 - Pages
 - PhotoSweeper?
-- 
 
 
 Asked for passwords
 - Office
 - Keybase
-
-
-

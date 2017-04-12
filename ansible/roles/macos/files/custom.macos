@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ~/.macos — https://mths.be/macos
+# ~/.macos — https://mths.be/macos - Apr 12, 2017
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
@@ -15,23 +15,6 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ###############################################################################
 # Custom                                                                      #
 ###############################################################################
-
-name=mbp
-
-# Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "$name"
-sudo scutil --set HostName "$name"
-sudo scutil --set LocalHostName "$name"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$name"
-
-# enable firewall, logging, and stealth mode
-/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
-/usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
-/usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
-
-# stop firewall auto-whitelist by all software
-/usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
-/usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
 
 # Show battery percentage
 defaults write com.apple.menuextra.battery ShowPercent -string "YES"
