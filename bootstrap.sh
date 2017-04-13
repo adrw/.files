@@ -8,12 +8,14 @@ function show_help {
   echo "-p {ansible playbook}               mac_core                      mac_dev"
   echo "-m {mac app store email}            \"\""
   echo "-n {mac app store password}         \"\""
-  echo "-s {run security setup}"
+  echo "-s {run security setup, set hostname}"
   echo "-t {use test environment, no git checkout}"
   exit 0
 }
 
 function secure_setup {
+  read -p "MAC_NAME: " MAC_NAME
+  echo "  - MAC_NAME $MAC_NAME"
   # randomize MAC address
   sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
   networksetup -setairportpower airport off
@@ -48,11 +50,9 @@ INVENTORY=macbox/hosts              # -i
 PLAY=mac_core                       # -p
 MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
-read -p "MAC_NAME: " MAC_NAME
 TEST=false                          # -t
 
 echo "Running with options..."
-echo "  - MAC_NAME $MAC_NAME"
 while getopts "h?d:b:i:p:m:n:st" opt; do
     case "$opt" in
     h|\?)
