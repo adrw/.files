@@ -7,6 +7,13 @@ Mac
 3. Enable Filevault and restart
 4. Provision with command below in Terminal
 ```Bash
-cd ~/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh; chmod +x ~/bootstrap.sh; ~/bootstrap.sh -s; rm ~/bootstrap.sh
+$ cd ~/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh; chmod +x ~/bootstrap.sh; ~/bootstrap.sh -s; rm ~/bootstrap.sh
 ```
 5. Reboot and fin.
+
+Other Steps
+---
+- `Privoxy` not working? Check that proxy `127.0.0.1:8118` was added to HTTP and HTTPS sections in Airport and Ethernet
+- Want to remove `admin` privileges from a user?
+  - Find `GeneratedUID` of account with `$ dscl . -read /Users/<username> GeneratedUID`
+  - Remove from admin with `$ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>`
