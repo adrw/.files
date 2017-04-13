@@ -4,7 +4,6 @@
   connection: local
   roles:
     - etchosts
-    - homecall
     - zsh
     - homebrew
     - dockutil

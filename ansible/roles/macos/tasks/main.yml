@@ -1,23 +1,5 @@
 ---
 
-- file:
-    path: '{{ roles_dir }}/macos/files/.macos'
-    mode: "u+x,g+x,o+x"
-  become: false
-
-- name: run .macos script
-  shell: '{{ roles_dir }}/macos/files/.macos'
-  become: true
-
-- name: download original.macos
-  get_url:
-    url: "{{ original_macos_url }}"
-    dest: "{{ roles_dir }}/macos/files/{{ original_macos_file }}"
-    mode: 0440
-  ignore_errors: true
-  when: cache_libraries
-  become: false
-
 - name: ensure system integrity protection
   command: csrutil status
   register: sip_status

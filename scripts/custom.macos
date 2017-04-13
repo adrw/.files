@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # ~/.macos — https://mths.be/macos - Apr 12, 2017
+# https://raw.githubusercontent.com/mathiasbynens/dotfiles/master/.macos
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
@@ -106,7 +107,7 @@ tell application "Terminal"
 	(* Open the custom theme so that it gets added to the list
 	   of available terminal themes (note: this will open two
 	   additional terminal windows). *)
-	do shell script "open '${HOME}/.files/ansible/roles/macos/files/" & themeName & ".terminal'"
+	do shell script "open '${HOME}/.files/static/" & themeName & ".terminal'"
 
 	(* Wait a little bit to ensure that the custom theme is added. *)
 	delay 1
@@ -145,3 +146,5 @@ defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Do
 # Use `~/Downloads` to store completed downloads
 defaults write org.m0k.transmission DownloadLocationConstant -bool true
 defaults write org.m0k.transmission CompleteDownloadFolder -string "${HOME}/Downloads/Torrents"
+
+echo "Done. Note that some of these changes require a logout/restart to take effect."

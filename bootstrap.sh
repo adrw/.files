@@ -9,6 +9,7 @@ function show_help {
   echo "-m {mac app store email}            \"\""
   echo "-n {mac app store password}         \"\""
   echo "-s {run security setup}"
+  echo "-t {use test environment, no git checkout}"
   exit 0
 }
 
@@ -40,17 +41,19 @@ set -e
 OPTIND=1
 
 MAIN_DIR="$HOME/.files"             # -d
+SCRIPTS="$MAIN_DIR/scripts"
 HOMEBREW_DIR="$HOME/.homebrew"      # -b
-HOMEBREW_INSTALL_DIR=$HOMEBREW_DIR
+HOMEBREW_INSTALL_DIR="$HOMEBREW_DIR"
 INVENTORY=macbox/hosts              # -i
 PLAY=mac_core                       # -p
 MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 read -p "MAC_NAME: " MAC_NAME
+TEST=false                          # -t
 
 echo "Running with options..."
 echo "  - MAC_NAME $MAC_NAME"
-while getopts "h?d:b:i:p:m:n:s" opt; do
+while getopts "h?d:b:i:p:m:n:st" opt; do
     case "$opt" in
     h|\?)
         show_help
@@ -58,10 +61,11 @@ while getopts "h?d:b:i:p:m:n:s" opt; do
         ;;
     d)  echo "  - MAIN_DIR $MAIN_DIR => $OPTARG"
         MAIN_DIR=$OPTARG
+        SCRIPTS="$MAIN_DIR/scripts"
         ;;
     b)  echo "  - HOMEBREW_DIR $HOMEBREW_DIR => $OPTARG"
         HOMEBREW_DIR=$OPTARG
-        HOMEBREW_INSTALL_DIR=$OPTARG/Homebrew
+        HOMEBREW_INSTALL_DIR="$OPTARG/Homebrew"
         ;;
     i)  echo "  - INVENTORY $INVENTORY => $OPTARG"
         INVENTORY=$OPTARG
@@ -77,6 +81,9 @@ while getopts "h?d:b:i:p:m:n:s" opt; do
         ;;
     s)  echo "  - running secure_setup routine"
         secure_setup
+        ;;
+    t)  echo "  - using test environment"
+        TEST=true
         ;;
     esac
 done
@@ -107,7 +114,7 @@ fi
 
 if [[ ! -d $MAIN_DIR ]]; then
   git clone https://github.com/andrewparadi/.files.git $MAIN_DIR
-else
+elif [[ "$TEST" == false ]]; then
   cd $MAIN_DIR
   git fetch --all
   git reset --hard origin/master
@@ -122,4 +129,14 @@ echo "xcode-select, git, homebrew, ansible [FIN] *******************************
 echo ""
 cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
 echo "ansible-playbook [FIN] *********************************************************"
+echo ""
+$SCRIPTS/custom.macos
+echo "run custom.macos [FIN] *********************************************************"
+echo ""
+$SCRIPTS/.macos
+echo "run .macos [FIN] ***************************************************************"
+echo ""
+bash $SCRIPTS/homecall.sh fixmacos
+echo "run homecall.sh fixmacos [FIN] *************************************************"
+echo "[FIN] **************************************************************************"
 exit 0
