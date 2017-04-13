@@ -7,7 +7,7 @@ homebrew__no_insecure_redirect: 'export HOMEBREW_NO_INSECURE_REDIRECT=1'
 homebrew__require_sha: 'export HOMEBREW_CASK_OPTS=--require-sha'
 
 homebrew_prefix: "{{ home }}/.homebrew"
-homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
+homebrew_install_path: "{{ homebrew_prefix }}"
 homebrew_brew_bin_path: "{{ homebrew_prefix }}/bin"
 
 homebrew_installed_packages: []

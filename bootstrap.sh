@@ -41,6 +41,7 @@ OPTIND=1
 
 MAIN_DIR="$HOME/.files"             # -d
 HOMEBREW_DIR="$HOME/.homebrew"      # -b
+HOMEBREW_INSTALL_DIR=$HOMEBREW_DIR
 INVENTORY=macbox/hosts              # -i
 PLAY=mac_core                       # -p
 MAS_EMAIL=                          # -m
@@ -60,6 +61,7 @@ while getopts "h?d:b:i:p:m:n:s" opt; do
         ;;
     b)  echo "  - HOMEBREW_DIR $HOMEBREW_DIR => $OPTARG"
         HOMEBREW_DIR=$OPTARG
+        HOMEBREW_INSTALL_DIR=$OPTARG/Homebrew
         ;;
     i)  echo "  - INVENTORY $INVENTORY => $OPTARG"
         INVENTORY=$OPTARG
@@ -118,6 +120,6 @@ fi
 
 echo "xcode-select, git, homebrew, ansible [FIN] *************************************"
 echo ""
-cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} homebrew_prefix=${HOMEBREW_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
 echo "ansible-playbook [FIN] *********************************************************"
 exit 0
