@@ -1,13 +1,11 @@
 ---
 
-# Move .gitconfig to home folder
-# generate ssh keys
-# add to github?
-
-  - file:
-      src: "{{ roles_dir }}/git/files/.gitconfig"
-      dest: "{{ home }}/.gitconfig"
-      state: link
-      force: yes
-    # with_items:
-    #   - { src: '.gitconfig', dest: '{{ home }}' }
+- file:
+    src: "{{ roles_dir }}/git/files/.gitconfig"
+    dest: "{{ home }}/.gitconfig"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+  become: false

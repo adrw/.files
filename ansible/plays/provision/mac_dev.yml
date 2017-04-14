@@ -23,6 +23,8 @@
   become_method: sudo
 
   vars:
+    user_name: me
+    user_group: staff
     home: "~"
     roles_dir: "{{ home }}/.files/ansible/roles"
 
@@ -63,6 +65,7 @@
       - flux
       - google-chrome
       - google-chrome-canary
+      - gpgtools-beta
       # - handbrake
       # - handbrakebatch
       # - imagealpha

@@ -3,10 +3,25 @@
 - file:
     path: "{{ home }}/.ssh/"
     state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0755
     recurse: yes
 
 - file:
     src: "{{ roles_dir }}/ssh/files/config"
     dest: "{{ home }}/.ssh/config"
     state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
     force: yes
+
+- name: "generate ssh key to {{ ssh_file }}"
+  user:
+    name: "{{ user_name }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: "{{ ssh_file }}"
+    ssh_key_passphrase: "{{ ssh_passphrase }}"
+  become: true

@@ -10,6 +10,7 @@ function show_help {
   echo "-n {mac app store password}         \"\""
   echo "-s {run security setup, set hostname}"
   echo "-t {use test environment, no git checkout}"
+  echo "-u {user name}                      me"
   exit 0
 }
 
@@ -51,9 +52,10 @@ PLAY=mac_core                       # -p
 MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 TEST=false                          # -t
+USER_NAME=me                        # -u
 
 echo "Running with options..."
-while getopts "h?d:b:i:p:m:n:st" opt; do
+while getopts "h?d:b:i:p:m:n:stu:" opt; do
     case "$opt" in
     h|\?)
         show_help
@@ -84,6 +86,9 @@ while getopts "h?d:b:i:p:m:n:st" opt; do
         ;;
     t)  echo "  - using test environment"
         TEST=true
+        ;;
+    u)  echo "  - USER $USER_NAME => $OPTARG"
+        USER_NAME=$OPTARG
         ;;
     esac
 done
@@ -127,7 +132,7 @@ fi
 
 echo "xcode-select, git, homebrew, ansible [FIN] *************************************"
 echo ""
-cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
 echo "ansible-playbook [FIN] *********************************************************"
 echo ""
 $SCRIPTS/custom.macos

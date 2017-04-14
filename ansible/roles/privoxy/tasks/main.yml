@@ -6,6 +6,8 @@
   become: false
 - name: start privoxy as service
   command: brew services start privoxy
+  register: privoxy_service_status
+  failed_when: "'tmux' not in privoxy_service_status.stderr"
   become: false
 - name: configure network to privoxy
   command: networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8118
