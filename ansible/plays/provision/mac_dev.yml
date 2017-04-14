@@ -13,6 +13,7 @@
     - atom
     - ssh
     - privoxy
+    - syncthing
     # - dnscrypt
     # - gpg
     # - mas
@@ -46,6 +47,7 @@
       - node
       - openssl
       - privoxy
+      - syncthing
       - tmux
       - yarn
       - zsh-syntax-highlighting

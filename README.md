@@ -26,8 +26,17 @@ $ cd ~/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/master/b
 
 FAQ / Non-Automated Setup Tasks
 ---
+- Generate SSH keys? Delete `ansible/roles/ssh/defaults/main.yml` and use `ansible-vault create` to make new `main.yml` with following keys
+  - `ssh_file` full path to where you want the `id_rsa` file generated (usually `~/.ssh/id_rsa`)
+  - `ssh_passphrase` generate with a given passphrase
 - Add SSH key to GitHub? `pbcopy < ~/.ssh/id_rsa.pub` -> [GitHub.com/settings/keys](https://github.com/settings/keys)
 - `Privoxy` not working? Check that proxy `127.0.0.1:8118` was added to HTTP and HTTPS sections in Airport and Ethernet
 - Want to remove `admin` privileges from a user?
   - Find `GeneratedUID` of account with `$ dscl . -read /Users/<username> GeneratedUID`
   - Remove from admin with `$ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>`
+- Syncthing? Installed at `https://127.0.0.1:8384/`
+- Auto-launch Syncthing? [Syncthing docs](https://github.com/syncthing/syncthing/tree/master/etc/macosx-launchd)
+  1. Find Syncthing in brew folder (usually '~/.homebrew/Cellar/syncthing')
+  1. Copy the `syncthing.plist` file to `~/Library/LaunchAgents`.
+  1. Log out and in again, or run `launchctl load
+   ~/Library/LaunchAgents/syncthing.plist`.

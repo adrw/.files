@@ -6,7 +6,8 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0755
-    recurse: yes
+  become: false
+
 
 - file:
     src: "{{ roles_dir }}/ssh/files/config"
@@ -14,8 +15,9 @@
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
-    mode: 0644
+    mode: 0600
     force: yes
+  become: false
 
 - name: "generate ssh key to {{ ssh_file }}"
   user:
@@ -24,4 +26,4 @@
     ssh_key_bits: 4096
     ssh_key_file: "{{ ssh_file }}"
     ssh_key_passphrase: "{{ ssh_passphrase }}"
-  become: true
+  become: false
