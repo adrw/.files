@@ -34,6 +34,14 @@ FAQ / Non-Automated Setup Tasks
 - Want to remove `admin` privileges from a user?
   - Find `GeneratedUID` of account with `$ dscl . -read /Users/<username> GeneratedUID`
   - Remove from admin with `$ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>`
+- Hide a user profile? [Apple docs](https://support.apple.com/en-us/HT203998)
+  - Hide from login screen `sudo dscl . create /Users/hiddenuser IsHidden 1`
+  - Hide home directory and share point
+    ```Bash
+    $ sudo mv /Users/hiddenuser /var/hiddenuser
+    $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
+    $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
+    ```
 - Syncthing? Installed at `https://127.0.0.1:8384/`
 - Auto-launch Syncthing? [Syncthing docs](https://github.com/syncthing/syncthing/tree/master/etc/macosx-launchd)
   1. Find Syncthing in brew folder (usually '~/.homebrew/Cellar/syncthing')
