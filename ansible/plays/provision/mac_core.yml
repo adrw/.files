@@ -64,6 +64,7 @@
       - coda
       - docker
       - dropbox
+      - firefox
       - flux
       - google-chrome
       - google-chrome-canary
