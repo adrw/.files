@@ -76,6 +76,8 @@
       - iterm2
       # - keybase
       # - kdiff3
+      - ngrok
+      # - nvalt
       # - nylas-mail
       - microsoft-office
       # - musicbrainz-picard
