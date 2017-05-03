@@ -49,6 +49,7 @@
       - privoxy
       - syncthing
       - tmux
+      - wget
       - yarn
       - zsh-syntax-highlighting
     homebrew_cask_apps:
@@ -111,6 +112,9 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
+      - name: Slack
+        path: "/Applications/Slack.app"
+        pos: 3
       - name: Messages
         path: "/Applications/Messages.app"
         pos: 4
@@ -123,21 +127,30 @@
       - name: Google Chrome Canary
         path: "/Applications/Google Chrome Canary.app"
         pos: 7
+      - name: Firefox
+        path: "/Applications/Firefox.app"
+        pos: 8
       - name: TorBrowser
         path: "/Applications/TorBrowser.app"
-        pos: 8
+        pos: 9
       - name: Atom
         path: /Applications/Atom.app
-        pos: 9
+        pos: 10
+      - name: Byword
+        path: /Applications/Byword.app
+        pos: 11
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 10
+        pos: 12
       - name: Microsoft Excel
         path: /Applications/Microsoft Excel.app
-        pos: 11
+        pos: 13
+      - name: iStudiez Pro
+        path: /Applications/iStudiez Pro.app
+        pos: 14
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 12
+        pos: 15
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 13
+        pos: 16

@@ -49,6 +49,7 @@
       - privoxy
       - syncthing
       - tmux
+      - wget
       - yarn
       - zsh-syntax-highlighting
     homebrew_cask_apps:
@@ -117,21 +118,30 @@
       - name: Messages
         path: "/Applications/Messages.app"
         pos: 4
+      - name: Nylas Mail
+        path: "/Applications/Nylas Mail.app"
+        pos: 5
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 5
+        pos: 6
       - name: Google Chrome Canary
         path: "/Applications/Google Chrome Canary.app"
-        pos: 6
+        pos: 7
+      - name: Firefox
+        path: "/Applications/Firefox.app"
+        pos: 8
       - name: TorBrowser
         path: "/Applications/TorBrowser.app"
-        pos: 7
+        pos: 9
       - name: Atom
         path: /Applications/Atom.app
-        pos: 8
+        pos: 10
+      - name: Byword
+        path: /Applications/Byword.app
+        pos: 11
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 9
+        pos: 12
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 10
+        pos: 13
