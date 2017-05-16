@@ -12,5 +12,3 @@ set incsearch
 
 set nocompatible
 filetype off
-
-

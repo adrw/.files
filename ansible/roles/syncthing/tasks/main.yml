@@ -3,11 +3,9 @@
 - name: start syncthing as service
   command: brew services start syncthing
   register: syncthing_service_status
-  failed_when: "'tmux' not in syncthing_service_status.stderr"
+  ignore_errors: yes
   become: false
-
-
-
+  
 # - find:
 #     paths: "{{ homebrew_install_path }}"
 #     patterns: "*.syncthing.plist"

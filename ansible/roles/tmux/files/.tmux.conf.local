@@ -1,6 +1,7 @@
 # https://github.com/gpakosz/.tmux
 # (‑●‑●)> released under the WTFPL v2 license, by Gregory Pakosz (@gpakosz)
 
+unbind C-b
 
 # -- navigation ----------------------------------------------------------------
 

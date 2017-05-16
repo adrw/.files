@@ -9,17 +9,17 @@ Mac
 3. Enable Filevault and restart
 4. Provision with command below in Terminal
 ```Bash
-$ cd ~/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh; chmod +x ~/bootstrap.sh; ~/bootstrap.sh -s; rm ~/bootstrap.sh
+$ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh -s; rm ${HOME}/bootstrap.sh
 ```
 5. Reboot and fin.
 
 **`bootstrap.sh` options**
-- `-d` choose main directory for the `.files/`. Default: `${HOME}/.files`
 - `-b` homebrew install directory. Default: `${HOME}/.homebrew`. Other: `/usr/local`
+- `-d` choose main directory for the `.files/`. Default: `${HOME}/.files`
 - `-i` ansible inventory. Default: `macbox/hosts`
-- `-p` ansible playbook. Default: `mac_core`. Other: `mac_dev`.
 - `-m` mac app store email
 - `-n` mac app store password
+- `-p` ansible playbook. Default: `mac_core`. Other: `mac_dev`.
 - `-s` run security setup, set hostname (prompted to type at runtime), enable firewall
 - `-t` use test environment, no git checkout
 - `-u` set user name that will be used to set owner for all file operations. Default: me

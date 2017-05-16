@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # ~/.macos — https://mths.be/macos
+# https://github.com/mathiasbynens/dotfiles/blob/master/.macos
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
@@ -15,6 +16,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################
+
+# Disable the sound effects on boot
+sudo nvram SystemAudioVolume=" "
 
 # Menu bar: hide the Time Machine, Volume, and User icons
 defaults -currentHost write dontAutoLoad -array \
@@ -92,6 +96,9 @@ defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
 defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 # Follow the keyboard focus while zoomed in
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
+
+# Disable press-and-hold for keys in favor of key repeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1
