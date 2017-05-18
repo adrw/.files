@@ -10,6 +10,7 @@
     - git
     - tmux
     - vim
+    - aliases
     - atom
     - ssh
     - privoxy

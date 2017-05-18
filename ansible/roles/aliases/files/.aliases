@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
+
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+
+# Shortcuts
+alias d="cd ~/Dropbox"
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias s="cd ~/src"
+alias g="git"
+alias uw="docs/UW/3b"
+
+# Paste terminal output to a link
+alias tb="nc termbin.com 9999"

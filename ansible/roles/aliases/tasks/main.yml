@@ -1,0 +1,35 @@
+---
+
+- file:
+    src: "{{ roles_dir }}/aliases/files/.aliases"
+    dest: "{{ home }}/.aliases"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+  become: false
+
+- name: save aliases path to zshrc
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    regexp: "^{{ aliases__source }}"
+    line: "{{ aliases__source }}"
+  become: false
+
+- file:
+    path: "{{ home }}/.bashrc"
+    state: touch
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+  become: false
+
+- name: save aliases path to bashrc
+  lineinfile:
+    dest: "{{ home }}/.bashrc"
+    state: present
+    regexp: "^{{ aliases__source }}"
+    line: "{{ aliases__source }}"
+  become: false
