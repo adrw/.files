@@ -15,6 +15,7 @@
     - ssh
     - privoxy
     - syncthing
+    - automator-workflows
     # - dnscrypt
     # - gpg
     # - mas
