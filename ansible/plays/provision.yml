@@ -1,3 +1,4 @@
 ---
 - include: provision/mac_core.yml
 - include: provision/mac_dev.yml
+- include: provision/mac_secure_no_animate.yml

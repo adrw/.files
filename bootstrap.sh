@@ -5,7 +5,9 @@ function show_help {
   echo "-d {.files/ directory}              ${HOME}/.files"
   echo "-b {homebrew install directory}     ${HOME}/.homebrew       /usr/local"
   echo "-i {ansible inventory}              macbox/hosts"
-  echo "-p {ansible playbook}               mac_core                      mac_dev"
+  echo "-p {ansible playbook}               mac_core"
+  echo "      mac_    core    dev   secure_no_animate"
+  echo "      linux_"
   echo "-m {mac app store email}            \"\""
   echo "-n {mac app store password}         \"\""
   echo "-s {run security setup, set hostname}"
@@ -131,17 +133,31 @@ fi
 # ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
 
 echo "xcode-select, git, homebrew, ansible [FIN] *************************************"
-echo ""
-cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-echo "ansible-playbook [FIN] *********************************************************"
-echo ""
-$SCRIPTS/custom.macos
-echo "run custom.macos [FIN] *********************************************************"
-echo ""
-$SCRIPTS/.macos
-echo "run .macos [FIN] ***************************************************************"
-echo ""
-bash $SCRIPTS/homecall.sh fixmacos
-echo "run homecall.sh fixmacos [FIN] *************************************************"
+if [[ $PLAY == "mac_secure_no_animate" ]]; then
+
+  echo ""
+  cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+  echo "ansible-playbook [FIN] *********************************************************"
+  echo ""
+  $SCRIPTS/no_animate.macos
+  echo "run no_animate.macos [FIN] *****************************************************"
+
+else
+
+  echo ""
+  cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+  echo "ansible-playbook [FIN] *********************************************************"
+  echo ""
+  $SCRIPTS/custom.macos
+  echo "run custom.macos [FIN] *********************************************************"
+  echo ""
+  $SCRIPTS/.macos
+  echo "run .macos [FIN] ***************************************************************"
+  echo ""
+  bash $SCRIPTS/homecall.sh fixmacos
+  echo "run homecall.sh fixmacos [FIN] *************************************************"
+
+fi
+
 echo "[FIN] **************************************************************************"
 exit 0
