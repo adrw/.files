@@ -1,0 +1,56 @@
+---
+
+- file:
+    path: "{{ home }}/.zshrc"
+    state: touch
+  become: false
+
+- name: Register Antibody
+  shell: echo 'source <(antibody init)'
+  register: antibody_source
+  become: false
+
+- name: Add Antibody to zshrc
+  lineinfile:
+      dest: "{{ home }}/.zshrc"
+      state: present
+      line: "{{ antibody_source.stdout }}"
+  become: false
+
+- file:
+    src: "{{ roles_dir }}/antibody-zsh/files/{{ antibody__plugins_list }}"
+    dest: "{{ home }}/{{ antibody__plugins_list }}"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+  become: false
+
+- name: Antibody Bundle
+  shell: antibody bundle < "{{ home }}/{{ antibody__plugins_list }}" > "{{ home }}/{{ antibody__plugins_zsh }}"
+  become: false
+
+- name: Source plugins
+  lineinfile:
+      dest: "{{ home }}/.zshrc"
+      state: present
+      line: "source {{ home }}/{{ antibody__plugins_zsh }}"
+  become: false
+
+- name: "set .zshrc default_user as '{{ home | win_basename }}' for shorter cmd prompt"
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    line: "{{ zsh__default_user }}"
+  become: false
+
+- name: Check default shell
+  shell: echo $SHELL
+  register: current_shell
+
+- name: Set zsh as default shell
+  shell: chsh -s /bin/zsh
+  when: current_shell.stdout != "/bin/zsh"
+  become_user: "{{ user_name }}"
+  become: true

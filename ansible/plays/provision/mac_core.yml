@@ -4,8 +4,10 @@
   connection: local
   roles:
     - etchosts
-    - zsh
+    # - oh-my-zsh
     - homebrew
+    - antibody-zsh
+    - bash
     - dockutil
     - git
     - tmux
@@ -41,7 +43,9 @@
       - caskroom/cask
       - caskroom/versions
       - caskroom/fonts
+      - getantibody/homebrew-antibody
     homebrew_installed_packages:
+      - antibody
       - dockutil
       # - gnupg2 requires java...
       - htop
@@ -53,7 +57,7 @@
       - tmux
       - wget
       - yarn
-      - zsh-syntax-highlighting
+      # - zsh-syntax-highlighting
     homebrew_cask_apps:
       - 1password
       - alfred

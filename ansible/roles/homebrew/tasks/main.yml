@@ -1,10 +1,14 @@
 ---
 
+- file:
+    path: "{{ home }}/.zshrc"
+    state: touch
+  become: false
+
 - name: save homebrew path to zshrc
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
-    regexp: "^{{ homebrew__path_prefix }}"
     line: "{{ homebrew__path }}"
   become: false
 
@@ -12,7 +16,6 @@
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
-    regexp: "^{{ homebrew__no_analytics }}"
     line: "{{ homebrew__no_analytics }}"
   become: false
 
@@ -20,7 +23,6 @@
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
-    regexp: "^{{ homebrew__no_insecure_redirect }}"
     line: "{{ homebrew__no_insecure_redirect }}"
   become: false
 
@@ -29,7 +31,40 @@
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
-    regexp: "^{{ homebrew__require_sha }}"
+    line: "{{ homebrew__require_sha }}"
+  become: false
+
+- file:
+    path: "{{ home }}/.bashrc"
+    state: touch
+  become: false
+
+- name: save homebrew path to bashrc
+  lineinfile:
+    dest: "{{ home }}/.bashrc"
+    state: present
+    line: "{{ homebrew__path }}"
+  become: false
+
+- name: turn off homebrew analytics
+  lineinfile:
+    dest: "{{ home }}/.bashrc"
+    state: present
+    line: "{{ homebrew__no_analytics }}"
+  become: false
+
+- name: force homebrew no-insecure-redirect
+  lineinfile:
+    dest: "{{ home }}/.bashrc"
+    state: present
+    line: "{{ homebrew__no_insecure_redirect }}"
+  become: false
+
+- name: require-sha
+  when: homebrew_cask_require_sha
+  lineinfile:
+    dest: "{{ home }}/.bashrc"
+    state: present
     line: "{{ homebrew__require_sha }}"
   become: false
 

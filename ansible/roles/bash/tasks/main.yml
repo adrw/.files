@@ -1,0 +1,37 @@
+---
+
+- name: Install Bash Powerline Theme
+  get_url:
+    url: "{{ bash_powerline_url }}"
+    dest: "{{ roles_dir }}/bash/files/{{ bash_powerline_file }}"
+    mode: 0440
+  ignore_errors: true
+  become: false
+
+- file:
+    src: "{{ roles_dir }}/bash/files/{{ bash_powerline_file }}"
+    dest: "{{ home }}/{{ bash_powerline_file }}"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+  become: false
+
+- lineinfile:
+      dest: "{{ home }}/.bashrc"
+      state: present
+      line: "{{ bash_powerline_source }}"
+  become: false
+
+- name: Add .bashrc to .bash_profile so it runs on launch
+  file:
+    path: "{{ home }}/.bash_profile"
+    state: touch
+  become: false
+
+- lineinfile:
+      dest: "{{ home }}/.bash_profile"
+      state: present
+      line: "source {{ home }}/.bashrc"
+  become: false

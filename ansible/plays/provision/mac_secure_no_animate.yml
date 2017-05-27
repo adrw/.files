@@ -4,7 +4,7 @@
   connection: local
   roles:
     - etchosts
-    # - zsh
+    # - oh-my-zsh
     - homebrew
     # - dockutil
     # - git
