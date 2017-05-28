@@ -18,6 +18,14 @@
     force: yes
   become: false
 
+- file:
+    path: "{{ home }}/.bashrc"
+    state: touch
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+  become: false
+
 - lineinfile:
       dest: "{{ home }}/.bashrc"
       state: present

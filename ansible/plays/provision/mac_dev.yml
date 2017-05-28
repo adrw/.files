@@ -8,6 +8,7 @@
     - homebrew
     - antibody-zsh
     - bash
+    - zsh
     - dockutil
     - aliases
     - functions
@@ -35,7 +36,6 @@
     roles_dir: "{{ home }}/.files/ansible/roles"
 
     filevault_auto_evict: true
-    cache_libraries: true
 
     homebrew_cask_require_sha: false
     homebrew_taps:
@@ -58,7 +58,6 @@
       - tmux
       - wget
       - yarn
-      # - zsh-syntax-highlighting
     homebrew_cask_apps:
       - 1password
       - alfred

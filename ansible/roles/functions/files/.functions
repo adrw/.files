@@ -3,6 +3,14 @@
 # https://github.com/mathiasbynens/dotfiles/blob/master/.functions
 # https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
 
+# Reload Antibody
+function antiup() {
+	rm -rf `antibody home`
+	bash -c "antibody bundle < ~/.zshplugins > ~/.zsh_plugins.sh"
+	cat ~/.zsh_plugins.sh
+	reload
+}
+
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {
 	local tmpFile="${@%/}.tar";

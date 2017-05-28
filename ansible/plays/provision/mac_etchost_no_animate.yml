@@ -1,0 +1,14 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - etchosts
+  become: yes
+  become_method: sudo
+
+  vars:
+    home: "~"
+    roles_dir: "{{ home }}/.files/ansible/roles"
+
+    filevault_auto_evict: true

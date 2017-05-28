@@ -6,7 +6,7 @@ function show_help {
   echo "-b {homebrew install directory}     ${HOME}/.homebrew       /usr/local"
   echo "-i {ansible inventory}              macbox/hosts"
   echo "-p {ansible playbook}               mac_core"
-  echo "      mac_    core    dev   secure_no_animate"
+  echo "      mac    _core    _dev   _etchost_no_animate"
   echo "      linux_"
   echo "-m {mac app store email}            \"\""
   echo "-n {mac app store password}         \"\""
@@ -133,7 +133,7 @@ fi
 # ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
 
 echo "xcode-select, git, homebrew, ansible [FIN] *************************************"
-if [[ $PLAY == "mac_secure_no_animate" ]]; then
+if [[ $PLAY == "mac_etchost_no_animate" ]]; then
 
   echo ""
   cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"

@@ -11,12 +11,17 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
+alias .f="cd ~/.files"
 alias d="cd ~/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias sr="cd ~/src"
+alias ap="cd ~/src/github.com/andrewparadi.github.io"
 alias g="git"
 alias uw="cd ~/docs/UW/3b"
+alias 350="cd ~/src/cs350-work"
+alias 348="cd ~/src/cs348-work"
+alias 341="cd ~/src/cs341-work"
 
 # Paste terminal output to a link
 alias tb="nc termbin.com 9999"

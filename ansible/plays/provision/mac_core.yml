@@ -8,6 +8,7 @@
     - homebrew
     - antibody-zsh
     - bash
+    - zsh
     - dockutil
     - aliases
     - functions
@@ -35,7 +36,6 @@
     roles_dir: "{{ home }}/.files/ansible/roles"
 
     filevault_auto_evict: true
-    cache_libraries: true
 
     homebrew_cask_require_sha: false
     homebrew_taps:
@@ -58,7 +58,6 @@
       - tmux
       - wget
       - yarn
-      # - zsh-syntax-highlighting
     homebrew_cask_apps:
       - 1password
       - alfred
@@ -131,39 +130,39 @@
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
         pos: 6
-      # - name: Google Chrome Canary
-      #   path: "/Applications/Google Chrome Canary.app"
-      #   pos: 7
+      - name: Google Chrome Canary
+        path: "/Applications/Google Chrome Canary.app"
+        pos: 7
       - name: Firefox
         path: "/Applications/Firefox.app"
-        pos: 7
+        pos: 8
       - name: TorBrowser
         path: "/Applications/TorBrowser.app"
-        pos: 8
+        pos: 9
       - name: Atom
         path: /Applications/Atom.app
-        pos: 9
+        pos: 10
       - name: Byword
         path: /Applications/Byword.app
-        pos: 10
+        pos: 11
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 11
+        pos: 12
       - name: Microsoft Excel
         path: /Applications/Microsoft Excel.app
-        pos: 12
+        pos: 13
       - name: Microsoft OneNote
         path: /Applications/Microsoft OneNote.app
-        pos: 13
+        pos: 14
       - name: Preview
         path: /Applications/Preview.app
-        pos: 14
+        pos: 15
       - name: iStudiez Pro
         path: /Applications/iStudiez Pro.app
-        pos: 15
+        pos: 16
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 16
+        pos: 17
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 17
+        pos: 18
