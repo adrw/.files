@@ -9,10 +9,11 @@
     - antibody-zsh
     - bash
     - dockutil
+    - aliases
+    - functions
     - git
     - tmux
     - vim
-    - aliases
     - atom
     - ssh
     - privoxy

@@ -1,8 +1,8 @@
 ---
 
 - file:
-    src: "{{ roles_dir }}/aliases/files/.aliases"
-    dest: "{{ home }}/.aliases"
+    src: "{{ roles_dir }}/functions/files/.functions"
+    dest: "{{ home }}/.functions"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -10,11 +10,11 @@
     force: yes
   become: false
 
-- name: save aliases path to zshrc
+- name: save functions path to zshrc
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
-    line: "{{ aliases__source }}"
+    line: "{{ functions__source }}"
   become: false
 
 - file:
@@ -25,9 +25,9 @@
     mode: 0644
   become: false
 
-- name: save aliases path to bashrc
+- name: save functions path to bashrc
   lineinfile:
     dest: "{{ home }}/.bashrc"
     state: present
-    line: "{{ aliases__source }}"
+    line: "{{ functions__source }}"
   become: false

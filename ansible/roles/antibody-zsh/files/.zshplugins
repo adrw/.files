@@ -1,11 +1,13 @@
-caarlos0/ports kind:path
-djui/alias-tips
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-completions
-zsh-users/zsh-syntax-highlighting
 bhilburn/powerlevel9k
 bric3/nice-exit-code
+djui/alias-tips
+caarlos0/ports kind:path
 caarlos0/zsh-add-upstream
 peterhurford/git-it-on.zsh
 supercrabtree/k
-# Tarrasch/zsh-colors
+Tarrasch/zsh-autoenv
+Tarrasch/zsh-colors
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zsh-users/zsh-history-substring-search
+zsh-users/zsh-syntax-highlighting
