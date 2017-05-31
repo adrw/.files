@@ -2,6 +2,14 @@ Andrew's dotfiles
 ===
 **Ansible provisioning of macOS and Linux with security in mind**
 
+Linux
+===
+1. Installs .aliases, .functions, bash & zsh powerline themes
+```Bash
+$ curl -s https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh | bash -s
+```
+2. fin.
+
 Mac
 ===
 1. Reboot with `option` into Recovery parition on a USB
@@ -17,6 +25,7 @@ $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/ma
 - `-b` homebrew install directory. Default: `${HOME}/.homebrew`. Other: `/usr/local`
 - `-d` choose main directory for the `.files/`. Default: `${HOME}/.files`
 - `-i` ansible inventory. Default: `macbox/hosts`
+- `-l` install basic Linux (.aliases, .functions, bash & zsh powerline themes)
 - `-m` mac app store email
 - `-n` mac app store password
 - `-p` ansible playbook to run. Default: `mac_core`. Other: `mac_dev`, `mac_etchost_no_animate`
@@ -64,6 +73,7 @@ Useful Resources
 - [mac-dev-playbook](https://github.com/geerlingguy/mac-dev-playbook) - [@geerlingguy](https://github.com/geerlingguy) one of the best macOS Ansible playbooks I found, he also wrote many great Ansible Roles which you can use in your own playbook too
 - [.tmux](https://github.com/gpakosz/.tmux) - [@gpakosz](https://github.com/gpakosz) awesome tmux configuration file for terminal multiplexing (multiple shell instances in the same terminal session)
 - [antibody](https://github.com/getantibody/antibody) - [@caarlos0](https://github.com/caarlos0) Faster version of `Antigen` zsh plugin manager. Well worth switching too after feeling the lag too often of `oh-my-zsh`
+- [Bash](https://github.com/riobard/bash-powerline) & [ZSH](https://github.com/riobard/zsh-powerline) Powerline Themes - [@riobard](https://github.com/riobard) Fast Powerline themes with Git support written in Bash and ZSH
 - [iterm2-solarized](https://gist.github.com/kevin-smets/8568070) - [@kevin-smets](https://github.com/kevin-smets) really nice iTerm2 configuration with a `Dark-Solarized` theme, `oh-my-zsh`, [`zsh-autosuggestions`](https://github.com/zsh-users/zsh-autosuggestions#oh-my-zsh) and [Powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 - [dotfiles/.macos](https://github.com/mathiasbynens/dotfiles) - [@mathiasbynens](https://github.com/mathiasbynens) >900 lines of great common sense macOS defaults and configuration that you can easily clone and customize
 - [dockutil](https://github.com/kcrawford/dockutil) - [@kcrawford](https://github.com/kcrawford) great shell script for customizing macOS dock items
