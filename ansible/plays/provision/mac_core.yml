@@ -69,6 +69,7 @@
       - bartender
       - calibre
       - coda
+      - dash
       - docker
       - dropbox
       - firefox
@@ -88,6 +89,7 @@
       - nylas-mail
       - microsoft-office
       - musicbrainz-picard
+      # - sublime-text
       - skype
       - slack
       - spectacle

@@ -2,6 +2,9 @@
 
 # https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 
+# SSH
+alias uwssh="ssh -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -18,6 +21,9 @@ alias dt="cd ~/Desktop"
 alias sr="cd ~/src"
 alias ap="cd ~/src/github.com/andrewparadi.github.io"
 alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
 alias uw="cd ~/docs/UW/3b"
 alias 350="cd ~/src/cs350-work"
 alias 348="cd ~/src/cs348-work"

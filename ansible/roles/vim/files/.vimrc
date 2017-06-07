@@ -6,9 +6,9 @@ set backspace=2
 set autoindent
 set smartindent
 set number
-syntax enable
+syntax on
 set hlsearch
 set incsearch
-
+"set mouse=a
 set nocompatible
-filetype off
+filetype on
