@@ -1,0 +1,27 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - homebrew
+    - atom
+  become: yes
+  become_method: sudo
+
+  vars:
+    home: "~"
+    roles_dir: "{{ home }}/.files/ansible/roles"
+
+    filevault_auto_evict: true
+
+    homebrew_cask_require_sha: false
+    homebrew_taps:
+      - homebrew/core
+      - caskroom/cask
+    homebrew_installed_packages:
+      - node
+      - wget
+      - yarn
+    homebrew_cask_apps:
+      - atom
+      - docker

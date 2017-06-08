@@ -28,7 +28,7 @@ $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/ma
 - `-l` install basic Linux (.aliases, .functions, bash & zsh powerline themes)
 - `-m` mac app store email
 - `-n` mac app store password
-- `-p` ansible playbook to run. Default: `mac_core`. Other: `mac_dev`, `mac_etchost_no_animate`
+- `-p` ansible playbook to run. Default: `mac_core`. Other: `mac_dev`, `mac_jekyll`, `mac_etchost_no_animate`
 - `-s` run security setup, set hostname (prompted to type at runtime), enable firewall
 - `-t` use test environment, no git checkout
 - `-u` set user name that will be used to set owner for all file operations. Default: `me`
@@ -38,6 +38,7 @@ Included Playbooks
 Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
 - `mac_core` my full setup on my personal Mac
 - `mac_dev` entire dev environment suitable for work machine (doesn't include any media or photo software)
+- `mac_jekyll` minimum requirements to [get-started-with-jekyll](https://github.com/andrewparadi/get-started-with-jekyll)
 - `mac_etchost_no_animate` only install /etc/hosts domain blocking and disable Mac animations
 
 

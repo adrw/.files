@@ -41,7 +41,6 @@
     homebrew_taps:
       - homebrew/core
       - caskroom/cask
-      - caskroom/cask
       - caskroom/versions
       - caskroom/fonts
       - getantibody/homebrew-antibody
