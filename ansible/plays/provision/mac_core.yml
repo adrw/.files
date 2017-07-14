@@ -81,7 +81,7 @@
       - imagealpha
       - ipartition
       - iterm2
-      # - keybase
+      - keybase
       - kdiff3
       - ngrok
       - nvalt

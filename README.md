@@ -1,4 +1,4 @@
-Andrew's dotfiles
+Andrew's .files
 ===
 **Ansible provisioning of macOS and Linux with security in mind**
 
@@ -24,6 +24,7 @@ $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/ma
 **`bootstrap.sh` options**
 - `-b` homebrew install directory. Default: `${HOME}/.homebrew`. Other: `/usr/local`
 - `-d` choose main directory for the `.files/`. Default: `${HOME}/.files`
+- `-h` show help menu
 - `-i` ansible inventory. Default: `macbox/hosts`
 - `-l` install basic Linux (.ap-aliases, .ap-functions, bash & zsh powerline themes)
 - `-m` mac app store email
@@ -44,9 +45,14 @@ Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
 
 FAQ / Non-Automated Setup Tasks
 ---
-- Generate SSH keys? Delete `ansible/roles/ssh/defaults/main.yml` and use `ansible-vault create` to make new `main.yml` with following keys
-  - `ssh_file` full path to where you want the `id_rsa` file generated (usually `~/.ssh/id_rsa`)
-  - `ssh_passphrase` generate with a given passphrase
+- Enable `System Integrity Protection`
+  - Check status with `csrutil status`
+  - Reboot into Recovery OS: reboot holding Cmd+R
+  - In Utilities/Terminal, enable with `csrutil enable`
+- Generate SSH keys? Delete `ansible/roles/ssh/defaults/main.yml` and use `ansible-vault create` to make new `defaults/main.yml` with following declared strings
+  - `ssh_passphrase` generate id_rsa with a given passphrase then required on every id_rsa use
+  - `ssh_file: "{ full path }"` full path to where you want the `id_rsa` file generated (usually `~/.ssh/id_rsa`)
+  - Want to change the file later? `ansible-vault edit --ask-vault-pass ./main.yml`
 - Add SSH key to GitHub? `pbcopy < ~/.ssh/id_rsa.pub` -> [GitHub.com/settings/keys](https://github.com/settings/keys)
 - `Privoxy` not working? Check that proxy `127.0.0.1:8118` was added to HTTP and HTTPS sections in Airport and Ethernet
 - Want to remove `admin` privileges from a user?

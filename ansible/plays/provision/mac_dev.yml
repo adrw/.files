@@ -65,7 +65,7 @@
       # - autodmg
       # - backblaze
       # - backblaze-downloader
-      # - bartender
+      - bartender
       # - calibre
       - coda
       - dash
@@ -81,7 +81,7 @@
       # - imagealpha
       # - ipartition
       - iterm2
-      # - keybase
+      - keybase
       # - kdiff3
       - ngrok
       # - nvalt
