@@ -4,7 +4,7 @@ Andrew's dotfiles
 
 Linux
 ===
-1. Installs .aliases, .functions, bash & zsh powerline themes
+1. Installs .ap-aliases, .ap-functions, bash & zsh powerline themes
 ```Bash
 $ curl -s https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh | bash -s
 ```
@@ -25,7 +25,7 @@ $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/ma
 - `-b` homebrew install directory. Default: `${HOME}/.homebrew`. Other: `/usr/local`
 - `-d` choose main directory for the `.files/`. Default: `${HOME}/.files`
 - `-i` ansible inventory. Default: `macbox/hosts`
-- `-l` install basic Linux (.aliases, .functions, bash & zsh powerline themes)
+- `-l` install basic Linux (.ap-aliases, .ap-functions, bash & zsh powerline themes)
 - `-m` mac app store email
 - `-n` mac app store password
 - `-p` ansible playbook to run. Default: `mac_core`. Other: `mac_dev`, `mac_jekyll`, `mac_etchost_no_animate`
@@ -67,7 +67,7 @@ FAQ / Non-Automated Setup Tasks
   1. Log out and in again, or run `launchctl load
    ~/Library/LaunchAgents/syncthing.plist`.
 
-Useful Resources
+Resources
 ---
 - [Ansible docs](https://docs.ansible.com/ansible/) very thorough spec for all standard Ansible modules and functionality
 - [macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) - [@drduh](https://github.com/drduh) consolidates best practices from enterprise IT and government to secure macOS from many standard threat models

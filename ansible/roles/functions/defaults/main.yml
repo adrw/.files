@@ -1,2 +1,3 @@
 ---
-functions__source: 'source {{home}}/.functions'
+functions__filename: .ap-functions
+functions__source: 'source {{home}}/.ap-functions'

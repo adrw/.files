@@ -1,8 +1,8 @@
 ---
 
 - file:
-    src: "{{ roles_dir }}/aliases/files/.aliases"
-    dest: "{{ home }}/.aliases"
+    src: "{{ roles_dir }}/aliases/files/{{ aliases__filename }}"
+    dest: "{{ home }}/{{ aliases__filename }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

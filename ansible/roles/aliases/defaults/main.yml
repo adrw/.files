@@ -1,2 +1,3 @@
 ---
-aliases__source: 'source {{home}}/.aliases'
+aliases__filename: .ap-aliases
+aliases__source: 'source {{home}}/.ap-aliases'

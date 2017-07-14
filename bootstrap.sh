@@ -1,77 +1,69 @@
 #!/usr/bin/env bash
 
-div="***********************************************************************"
+# set up bash to handle errors more aggressively - a "strict mode" of sorts
+set -e # give an error if any command finishes with a non-zero exit code
+set -u # give an error if we reference unset variables
+set -o pipefail # for a pipeline, if any of the commands fail with a non-zero exit code, fail the entire pipeline with that exit code
+
+### Colors
+# Reset
+Reset='   tput sgr0'       # Text Reset
+# Regular Colors
+Black='   tput setaf 0'        # Black
+Red='     tput setaf 1'          # Red
+Green='   tput setaf 2'        # Green
+Yellow='  tput setaf 3'       # Yellow
+Blue='    tput setaf 4'         # Blue
+Purple='  tput setaf 5'       # Purple
+Cyan='    tput setaf 6'         # Cyan
+White='   tput setaf 7'        # White
+
+div="********************************************************************************"
 function beg {
   echo ""
-  echo "BEG [ ${1} ] ${div:${#1}}"
+  echo "$($Blue)<|b$($Reset) [ ${1} ] ${div:$((${#1}+9))}"
 }
 
 function end {
-  echo "FIN [ ${1} ] ${div:${#1}}"
+  echo -e "$($Green)ok: [ ${1} ] ${div:$((${#1}+9))}$($Reset)"
+}
+
+function err {
+  echo -e "$($Red)fatal: [ ${1} ] ${div:$((${#1}+12))}$($Reset)"
 }
 
 function show_help {
-  echo ".files/bootstrap.sh {opts}          (default)                     (other)"
-  echo "-d {.files/ directory}              ${HOME}/.files"
-  echo "-b {homebrew install directory}     ${HOME}/.homebrew       /usr/local"
-  echo "-i {ansible inventory}              macbox/hosts"
-  echo "-p {ansible playbook}               mac_core"
-  echo "      mac    _core    _dev  _jekyll   _etchost_no_animate"
-  echo "      linux_"
-  echo "-m {mac app store email}            \"\""
-  echo "-n {mac app store password}         \"\""
-  echo "-s {run security setup, set hostname}"
-  echo "-t {use test environment, no git checkout}"
-  echo "-u {user name}                      me"
+  beg "❓  Usage :: .files/bootstrap.sh {opts}"
+  echo "Options |   Description                       |   Default (or alternate) Values"
+  echo "${div}"
+  echo "-d      |   .files/ directory                 |   ${HOME}/.files        "
+  echo "-b      |   Homebrew install directory        |   ${HOME}/.homebrew     "
+  echo "        |       Homebrew default              |   /usr/local            "
+  echo "-i      |   Ansible Inventory                 |   macbox/hosts          "
+  echo "-p      |   Ansible Playbook                  |                         "
+  echo "        |     - Default: Main Mac environment |   mac_core              "
+  echo "        |     - Dev environment (no media)    |   mac_dev               "
+  echo "        |     - Homebrew, Atom, Docker...     |   mac_jekyll            "
+  echo "        |     - etchost domain blocking       |   mac_etchost_no_animate"
+  # echo "        |     - Linux environment             |   linux_core"
+  echo "-m      |   Mac App Store email               |   \"\"                  "
+  echo "-n      |   Mac App Store password            |   \"\"                  "
+  echo "-s      |   Set hostname, turn on Firewall    |                         "
+  echo "-t      |   Test env, don't detach Git head   |                         "
+  echo "-u      |   User name                         |   me                    "
+  err "Learn more at https://github.com/andrewparadi/.files"
   exit 0
 }
 
-function install_linux {
-  beg "Install Pure Linux"
-  # Bash Powerline Theme
-  if [ ! -f ~/.bash-powerline.sh ]; then
-    beg "Bash Powerline"
-    wget https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh -O ~/.bash-powerline.sh
-    echo "source ~/.bash-powerline.sh" >> ~/.bashrc
-    end "Bash Powerline"
-  fi
-
-  # ZSH Powerline Theme
-  if [ ! -f ~/.zsh-powerline.sh ]; then
-    beg "ZSH Powerline"
-    wget https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh -O ~/.zsh-powerline.sh
-    echo "source ~/.zsh-powerline.sh" >> ~/.zshrc
-    end "ZSH Powerline"
-  fi
-
-  # Aliases
-  if [ ! -f ~/.ap-aliases ]; then
-    beg "Aliases"
-    wget https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/aliases/files/.aliases -O ~/.ap-aliases
-    echo "source ~/.ap-aliases" >> ~/.bashrc
-    echo "source ~/.ap-aliases" >> ~/.zshrc
-    end "Aliases"
-  fi
-
-  # Functions
-  if [ ! -f ~/.ap-functions ]; then
-    beg "Functions"
-    wget https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/functions/files/.functions -O ~/.ap-functions
-    echo "source ~/.ap-functions" >> ~/.bashrc
-    echo "source ~/.ap-functions" >> ~/.zshrc
-    end "Functions"
-  fi
-
-  end "Install Pure Linux"
-  exit 0
-}
-
-function secure_setup {
-  read -p "MAC_NAME: " MAC_NAME
+function secure_hostname_network {
+  beg "🔐  Secure network and custom host name"
+  read -p "Enter name for your Mac: " MAC_NAME
   echo "  - MAC_NAME $MAC_NAME"
   # randomize MAC address
   sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
-  networksetup -setairportpower airport off
+
+  # turn off network interfaces
+  networksetup -setairportpower en0 off
 
   # set computer name (as done via System Preferences → Sharing)
   sudo scutil --set ComputerName "$MAC_NAME"
@@ -88,12 +80,137 @@ function secure_setup {
   /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
   /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
 
-  networksetup -setairportpower airport on
+  # reboot network interfaces
+  networksetup -setairportpower en0 on
+
   sleep 5
+  end "🔐  Host Name: ${MAC_NAME}. Firewall: On."
 }
 
-set -e
-OPTIND=1
+function mac_bootstrap {
+  beg "Bootstrap Script"
+
+  if [[ ! -x /usr/bin/gcc ]]; then
+    beg "Install xcode-select (Command Line Tools)"
+    xcode-select --install
+    end  "Install xcode-select (Command Line Tools)"
+  fi
+
+  if [[ ! -x "$HOMEBREW_DIR/bin/brew" ]]; then
+    beg "Install Homebrew"
+    mkdir -p $HOMEBREW_DIR && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_DIR
+    end "Install Homebrew"
+  fi
+
+  export PATH=$HOMEBREW_DIR/sbin:$HOMEBREW_DIR/bin:$PATH
+
+  if [[ ! -x $HOMEBREW_DIR/bin/git ]]; then
+    beg "Install Git"
+    brew install git
+    end "Install Git"
+  fi
+
+  if [[ ! -x $HOMEBREW_DIR/bin/ansible ]]; then
+    beg "Install Ansible"
+    brew install ansible
+    end "Install Ansible"
+  fi
+
+  if [[ ! -d $MAIN_DIR ]]; then
+    beg "Clone .files"
+    git clone https://github.com/andrewparadi/.files.git $MAIN_DIR
+    end "Clone .files"
+  elif [[ "$TEST" == false ]]; then
+    beg "Decapitate .files (headless mode)"
+    cd $MAIN_DIR
+    git fetch --all
+    git reset --hard origin/master
+    git checkout origin/master
+    end "Decapitate .files (headless mode)"
+  fi
+
+  # chmod -R 774 $MAIN_DIR
+  # chmod +x $MAIN_DIR/bin/shuttle.sh
+  # ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
+  end "xcode-select, git, homebrew, ansible"
+  if [[ $PLAY == "mac_etchost_no_animate" ]]; then
+    beg "ansible-playbook | $PLAY @ $INVENTORY"
+    cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    end "ansible-playbook | $PLAY @ $INVENTORY"
+
+    beg "no_animate.macos"
+    $SCRIPTS/no_animate.macos
+    end "no_animate.macos"
+  elif [[ $PLAY == "mac_jekyll" ]]; then
+    beg "ansible-playbook :: $PLAY @ $INVENTORY"
+    cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    end "ansible-playbook :: $PLAY @ $INVENTORY"
+  else
+    beg "ansible-playbook :: $PLAY @ $INVENTORY"
+    cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    end "ansible-playbook :: $PLAY @ $INVENTORY"
+
+    beg "custom.macos"
+    $SCRIPTS/custom.macos
+    end "custom.macos"
+
+    beg ".macos"
+    $SCRIPTS/.macos
+    end ".macos"
+
+    beg "homecall.sh fixmacos"
+    bash $SCRIPTS/homecall.sh fixmacos
+    end "homecall.sh fixmacos"
+  fi
+
+  beg "🍺  Bootstrap Script Fin."
+  exit 0
+}
+
+function linux_bootstrap {
+  beg "Bootstrap Script"
+
+  beg "Install Linux Base Shell"
+  # Bash Powerline Theme
+  if [ ! -f ~/.bash-powerline.sh ]; then
+    beg "Bash Powerline"
+    wget https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh -O ~/.bash-powerline.sh
+    echo "source ~/.bash-powerline.sh" >> ~/.bashrc
+    end "Bash Powerline"
+  fi
+
+  # ZSH Powerline Theme
+  if [ ! -f ~/.zsh-powerline.sh ]; then
+    beg "ZSH Powerline"
+    wget https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh -O ~/.zsh-powerline.sh
+    echo "source ~/.zsh-powerline.sh" >> ~/.zshrc
+    end "ZSH Powerline"
+  fi
+
+  # AP-Aliases
+  if [ ! -f ~/.ap-aliases ]; then
+    beg ".ap-aliases"
+    wget https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/aliases/files/.ap-aliases -O ~/.ap-aliases
+    echo "source ~/.ap-aliases" >> ~/.bashrc
+    echo "source ~/.ap-aliases" >> ~/.zshrc
+    end ".ap-aliases"
+  fi
+
+  # AP-Functions
+  if [ ! -f ~/.ap-functions ]; then
+    beg ".ap-functions"
+    wget https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/functions/files/.ap-functions -O ~/.ap-functions
+    echo "source ~/.ap-functions" >> ~/.bashrc
+    echo "source ~/.ap-functions" >> ~/.zshrc
+    end ".ap-functions"
+  fi
+
+  beg "🍺  Fin. Bootstrap Script"
+  exit 0
+}
+
+echo "$($Blue)<|bootstrap.sh$($Reset) [ Welcome to .files bootstrap! ] ${div:48}"
+echo "$($Blue)<|b$($Reset) [ by Andrew Paradi. Source code: https://github.com/andrewparadi/.files ] **"
 
 MAIN_DIR="$HOME/.files"             # -d
 SCRIPTS="$MAIN_DIR/scripts"
@@ -106,8 +223,9 @@ MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 TEST=false                          # -t
 USER_NAME=me                        # -u
+SECURE=false                        # -s
 
-echo "Running with options..."
+beg "📈  Registered Configuration"
 while getopts "h?d:b:i:p:m:n:sltu:" opt; do
     case "$opt" in
     h|\?)
@@ -137,10 +255,10 @@ while getopts "h?d:b:i:p:m:n:sltu:" opt; do
     n)  echo "  - MAS_PASSWORD $MAS_PASSWORD => $OPTARG"
         MAS_PASSWORD=$OPTARG
         ;;
-    s)  echo "  - running secure_setup routine"
-        secure_setup
+    s)  echo "  - Secure network and custom host name"
+        SECURE=true
         ;;
-    t)  echo "  - using test environment"
+    t)  echo "  - Test Environment (Git Head still attached)"
         TEST=true
         ;;
     u)  echo "  - USER $USER_NAME => $OPTARG"
@@ -149,103 +267,25 @@ while getopts "h?d:b:i:p:m:n:sltu:" opt; do
     esac
 done
 
+shift $((OPTIND-1))
+echo "Leftovers: $@"
+
+if [[ $SECURE == true ]]; then
+  secure_hostname_network
+fi
+
 # Determine platform
 case "$(uname)" in
-    Darwin)   echo "  - PLATFORM = Darwin"
-              PLATFORM=Darwin
+    Darwin)   PLATFORM=Darwin
+              mac_bootstrap
               ;;
-    Linux)    echo "  - PLATFORM = Linux"
-              PLATFORM=Linux
+    Linux)    PLATFORM=Linux
               LINUX=true
-              install_linux
+              linux_bootstrap
               ;;
-    *)        echo "  - PLATFORM = Unknown"
-              PLATFORM=NULL
+    *)        PLATFORM=NULL
               ;;
 esac
 
-shift $((OPTIND-1))
-[ "$1" = "--" ] && shift
-echo "Leftovers: $@"
-beg "Bootstrap Script"
-if [[ ! -x /usr/bin/gcc ]]; then
-  beg "xcode-select"
-  xcode-select --install
-  end  "xcode-select"
-fi
-
-if [[ ! -x "$HOMEBREW_DIR/bin/brew" ]]; then
-  beg "Install Homebrew"
-  mkdir -p $HOMEBREW_DIR && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_DIR
-  end "Install Homebrew"
-fi
-
-export PATH=$HOMEBREW_DIR/sbin:$HOMEBREW_DIR/bin:$PATH
-
-if [[ ! -x $HOMEBREW_DIR/bin/git ]]; then
-  beg "Install Git"
-  brew install git
-  end "Install Git"
-fi
-
-if [[ ! -x $HOMEBREW_DIR/bin/ansible ]]; then
-  beg "Install Ansible"
-  brew install ansible
-  end "Install Ansible"
-fi
-
-if [[ ! -d $MAIN_DIR ]]; then
-  beg "Clone .files"
-  git clone https://github.com/andrewparadi/.files.git $MAIN_DIR
-  end "Clone .files"
-elif [[ "$TEST" == false ]]; then
-  beg "Decapitate .files (headless mode)"
-  cd $MAIN_DIR
-  git fetch --all
-  git reset --hard origin/master
-  git checkout origin/master
-  end "Decapitate .files (headless mode)"
-fi
-
-# chmod -R 774 $MAIN_DIR
-# chmod +x $MAIN_DIR/bin/shuttle.sh
-# ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
-end "xcode-select, git, homebrew, ansible"
-if [[ $PLAY == "mac_etchost_no_animate" ]]; then
-
-  beg "ansible-playbook | $PLAY @ $INVENTORY"
-  cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-  end "ansible-playbook | $PLAY @ $INVENTORY"
-
-  beg "no_animate.macos"
-  $SCRIPTS/no_animate.macos
-  end "no_animate.macos"
-
-elif [[ $PLAY == "mac_jekyll" ]]; then
-
-  beg "ansible-playbook | $PLAY @ $INVENTORY"
-  cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-  end "ansible-playbook | $PLAY @ $INVENTORY"
-
-else
-
-  beg "ansible-playbook | $PLAY @ $INVENTORY"
-  cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-  end "ansible-playbook | $PLAY @ $INVENTORY"
-
-  beg "custom.macos"
-  $SCRIPTS/custom.macos
-  end "custom.macos"
-
-  beg ".macos"
-  $SCRIPTS/.macos
-  end ".macos"
-
-  beg "homecall.sh fixmacos"
-  bash $SCRIPTS/homecall.sh fixmacos
-  end "homecall.sh fixmacos"
-
-fi
-
-end "Bootstrap Script"
-exit 0
+err "Unknown Error. Maybe invalid platform (Only works on Mac or Linux)."
+exit 1

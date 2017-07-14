@@ -72,7 +72,7 @@
       - docker
       - dropbox
       - firefox
-      - flux
+      # - flux
       - google-chrome
       - google-chrome-canary
       - gpgtools-beta

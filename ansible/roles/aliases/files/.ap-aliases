@@ -20,14 +20,23 @@ alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias sr="cd ~/src"
 alias ap="cd ~/src/github.com/andrewparadi.github.io"
-alias g="git"
+alias uw="cd ~/docs/UW/3b"
+alias 350="cd ~/src/cs350-work/src"
+alias 348="cd ~/src/cs348-work"
+alias 341="cd ~/src/cs341-work"
+
+#Git
 alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
-alias uw="cd ~/docs/UW/3b"
-alias 350="cd ~/src/cs350-work"
-alias 348="cd ~/src/cs348-work"
-alias 341="cd ~/src/cs341-work"
+alias _add-upstream="git remote add upstream"
+alias _add-remote="git remote add"
+
+#Syncthing
+alias st="syncthing"
+
+#Web Download every file off of a website
+alias wd="wget -r -l 1 -nd -nH -A pdf"
 
 # Paste terminal output to a link
 alias tb="nc termbin.com 9999"
