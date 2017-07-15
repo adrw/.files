@@ -6,48 +6,34 @@ set -e # give an error if any command finishes with a non-zero exit code
 set -u # give an error if we reference unset variables
 set -o pipefail # for a pipeline, if any of the commands fail with a non-zero exit code, fail the entire pipeline with that exit code
 
-### Colors
-# Reset
-Reset='   tput sgr0'       # Text Reset
-# Regular Colors
-Black='   tput setaf 0'        # Black
-Red='     tput setaf 1'          # Red
-Green='   tput setaf 2'        # Green
-Yellow='  tput setaf 3'       # Yellow
-Blue='    tput setaf 4'         # Blue
-Purple='  tput setaf 5'       # Purple
-Cyan='    tput setaf 6'         # Cyan
-White='   tput setaf 7'        # White
-
-div="********************************************************************************"
-function beg {
-  echo ""
-  echo "$($Blue)<|b$($Reset) [ ${1} ] ${div:$((${#1}+9))}"
-}
-
-function end {
-  echo -e "$($Green)ok: [ ${1} ] ${div:$((${#1}+9))}$($Reset)"
-}
-
-function err {
-  echo -e "$($Red)fatal: [ ${1} ] ${div:$((${#1}+12))}$($Reset)"
+function status {
+  Reset='   tput sgr0'       # Text Reset
+  Red='     tput setaf 1'          # Red
+  Green='   tput setaf 2'        # Green
+  Blue='    tput setaf 4'         # Blue
+  div="********************************************************************************"
+  scriptname="$(basename "$0")"
+  case "$1" in
+    a)        echo "" && echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
+    b)        echo "$($Green)ok: [ ${2} ] ${div:$((${#2}+9))}$($Reset)" ;;
+    s|status) echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
+    t|title)  echo "$($Blue)<|${scriptname}$($Reset) [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
+    e|err)    echo "$($Red)fatal: [ ${2} ] ${div:$((${#2}+12))}$($Reset)" ;;
+  esac
 }
 
 function safe_download {
   timestamp="`date '+%Y%m%d-%H%M%S'`"
-
   if [ ! -f "$1" ]; then
-    beg "Download ${1}"
+    status a "Download ${1}"
     curl -s -o $1 $2
-    end "Download ${1}"
+    status b "Download ${1}"
   else
-    beg "Update ${1}"
+    status a "Update ${1}"
     mv $1 $1.$timestamp
     curl -s -o $1 $2
-    if diff -q "$1" "$1.$timestamp" > /dev/null; then
-      rm $1.$timestamp
-    fi
-    end "Update ${1}"
+    if diff -q "$1" "$1.$timestamp" > /dev/null; then rm $1.$timestamp; fi
+    status b "Update ${1}"
   fi
 }
 
@@ -56,7 +42,7 @@ function safe_source {
 }
 
 function show_help {
-  beg "❓  Usage :: .files/bootstrap.sh {opts}"
+  status a "❓  Usage :: .files/bootstrap.sh {opts}"
   echo "Options |   Description                       |   Default (or alternate) Values"
   echo "${div}"
   echo "-h      |   Show help menu                    |                         "
@@ -80,7 +66,7 @@ function show_help {
 }
 
 function secure_hostname_network {
-  beg "🔐  Secure network and custom host name"
+  status a "🔐  Secure network and custom host name"
   read -p "Enter name for your Mac: " MAC_NAME
   echo "  - MAC_NAME $MAC_NAME"
   # randomize MAC address
@@ -108,94 +94,91 @@ function secure_hostname_network {
   networksetup -setairportpower en0 on
 
   sleep 5
-  end "🔐  Host Name: ${MAC_NAME}. Firewall: On."
+  status b "🔐  Host Name: ${MAC_NAME}. Firewall: On."
 }
 
 function mac_bootstrap {
-  beg "Bootstrap Script"
+  status a "Bootstrap Script"
 
   if [[ ! -x /usr/bin/gcc ]]; then
-    beg "Install xcode-select (Command Line Tools)"
+    status a "Install xcode-select (Command Line Tools)"
     xcode-select --install
-    end  "Install xcode-select (Command Line Tools)"
+    status b  "Install xcode-select (Command Line Tools)"
   fi
 
   if [[ ! -x "$HOMEBREW_DIR/bin/brew" ]]; then
-    beg "Install Homebrew"
+    status a "Install Homebrew"
     mkdir -p $HOMEBREW_DIR && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_DIR
-    end "Install Homebrew"
+    status b "Install Homebrew"
   fi
 
   export PATH=$HOMEBREW_DIR/sbin:$HOMEBREW_DIR/bin:$PATH
 
   if [[ ! -x $HOMEBREW_DIR/bin/git ]]; then
-    beg "Install Git"
+    status a "Install Git"
     brew install git
-    end "Install Git"
+    status b "Install Git"
   fi
 
   if [[ ! -x $HOMEBREW_DIR/bin/ansible ]]; then
-    beg "Install Ansible"
+    status a "Install Ansible"
     brew install ansible
-    end "Install Ansible"
+    status b "Install Ansible"
   fi
 
   if [[ ! -d $MAIN_DIR ]]; then
-    beg "Clone .files"
+    status a "Clone .files"
     git clone https://github.com/andrewparadi/.files.git $MAIN_DIR
-    end "Clone .files"
+    status b "Clone .files"
   elif [[ "$TEST" == false ]]; then
-    beg "Decapitate .files (headless mode)"
+    status a "Decapitate .files (headless mode)"
     cd $MAIN_DIR
     git fetch --all
     git reset --hard origin/master
     git checkout origin/master
-    end "Decapitate .files (headless mode)"
+    status b "Decapitate .files (headless mode)"
   fi
 
   # chmod -R 774 $MAIN_DIR
   # chmod +x $MAIN_DIR/bin/shuttle.sh
   # ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
-  end "xcode-select, git, homebrew, ansible"
+  status b "xcode-select, git, homebrew, ansible"
   if [[ $PLAY == "mac_etchost_no_animate" ]]; then
-    beg "ansible-playbook | $PLAY @ $INVENTORY"
+    status a "ansible-playbook | $PLAY @ $INVENTORY"
     cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    end "ansible-playbook | $PLAY @ $INVENTORY"
+    status b "ansible-playbook | $PLAY @ $INVENTORY"
 
-    beg "no_animate.macos"
+    status a "no_animate.macos"
     $SCRIPTS/no_animate.macos
-    end "no_animate.macos"
+    status b "no_animate.macos"
   elif [[ $PLAY == "mac_jekyll" ]]; then
-    beg "ansible-playbook :: $PLAY @ $INVENTORY"
+    status a "ansible-playbook :: $PLAY @ $INVENTORY"
     cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    end "ansible-playbook :: $PLAY @ $INVENTORY"
+    status b "ansible-playbook :: $PLAY @ $INVENTORY"
   else
-    beg "ansible-playbook :: $PLAY @ $INVENTORY"
+    status a "ansible-playbook :: $PLAY @ $INVENTORY"
     cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    end "ansible-playbook :: $PLAY @ $INVENTORY"
+    status b "ansible-playbook :: $PLAY @ $INVENTORY"
 
-    beg "custom.macos"
+    status a "custom.macos"
     $SCRIPTS/custom.macos
-    end "custom.macos"
+    status b "custom.macos"
 
-    beg ".macos"
+    status a ".macos"
     $SCRIPTS/.macos
-    end ".macos"
+    status b ".macos"
 
-    beg "homecall.sh fixmacos"
+    status a "homecall.sh fixmacos"
     bash $SCRIPTS/homecall.sh fixmacos
-    end "homecall.sh fixmacos"
+    status b "homecall.sh fixmacos"
   fi
 
-  beg "🍺  Bootstrap Script Fin."
+  status a "🍺  Bootstrap Script Fin."
   exit 0
 }
 
 function linux_bootstrap {
-
-  beg "Bootstrap Script"
-
-  beg "Install Linux Base Shell"
+  status a "Install Linux Base Shell"
   # Bash Powerline Theme
   safe_download ~/.bash-powerline.sh https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh
   safe_source ~/.bash-powerline.sh ~/.bashrc
@@ -214,12 +197,12 @@ function linux_bootstrap {
   safe_source ~/.ap-functions ~/.bashrc
   safe_source ~/.ap-functions ~/.zshrc
 
-  beg "🍺  Fin. Bootstrap Script"
+  status a "🍺  Fin. Bootstrap Script"
   exit 0
 }
 
-echo "$($Blue)<|bootstrap.sh$($Reset) [ Welcome to .files bootstrap! ] ${div:48}"
-echo "$($Blue)<|b$($Reset) [ by Andrew Paradi. Source code: https://github.com/andrewparadi/.files ] **"
+status t "Welcome to .files bootstrap!"
+status s "Andrew Paradi. https://github.com/andrewparadi/.files"
 
 MAIN_DIR="$HOME/.files"             # -d
 SCRIPTS="$MAIN_DIR/scripts"
@@ -234,7 +217,7 @@ TEST=false                          # -t
 USER_NAME=me                        # -u
 SECURE=false                        # -s
 
-beg "📈  Registered Configuration"
+status a "📈  Registered Configuration"
 while getopts "h?d:b:i:p:m:n:sltu:" opt; do
     case "$opt" in
     h|\?)
@@ -296,5 +279,5 @@ case "$(uname)" in
               ;;
 esac
 
-err "Unknown Error. Maybe invalid platform (Only works on Mac or Linux)."
+status err "Unknown Error. Maybe invalid platform (Only works on Mac or Linux)."
 exit 1

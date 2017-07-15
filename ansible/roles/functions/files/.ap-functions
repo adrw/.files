@@ -4,6 +4,45 @@
 # https://github.com/mathiasbynens/dotfiles/blob/master/.functions
 # https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
 
+# AP Bootstrap Standard Methods
+# status a "Main update text"
+# safe_download ./path/file.sh https://url.com/file.sh
+# safe_source ./path/file.sh ~/.bashrc
+function status {
+  Reset='   tput sgr0'       # Text Reset
+  Red='     tput setaf 1'          # Red
+  Green='   tput setaf 2'        # Green
+  Blue='    tput setaf 4'         # Blue
+  div="********************************************************************************"
+  scriptname="$(basename "$0")"
+  case "$1" in
+    a)        echo "" && echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
+    b)        echo "$($Green)ok: [ ${2} ] ${div:$((${#2}+9))}$($Reset)" ;;
+    s|status) echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
+    t|title)  echo "$($Blue)<|${scriptname}$($Reset) [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
+    e|err)    echo "$($Red)fatal: [ ${2} ] ${div:$((${#2}+12))}$($Reset)" ;;
+  esac
+}
+
+function safe_download {
+  timestamp="`date '+%Y%m%d-%H%M%S'`"
+  if [ ! -f "$1" ]; then
+    status a "Download ${1}"
+    curl -s -o $1 $2
+    status b "Download ${1}"
+  else
+    status a "Update ${1}"
+    mv $1 $1.$timestamp
+    curl -s -o $1 $2
+    if diff -q "$1" "$1.$timestamp" > /dev/null; then rm $1.$timestamp; fi
+    status b "Update ${1}"
+  fi
+}
+
+function safe_source {
+  if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
+}
+
 # Reload Antibody
 function antiup() {
 	rm -rf `antibody home`
