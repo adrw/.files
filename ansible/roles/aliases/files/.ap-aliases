@@ -1,9 +1,10 @@
+# By Andrew Paradi | Source at https://github.com/andrewparadi/.files
 #!/usr/bin/env bash
 
 # https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 
 # SSH
-alias uwssh="ssh -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
+alias uwssh="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."

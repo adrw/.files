@@ -1,3 +1,4 @@
+# By Andrew Paradi | Source at https://github.com/andrewparadi/.files
 #!/usr/bin/env bash
 
 # set up bash to handle errors more aggressively - a "strict mode" of sorts
@@ -32,10 +33,33 @@ function err {
   echo -e "$($Red)fatal: [ ${1} ] ${div:$((${#1}+12))}$($Reset)"
 }
 
+function safe_download {
+  timestamp="`date '+%Y%m%d-%H%M%S'`"
+
+  if [ ! -f "$1" ]; then
+    beg "Download ${1}"
+    curl -s -o $1 $2
+    end "Download ${1}"
+  else
+    beg "Update ${1}"
+    mv $1 $1.$timestamp
+    curl -s -o $1 $2
+    if diff -q "$1" "$1.$timestamp" > /dev/null; then
+      rm $1.$timestamp
+    fi
+    end "Update ${1}"
+  fi
+}
+
+function safe_source {
+  if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
+}
+
 function show_help {
   beg "❓  Usage :: .files/bootstrap.sh {opts}"
   echo "Options |   Description                       |   Default (or alternate) Values"
   echo "${div}"
+  echo "-h      |   Show help menu                    |                         "
   echo "-d      |   .files/ directory                 |   ${HOME}/.files        "
   echo "-b      |   Homebrew install directory        |   ${HOME}/.homebrew     "
   echo "        |       Homebrew default              |   /usr/local            "
@@ -168,42 +192,27 @@ function mac_bootstrap {
 }
 
 function linux_bootstrap {
+
   beg "Bootstrap Script"
 
   beg "Install Linux Base Shell"
   # Bash Powerline Theme
-  if [ ! -f ~/.bash-powerline.sh ]; then
-    beg "Bash Powerline"
-    wget https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh -O ~/.bash-powerline.sh
-    echo "source ~/.bash-powerline.sh" >> ~/.bashrc
-    end "Bash Powerline"
-  fi
+  safe_download ~/.bash-powerline.sh https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh
+  safe_source ~/.bash-powerline.sh ~/.bashrc
 
   # ZSH Powerline Theme
-  if [ ! -f ~/.zsh-powerline.sh ]; then
-    beg "ZSH Powerline"
-    wget https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh -O ~/.zsh-powerline.sh
-    echo "source ~/.zsh-powerline.sh" >> ~/.zshrc
-    end "ZSH Powerline"
-  fi
+  safe_download ~/.zsh-powerline.sh https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh
+  safe_source ~/.zsh-powerline.sh ~/.zshrc
 
   # AP-Aliases
-  if [ ! -f ~/.ap-aliases ]; then
-    beg ".ap-aliases"
-    wget https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/aliases/files/.ap-aliases -O ~/.ap-aliases
-    echo "source ~/.ap-aliases" >> ~/.bashrc
-    echo "source ~/.ap-aliases" >> ~/.zshrc
-    end ".ap-aliases"
-  fi
+  safe_download ~/.ap-aliases https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/aliases/files/.ap-aliases
+  safe_source ~/.ap-aliases ~/.bashrc
+  safe_source ~/.ap-aliases ~/.zshrc
 
   # AP-Functions
-  if [ ! -f ~/.ap-functions ]; then
-    beg ".ap-functions"
-    wget https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/functions/files/.ap-functions -O ~/.ap-functions
-    echo "source ~/.ap-functions" >> ~/.bashrc
-    echo "source ~/.ap-functions" >> ~/.zshrc
-    end ".ap-functions"
-  fi
+  safe_download ~/.ap-functions https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/functions/files/.ap-functions
+  safe_source ~/.ap-functions ~/.bashrc
+  safe_source ~/.ap-functions ~/.zshrc
 
   beg "🍺  Fin. Bootstrap Script"
   exit 0
