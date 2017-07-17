@@ -168,9 +168,12 @@ function mac_bootstrap {
     $SCRIPTS/.macos
     status b ".macos"
 
-    status a "homecall.sh fixmacos"
-    bash $SCRIPTS/homecall.sh fixmacos
-    status b "homecall.sh fixmacos"
+    # Only works when system integrity protection is off
+    if [[ $(csrutil status) != *enabled* ]]; then
+      status a "homecall.sh fixmacos"
+      bash $SCRIPTS/homecall.sh fixmacos
+      status b "homecall.sh fixmacos"
+    fi
   fi
 
   status a "🍺  Bootstrap Script Fin."
