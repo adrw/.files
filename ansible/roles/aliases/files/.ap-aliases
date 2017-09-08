@@ -14,7 +14,9 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
-# Shortcuts
+alias l="ls -la"
+
+# Dir Shortcuts
 alias .f="cd ~/.files"
 alias d="cd ~/Dropbox"
 alias dl="cd ~/Downloads"
@@ -22,9 +24,13 @@ alias dt="cd ~/Desktop"
 alias sr="cd ~/src"
 alias ap="cd ~/src/github.com/andrewparadi.github.io"
 alias uw="cd ~/docs/UW/3b"
-alias 350="cd ~/src/cs350-work/src"
-alias 348="cd ~/src/cs348-work"
-alias 341="cd ~/src/cs341-work"
+alias 350="cd ~/src/uw/cs350-work/src"
+alias 348="cd ~/src/uw/cs348-work"
+alias 341="cd ~/src/uw/cs341-work"
+alias 343="cd ~/src/uw/cs343-work"
+alias 456="cd ~/src/uw/cs456-work"
+alias 458="cd ~/src/uw/cs458-work"
+alias 489="cd ~/src/uw/cs489-work"
 
 #Git
 alias gs="git status"
@@ -32,6 +38,8 @@ alias ga="git add"
 alias gc="git commit"
 alias _add-upstream="git remote add upstream"
 alias _add-remote="git remote add"
+alias gl="git log --oneline"
+alias gr="git rebase -i"
 
 #Syncthing
 alias st="syncthing"
@@ -54,7 +62,8 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
 # Finally, clear download history from quarantine. https://mths.be/bum
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+# Clear Homebrew cache
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'; rm -rf `brew --cache`"
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
