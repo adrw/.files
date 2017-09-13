@@ -29,6 +29,12 @@
 - lineinfile:
       dest: "{{ home }}/.bashrc"
       state: present
+      line: "{{ bash_powerline_div }}"
+  become: false
+
+- lineinfile:
+      dest: "{{ home }}/.bashrc"
+      state: present
       line: "{{ bash_powerline_source }}"
   become: false
 

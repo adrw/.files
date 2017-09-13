@@ -14,6 +14,12 @@
   lineinfile:
       dest: "{{ home }}/.zshrc"
       state: present
+      line: "{{ antibody__div }}"
+  become: false
+
+- lineinfile:
+      dest: "{{ home }}/.zshrc"
+      state: present
       line: "{{ antibody_source.stdout }}"
   become: false
 

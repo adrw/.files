@@ -9,7 +9,6 @@
     - antibody-zsh
     - bash
     - zsh
-    - dockutil
     - aliases
     - functions
     - git
@@ -20,10 +19,11 @@
     - privoxy
     - syncthing
     - automator-workflows
+    - anaconda
     # - dnscrypt
     # - gpg
     # - mas
-    # - sublime-text
+    - dockutil
     - macos
     - iterm2
   become: yes
@@ -60,6 +60,7 @@
     homebrew_cask_apps:
       - 1password
       - alfred
+      - anaconda
       - appcleaner
       - atom
       # - autodmg
@@ -88,7 +89,7 @@
       # - nylas-mail
       - microsoft-office
       # - musicbrainz-picard
-      # - sublime-text
+      - sublime-text
       # - skype
       - slack
       - spectacle

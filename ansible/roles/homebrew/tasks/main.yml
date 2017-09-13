@@ -5,6 +5,13 @@
     state: touch
   become: false
 
+- name: homebrew section zshrc
+  lineinfile:
+    dest: "{{ home }}/.zshrc"
+    state: present
+    line: "{{ homebrew__div }}"
+  become: false
+
 - name: save homebrew path to zshrc
   lineinfile:
     dest: "{{ home }}/.zshrc"
@@ -37,6 +44,13 @@
 - file:
     path: "{{ home }}/.bashrc"
     state: touch
+  become: false
+
+- name: homebrew section bashrc
+  lineinfile:
+    dest: "{{ home }}/.bashrc"
+    state: present
+    line: "{{ homebrew__div }}"
   become: false
 
 - name: save homebrew path to bashrc
