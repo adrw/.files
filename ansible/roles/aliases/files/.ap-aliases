@@ -6,7 +6,8 @@
 # SSH
 alias uwssh="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
 alias uwssh458="ssh adsparad@ugster19.student.cs.uwaterloo.ca"
-alias uwscp458="scp -r adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/* ./"
+alias uw458scp="scp -r adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/* ./"
+alias uwscp458="scp -r ./ adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."

@@ -1,0 +1,21 @@
+---
+
+- name: Initialize src/github directory
+  file:
+    path: "{{ src_github_path }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    recurse: yes
+  ignore_errors: true
+
+- name: Clone DeDRM_tools repo
+  git:
+    repo: "{{ DeDRM_tools_git }}"
+    dest: "{{ src_github_path }}"
+    version: master
+    accept_hostkey: yes
+    key_file: "{{ ssh_file }}"
+  become_user: "{{ user_name }}"
+  ignore_errors: true

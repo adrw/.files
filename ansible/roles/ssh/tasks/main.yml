@@ -19,7 +19,7 @@
     force: yes
   become: false
 
-- name: "generate ssh key to {{ ssh_file }}"
+- name: "generate id_rsa key to {{ ssh_file }}"
   user:
     name: "{{ user_name }}"
     generate_ssh_key: yes

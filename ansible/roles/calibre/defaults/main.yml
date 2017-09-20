@@ -1,0 +1,4 @@
+---
+
+src_github_path: "{{ home }}/src/github.com/DeDRM_tools"
+DeDRM_tools_git: git@github.com:apprenticeharper/DeDRM_tools.git

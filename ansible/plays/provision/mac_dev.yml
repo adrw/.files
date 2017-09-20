@@ -20,6 +20,7 @@
     - syncthing
     - automator-workflows
     - anaconda
+    # - calibre
     # - dnscrypt
     # - gpg
     # - mas
@@ -59,6 +60,7 @@
       - yarn
     homebrew_cask_apps:
       - 1password
+    #   - adobe-digital-editions
       - alfred
       - anaconda
       - appcleaner
@@ -80,6 +82,7 @@
       # - handbrake
       # - handbrakebatch
       # - imagealpha
+      - insomnia
       # - ipartition
       - iterm2
       - keybase
