@@ -2,14 +2,43 @@
 
 - name: download malware/ad blocked hosts
   get_url:
-    url: "{{ block_hosts_url }}"
-    dest: "{{ roles_dir }}/etchosts/files/{{ block_hosts_file }}"
-    mode: 0440
+    url: "{{ raw_hosts_url }}"
+    dest: "{{ roles_dir }}/etchosts/files/{{ raw_hosts_file }}"
+    mode: 0644
+    force: yes
+    backup: yes
   ignore_errors: true
   become: false
+
+- name: ...but let messenger.com work
+  shell: sed '/{{ facebook_header }}/,/{{ twitter_header }}/d' {{ roles_dir }}/etchosts/files/{{ raw_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}
+
+- name: add back in Facebook header
+  lineinfile:
+    dest: "{{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}"
+    state: present
+    line: "{{ facebook_header }}\n"
+    insertbefore: '^({{ twitter_1_domain }})'
+
+- name: add back in Twitter header
+  lineinfile:
+    dest: "{{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}"
+    state: present
+    line: "{{ twitter_header }}\n"
+    insertbefore: '^({{ twitter_1_domain }})'
+
+- name: copy lines up to facebook section into merged
+  shell: "head -n$(expr $(cat {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} | grep -n \"{{ facebook_header }}\" | cut -d : -f 1) - 2) {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ merge_hosts_file }}"
+
+- name: copy modified facebook lines in
+  shell: "cat {{ roles_dir }}/etchosts/files/{{ facebook_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ merge_hosts_file }}"
+
+- name: copy lines after facebook section into merged
+  shell: "tail -n +$(expr $(cat {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} | grep -n \"{{ facebook_header }}\" | cut -d : -f 1) + 1) {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ merge_hosts_file }}"
+
 - name: install blacklist to hosts file
   copy:
-    src: "{{ roles_dir }}/etchosts/files/{{ block_hosts_file }}"
+    src: "{{ roles_dir }}/etchosts/files/{{ merge_hosts_file }}"
     dest: /etc/hosts
     force: yes
   become: true

@@ -46,6 +46,7 @@ function show_help {
   echo "Options |   Description                       |   Default (or alternate) Values"
   echo "${div}"
   echo "-h      |   Show help menu                    |                         "
+  echo "-a      |   Only run Ansible Playbook         |   Def: runs .macos      "
   echo "-d      |   .files/ directory                 |   ${HOME}/.files        "
   echo "-b      |   Homebrew install directory        |   ${HOME}/.homebrew     "
   echo "        |       Homebrew default              |   /usr/local            "
@@ -148,25 +149,31 @@ function mac_bootstrap {
     cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     status b "ansible-playbook | $PLAY @ $INVENTORY"
 
-    status a "no_animate.macos"
-    $SCRIPTS/no_animate.macos
-    status b "no_animate.macos"
+    if [ "$ONLY_ANSIBLE" = false ]; then
+      status a "no_animate.macos"
+      $SCRIPTS/no_animate.macos
+      status b "no_animate.macos"
+    fi
+
   elif [[ $PLAY == "mac_jekyll" ]]; then
     status a "ansible-playbook :: $PLAY @ $INVENTORY"
     cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     status b "ansible-playbook :: $PLAY @ $INVENTORY"
+
   else
     status a "ansible-playbook :: $PLAY @ $INVENTORY"
     cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     status b "ansible-playbook :: $PLAY @ $INVENTORY"
 
-    status a "custom.macos"
-    $SCRIPTS/custom.macos
-    status b "custom.macos"
+    if [ "$ONLY_ANSIBLE" = false ]; then
+      status a "custom.macos"
+      $SCRIPTS/custom.macos
+      status b "custom.macos"
 
-    status a ".macos"
-    $SCRIPTS/.macos
-    status b ".macos"
+      status a ".macos"
+      $SCRIPTS/.macos
+      status b ".macos"
+    fi
 
     # Only works when system integrity protection is off
     if [[ $(csrutil status) != *enabled* ]]; then
@@ -207,6 +214,7 @@ function linux_bootstrap {
 status t "Welcome to .files bootstrap!"
 status s "Andrew Paradi. https://github.com/andrewparadi/.files"
 
+ONLY_ANSIBLE=false                  # -a
 MAIN_DIR="$HOME/.files"             # -d
 SCRIPTS="$MAIN_DIR/scripts"
 HOMEBREW_DIR="$HOME/.homebrew"      # -b
@@ -221,11 +229,14 @@ USER_NAME=me                        # -u
 SECURE=false                        # -s
 
 status a "📈  Registered Configuration"
-while getopts "h?d:b:i:p:m:n:sltu:" opt; do
+while getopts "h?ad:b:i:p:m:n:sltu:" opt; do
     case "$opt" in
     h|\?)
         show_help
         exit 0
+        ;;
+    a)  echo "  - ONLY_ANSIBLE=true"
+        ONLY_ANSIBLE=true
         ;;
     d)  echo "  - MAIN_DIR $MAIN_DIR => $OPTARG"
         MAIN_DIR=$OPTARG

@@ -1,4 +1,15 @@
 ---
 
-block_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts
-block_hosts_file: block.hosts
+# Source: https://github.com/StevenBlack/hosts
+
+# block_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts
+raw_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts
+raw_hosts_file: .raw.hosts
+clean_hosts_file: .clean.hosts
+merge_hosts_file: .merge.hosts
+facebook_hosts_file: facebook.hosts
+
+# host file landmarks
+twitter_header: "# Twitter"
+twitter_1_domain: "0.0.0.0 www.twitter.com"
+facebook_header: "# Facebook"

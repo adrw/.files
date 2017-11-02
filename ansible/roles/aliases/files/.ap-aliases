@@ -53,7 +53,8 @@ alias jn="jupyter notebook"
 #Web Download files off of a webpage
 # - Every file: wd ""  {url}
 # - Only with extension: wd pdf {url}
-alias wd="wget -r -l 1 -nd -nH -A"
+# - -N is timestamp and won't overwrite previously downloaded files
+alias wd="wget -r -l 1 -nd -nH -N -A"
 
 # Paste terminal output to a link
 alias tb="nc termbin.com 9999"

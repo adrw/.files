@@ -19,11 +19,11 @@
     force: yes
   become: false
 
-- name: "generate id_rsa key to {{ ssh_file }}"
+- name: "generate id_rsa key to {{ id_rsa }}"
   user:
     name: "{{ user_name }}"
     generate_ssh_key: yes
     ssh_key_bits: 4096
-    ssh_key_file: "{{ ssh_file }}"
+    ssh_key_file: "{{ id_rsa }}"
     ssh_key_passphrase: "{{ ssh_passphrase }}"
   become: false
