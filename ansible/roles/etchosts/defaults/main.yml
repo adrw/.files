@@ -8,6 +8,7 @@ raw_hosts_file: .raw.hosts
 clean_hosts_file: .clean.hosts
 merge_hosts_file: .merge.hosts
 facebook_hosts_file: facebook.hosts
+media_hosts_file: media.hosts
 
 # host file landmarks
 twitter_header: "# Twitter"

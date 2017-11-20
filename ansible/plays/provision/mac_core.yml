@@ -3,6 +3,7 @@
 - hosts: macbox
   connection: local
   roles:
+    # - calibre # only needs to be run once
     - etchosts
     # - oh-my-zsh
     - homebrew
@@ -20,7 +21,6 @@
     - syncthing
     - automator-workflows
     - anaconda
-    - calibre
     # - dnscrypt
     # - gpg
     # - mas
@@ -50,7 +50,7 @@
     homebrew_installed_packages:
       - antibody
       - dockutil
-      # - gnupg2 requires java...
+      # - gnupg2 # requires java...
       - htop
       - mas
       - node
@@ -66,7 +66,7 @@
       - 1password
       - adobe-digital-editions
       - alfred
-      - anaconda
+      - anaconda # python ML libraries
       - appcleaner
       - atom
       - autodmg
@@ -78,6 +78,7 @@
       - dash
       - docker
       - dropbox
+      - eloston-chromium
       - firefox
       # - flux
       - google-chrome
@@ -93,14 +94,14 @@
       - kdiff3
       - ngrok
       - notational-velocity
-      - mailspring #nylas-mail
       - microsoft-office
       - musicbrainz-picard
       - onedrive
-      - sublime-text
+      - sqlpro-for-sqlite
       - skype
       - slack
       - spectacle
+      - sublime-text
       - switch
       - synology-assistant
       - the-unarchiver
@@ -129,17 +130,17 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
+      - name: Mail
+        path: "/Applications/Mail.app"
+        pos: 2
       - name: Slack
         path: "/Applications/Slack.app"
-        pos: 3
+        pos: 4
       - name: Messages
         path: "/Applications/Messages.app"
-        pos: 4
+        pos: 5
       - name: WhatsApp
         path: "/Applications/WhatsApp.app"
-        pos: 5
-      - name: Mailspring
-        path: "/Applications/Mailspring.app"
         pos: 6
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
@@ -153,21 +154,15 @@
       - name: iTerm
         path: /Applications/iTerm.app
         pos: 10
-      - name: Microsoft Excel
-        path: /Applications/Microsoft Excel.app
-        pos: 11
-      - name: Microsoft OneNote
-        path: /Applications/Microsoft OneNote.app
-        pos: 12
       - name: Preview
         path: /Applications/Preview.app
-        pos: 13
+        pos: 11
       - name: iStudiez Pro
         path: /Applications/iStudiez Pro.app
-        pos: 14
+        pos: 12
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 15
+        pos: 13
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 16
+        pos: 14

@@ -8,7 +8,7 @@
 # status a "Main update text"
 # safe_download ./path/file.sh https://url.com/file.sh
 # safe_source ./path/file.sh ~/.bashrc
-function status {
+function status() {
   Reset='   tput sgr0'       # Text Reset
   Red='     tput setaf 1'          # Red
   Green='   tput setaf 2'        # Green
@@ -24,7 +24,7 @@ function status {
   esac
 }
 
-function safe_download {
+function safe_download() {
   timestamp="`date '+%Y%m%d-%H%M%S'`"
   if [ ! -f "$1" ]; then
     status a "Download ${1}"
@@ -39,8 +39,13 @@ function safe_download {
   fi
 }
 
-function safe_source {
+function safe_source() {
   if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
+}
+
+# Killall Process from search
+function killall() {
+  for pid in `ps -ef | grep "${1}" | awk '{print $2}'` ; do kill $pid ; done
 }
 
 # Reload Antibody
