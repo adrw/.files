@@ -5,6 +5,7 @@
 
 # SSH
 alias uwssh="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
+alias uwssh1404="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1404.student.cs.uwaterloo.ca"
 alias uwssh458="ssh adsparad@ugster19.student.cs.uwaterloo.ca"
 alias uw458scp="scp -r adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/* ./"
 alias uwscp458="scp -r ./ adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/"
@@ -46,6 +47,9 @@ alias gr="git rebase -i"
 
 #Syncthing
 alias st="syncthing"
+
+#Functions
+alias ka="killall"
 
 #Jupyter
 alias jn="jupyter notebook"

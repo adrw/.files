@@ -49,6 +49,7 @@
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
+      - cheat
       - dockutil
       # - gnupg2 # requires java...
       - htop
@@ -59,6 +60,7 @@
       - python
       - python3
       - syncthing
+      - tldr
       - tmux
       - wget
       - yarn
@@ -81,6 +83,7 @@
       - eloston-chromium
       - firefox
       # - flux
+      - gmvault
       - google-chrome
       - google-chrome-canary
       - gpgtools-beta
@@ -97,6 +100,7 @@
       - microsoft-office
       - musicbrainz-picard
       - onedrive
+      - pomello
       - sqlpro-for-sqlite
       - skype
       - slack
@@ -163,6 +167,9 @@
       - name: iTunes
         path: /Applications/iTunes.app
         pos: 13
+      - name: Pomello
+        path: /Applications/Pomello.app
+        pos: 14
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 14
+        pos: 15
