@@ -4,7 +4,9 @@
   get_url:
     url: "{{ zsh_powerline_url }}"
     dest: "{{ roles_dir }}/zsh/files/{{ zsh_powerline_file }}"
-    mode: 0440
+    mode: 0644
+    force: yes
+    backup: yes
   ignore_errors: true
   become: false
 

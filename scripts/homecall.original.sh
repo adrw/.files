@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DAEMONS=()
 DAEMONS+=('com.apple.netbiosd') #Netbiosd is microsoft's networking service. used to share files between mac and windows
@@ -57,7 +57,7 @@ AGENTS+=('com.apple.assistant_service') #Siri
 #AGENTS+=('com.apple.IMLoggingAgent') #IMFoundation.framework - Not sure about this one, maybe used to log in to computer on start
 #AGENTS+=('com.apple.geodMachServiceBridge') #Located in GeoServices.framework, related to locations maybe used for maps, maybe as well for things like find my mac, or just syping
 #AGENTS+=('com.apple.syncdefaultsd') ##Propably related to syncing keychain
-#AGENTS+=('com.apple.security.cloudkeychainproxy3') #Propably related to syncing keychain to icloud 
+#AGENTS+=('com.apple.security.cloudkeychainproxy3') #Propably related to syncing keychain to icloud
 #AGENTS+=('com.apple.security.idskeychainsyncingproxy') #Most likely also related to keychain - IDSKeychainSyncingProxy.bundle
 #AGENTS+=('com.apple.security.keychain-circle-notification') #Related to keychain
 #AGENTS+=('com.apple.sharingd') #Airdrop, Remote Disks, Shared Directories, Handoff

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # https://github.com/karek314/macOS-home-call-drop
 # Updated Apr 9, 2017

@@ -1,29 +1,31 @@
-# By Andrew Paradi | Source at https://github.com/andrewparadi/.files
 #!/usr/bin/env bash
 
-# https://github.com/mathiasbynens/dotfiles/blob/master/.functions
-# https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
+# SOURCE Andrew Paradi | https://github.com/andrewparadi/.files
 
 # AP Bootstrap Standard Methods
-# status a "Main update text"
-# safe_download ./path/file.sh https://url.com/file.sh
-# safe_source ./path/file.sh ~/.bashrc
+prefix="ap::"
+# status opt_code "Main update text" "optional script name override"
 function status() {
-  Reset='   tput sgr0'       # Text Reset
-  Red='     tput setaf 1'          # Red
-  Green='   tput setaf 2'        # Green
-  Blue='    tput setaf 4'         # Blue
+  Reset="$(tput sgr0)"       # Text Reset
+  Red="$(tput setaf 1)"          # Red
+  Green="$(tput setaf 2)"        # Green
+  Blue="$(tput setaf 4)"         # Blue
   div="********************************************************************************"
-  scriptname="$(basename "$0")"
-  case "$1" in
-    a)        echo "" && echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
-    b)        echo "$($Green)ok: [ ${2} ] ${div:$((${#2}+9))}$($Reset)" ;;
-    s|status) echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
-    t|title)  echo "$($Blue)<|${scriptname}$($Reset) [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
-    e|err)    echo "$($Red)fatal: [ ${2} ] ${div:$((${#2}+12))}$($Reset)" ;;
+  if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "ap" if $0 is status, $0 otherwise
+    [ $(basename "${0}") = "status" ] && scriptname="ap" || scriptname=$(basename "${0}")
+  else
+    scriptname="${3}"
+  fi
+  case "${1}" in
+    a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
+    b)        echo "${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
+    s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
+    t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
+    e|err)    echo "${Red}fatal: [ ${2} ] ${div:$((${#2}+12))}${Reset}" ;;
   esac
 }
 
+# safe_download ./local/path/file.sh https://remote.com/path/file.sh
 function safe_download() {
   timestamp="`date '+%Y%m%d-%H%M%S'`"
   if [ ! -f "$1" ]; then
@@ -39,14 +41,106 @@ function safe_download() {
   fi
 }
 
+# safe_source ./path/file.sh ~/.bashrc
 function safe_source() {
   if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
 }
 
+# use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
+function safe_k() {
+  if type k &> /dev/null; then
+    k -a $@
+  else
+    ls -la $@
+  fi
+}
+
 # Killall Process from search
 function killall() {
-  for pid in `ps -ef | grep "${1}" | awk '{print $2}'` ; do kill $pid ; done
+  if [ $# -eq 0 ]; then
+    status e "killall requires a search term to grep processes."
+  else
+		for pid in `ps -ef | grep "${1}" | awk '{print $2}'` ; do kill $pid ; done
+	fi;
 }
+
+# Decapitate git repo – headless – (disregard all local changes, reset back to master)
+function decap() {
+  git fetch --all
+  if [ $# -eq 0 ]; then
+    git reset --hard origin/master
+  else
+    git reset --hard $1
+  fi
+}
+
+# toggle etchosts, swap default and .merge
+# default.hosts .merge.hosts
+function etc() {
+  name="${prefix}/etc/hosts"
+  if [ $# -eq 0 ]; then
+    default="default.hosts"; merge=".merge.hosts"
+  else
+    default=$1; merge=$2
+  fi
+  hosts_dir="$HOME/.files/ansible/roles/etchosts/files"
+
+  # determine if default hosts is currently installed at /etc/hosts
+  default_diff=`diff /etc/hosts ${hosts_dir}/${default} | wc | awk '{print $1}'`
+
+  if [ $default_diff -eq 0 ]; then
+    current="${default}"; updated="${merge}"
+  else
+    current="${merge}"; updated="${default}"
+  fi
+
+  status t "${current} => ${updated}" "${name}"
+  sudo cp ${hosts_dir}/${updated} /etc/hosts
+
+  post_diff=`diff /etc/hosts ${hosts_dir}/${default} | wc | awk '{print $1}'`
+
+  if [ $default_diff -eq $post_diff ]; then
+    status e "${name} = ${current}. update failed."
+  else
+    sudo dscacheutil -flushcache  # flush dns cache
+    sudo killall -HUP mDNSResponder
+    status b "🍺  Fin. ${name} = ${updated}"
+  fi
+  sudo -k # remove sudo permissions
+}
+
+# Rename all files to their first line
+# in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
+# in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
+function rename_first_line() {
+  name="${prefix}rename_first_line"
+  if [ $# -ne 2 ]; then
+    status e "Usage: rename_first_line {in_dir} {out_dir}"
+  else
+    in_dir=$1
+    out_dir=$2
+    mkdir -p $out_dir
+
+    status t "$in_dir/filename.ext => $out_dir/first_line.ext" "${name}"
+
+    for file in $in_dir/*; do
+      first_line=$(head -n 1 $file | cut -c-40 | awk '$1=$1')
+      extension="${file##*.}"
+      cp_err=$(cp "$file" "${out_dir}/${first_line}.${extension}" 2>&1)
+      if [[ $cp_err != "" || $(diff -q $file ${out_dir}/${first_line}.${extension}) ]]; then
+        status e "$file : $cp_err"
+      else
+        # status b "$file => ${out_dir}/${first_line}.${extension}"
+      fi
+    done
+
+    status b "$in_dir/filename.ext => $out_dir/first_line.ext"
+  fi
+}
+
+# Other Sources
+# https://github.com/mathiasbynens/dotfiles/blob/master/.functions
+# https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
 
 # Reload Antibody
 function antiup() {

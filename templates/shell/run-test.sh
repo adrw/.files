@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # assumes this is placed in dir and following test structure
 # dir / tests / {testID} / {testName}.in

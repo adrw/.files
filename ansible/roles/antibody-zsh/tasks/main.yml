@@ -58,5 +58,4 @@
 - name: Set zsh as default shell
   shell: chsh -s /bin/zsh
   when: current_shell.stdout != "/bin/zsh"
-  become_user: "{{ user_name }}"
   become: true

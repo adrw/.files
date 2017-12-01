@@ -104,7 +104,7 @@ __powerline() {
       esac
     fi
 
-    __git_info() { 
+    __git_info() {
         [ -x "$(which git)" ] || return    # git not found
 
         local git_eng="env LANG=C git"   # force git output in English to make our work easier
@@ -130,7 +130,7 @@ __powerline() {
 
     ps1() {
         # Check the exit code of the previous command and display different
-        # colors in the prompt accordingly. 
+        # colors in the prompt accordingly.
         if [ $? -eq 0 ]; then
             local BG_EXIT="$BG_GREEN"
         else

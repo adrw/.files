@@ -115,6 +115,7 @@
       - vlc
       - whatsapp
     # fonts
+      # - font-arvo # for OAKWEAR & CO.
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
@@ -136,7 +137,7 @@
     dockitems_to_persist:
       - name: Mail
         path: "/Applications/Mail.app"
-        pos: 2
+        pos: 3
       - name: Slack
         path: "/Applications/Slack.app"
         pos: 4

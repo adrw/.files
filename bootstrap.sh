@@ -6,19 +6,23 @@ set -e # give an error if any command finishes with a non-zero exit code
 set -u # give an error if we reference unset variables
 set -o pipefail # for a pipeline, if any of the commands fail with a non-zero exit code, fail the entire pipeline with that exit code
 
-function status {
-  Reset='   tput sgr0'       # Text Reset
-  Red='     tput setaf 1'          # Red
-  Green='   tput setaf 2'        # Green
-  Blue='    tput setaf 4'         # Blue
+function status() {
+  Reset="$(tput sgr0)"       # Text Reset
+  Red="$(tput setaf 1)"          # Red
+  Green="$(tput setaf 2)"        # Green
+  Blue="$(tput setaf 4)"         # Blue
   div="********************************************************************************"
-  scriptname="$(basename "$0")"
-  case "$1" in
-    a)        echo "" && echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
-    b)        echo "$($Green)ok: [ ${2} ] ${div:$((${#2}+9))}$($Reset)" ;;
-    s|status) echo "$($Blue)<|${scriptname:0:1}$($Reset) [ ${2} ] ${div:$((${#2}+9))}" ;;
-    t|title)  echo "$($Blue)<|${scriptname}$($Reset) [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
-    e|err)    echo "$($Red)fatal: [ ${2} ] ${div:$((${#2}+12))}$($Reset)" ;;
+  if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "ap" if $0 is status, $0 otherwise
+    [ $(basename "${0}") = "status" ] && scriptname="ap" || scriptname=$(basename "${0}")
+  else
+    scriptname="${3}"
+  fi
+  case "${1}" in
+    a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
+    b)        echo "${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
+    s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
+    t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
+    e|err)    echo "${Red}fatal: [ ${2} ] ${div:$((${#2}+12))}${Reset}" ;;
   esac
 }
 
@@ -62,7 +66,7 @@ function show_help {
   echo "-s      |   Set hostname, turn on Firewall    |                         "
   echo "-t      |   Test env, don't detach Git head   |                         "
   echo "-u      |   User name                         |   me                    "
-  err "Learn more at https://github.com/andrewparadi/.files"
+  status e "Learn more at https://github.com/andrewparadi/.files"
   exit 0
 }
 
@@ -183,18 +187,19 @@ function mac_bootstrap {
     fi
   fi
 
-  status a "🍺  Bootstrap Script Fin."
+  sudo -k # remove sudo permissions
+  status a "🍺  Fin. Bootstrap Script"
   exit 0
 }
 
 function linux_bootstrap {
   status a "Install Linux Base Shell"
   # Bash Powerline Theme
-  safe_download ~/.bash-powerline.sh https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh
+  safe_download ~/.bash-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/bash/files/.bash-powerline.sh
   safe_source ~/.bash-powerline.sh ~/.bashrc
 
   # ZSH Powerline Theme
-  safe_download ~/.zsh-powerline.sh https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh
+  safe_download ~/.zsh-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/zsh/files/.zsh-powerline.sh
   safe_source ~/.zsh-powerline.sh ~/.zshrc
 
   # AP-Aliases
@@ -293,5 +298,5 @@ case "$(uname)" in
               ;;
 esac
 
-status err "Unknown Error. Maybe invalid platform (Only works on Mac or Linux)."
+status e "Unknown Error. Maybe invalid platform (Only works on Mac or Linux)."
 exit 1
