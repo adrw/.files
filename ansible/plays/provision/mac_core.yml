@@ -76,6 +76,7 @@
       - backblaze-downloader
       - bartender
       - calibre
+      - createuserpkg
       - coda
       - dash
       - docker

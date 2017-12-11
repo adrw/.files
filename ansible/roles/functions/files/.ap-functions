@@ -9,6 +9,7 @@ function status() {
   Reset="$(tput sgr0)"       # Text Reset
   Red="$(tput setaf 1)"          # Red
   Green="$(tput setaf 2)"        # Green
+  Yellow="$(tput setaf 3)"          # Yellow
   Blue="$(tput setaf 4)"         # Blue
   div="********************************************************************************"
   if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "ap" if $0 is status, $0 otherwise
@@ -22,6 +23,7 @@ function status() {
     s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
     t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
     e|err)    echo "${Red}fatal: [ ${2} ] ${div:$((${#2}+12))}${Reset}" ;;
+    w|warn)   echo "${Yellow}warn: [ ${2} ] ${div:$((${#2}+11))}${Reset}" ;;
   esac
 }
 
@@ -58,7 +60,7 @@ function safe_k() {
 # Killall Process from search
 function killall() {
   if [ $# -eq 0 ]; then
-    status e "killall requires a search term to grep processes."
+    status e "Usage: killall <grep process search team>"
   else
 		for pid in `ps -ef | grep "${1}" | awk '{print $2}'` ; do kill $pid ; done
 	fi;
@@ -115,7 +117,7 @@ function etc() {
 function rename_first_line() {
   name="${prefix}rename_first_line"
   if [ $# -ne 2 ]; then
-    status e "Usage: rename_first_line {in_dir} {out_dir}"
+    status e "Usage: rename_first_line <in_dir> <out_dir>"
   else
     in_dir=$1
     out_dir=$2
@@ -134,7 +136,41 @@ function rename_first_line() {
       fi
     done
 
-    status b "$in_dir/filename.ext => $out_dir/first_line.ext"
+    status b "${in_dir}/filename.ext => ${out_dir}/first_line.ext"
+  fi
+  status b "🍺  Fin. ${in_dir} => ${out_dir}"
+}
+
+function chmod_admin() {
+  name="${prefix}chmod_admin"
+  if [ $# -ne 1 ]; then
+    status e "Usage: chmod_admin <username>"
+  else
+    user=${1}
+    status t "Remove '${user}' admin privileges" "${name}"
+
+    # Check user is valid
+    if ! dscl . list /users | grep -q "${user}"; then
+      status e "'${user}' is not a user"
+    elif [[ "${user}" == "admin" ]]; then
+      status e "'${user}' should keep admin privileges"
+    else
+      # Final confirmation
+      status w "Removing '${user}' admin privileges in 3 seconds..."
+      sleep 3
+
+      status a "Remove '${user}' from admin"
+
+      sudo dscl . -delete /Groups/admin GroupMembership ${user}
+      status b "Delete '${user}' membership in /Groups/admin"
+
+      user_UID=$(dscl . -read /Users/${user} GeneratedUID | cut -d ' ' -f 2)
+      sudo dscl . -delete /Groups/admin GroupMembers ${user_UID}
+      status b "Delete '${user_UID}' member in /Groups/admin"
+
+      sudo -k
+      status b "🍺  Fin. '${user}' = standard"
+    fi
   fi
 }
 
