@@ -3,8 +3,10 @@
 # Source: https://github.com/StevenBlack/hosts
 
 # block_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts
-raw_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts
-raw_hosts_file: .raw.hosts
+raw_ads_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts
+raw_ads_hosts_file: .raw-ads.hosts
+raw_social_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts
+raw_social_hosts_file: .raw-social.hosts
 clean_hosts_file: .clean.hosts
 merge_hosts_file: .merge.hosts
 facebook_hosts_file: facebook.hosts

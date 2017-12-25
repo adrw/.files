@@ -3,7 +3,6 @@
 dockitems_to_remove:
   - Siri
   - Launchpad
-  - Mail
   - Safari
   - Contacts
   - Calendar
@@ -11,12 +10,9 @@ dockitems_to_remove:
   - Reminders
   - Maps
   - Photos
-  - Messages
   - FaceTime
-  - iTunes
   - iBooks
   - App Store
-  - System Preferences
 
 dockitems_to_persist:
   # - name: Messages

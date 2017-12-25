@@ -28,4 +28,4 @@ homebrew_cask_apps: []
 homebrew_cask_appdir: /Applications
 
 homebrew_use_brewfile: false
-homebrew_brewfile_dir: '~'
+homebrew_brewfile_dir: '{{home}}'

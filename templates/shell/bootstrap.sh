@@ -46,7 +46,7 @@ function safe_source {
 }
 
 function show_help {
-  status a "❓  Usage :: .files/bootstrap.sh {opts}"
+  status a "❓  Usage :: .files/bootstrap.sh <opts>"
   echo "Options |   Description                       |   Default (or alternate) Values"
   echo "${div}"
   echo "-h      |   Show help menu                    |                         "

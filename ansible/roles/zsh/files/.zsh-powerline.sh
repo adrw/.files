@@ -1,25 +1,25 @@
 # Colorscheme
-readonly COLOR_CWD='blue'
-readonly COLOR_GIT='cyan'
-readonly COLOR_SUCCESS='green'
-readonly COLOR_FAILURE='red'
-readonly COLOR_TIME='cyan'
+COLOR_CWD='blue'
+COLOR_GIT='cyan'
+COLOR_SUCCESS='green'
+COLOR_FAILURE='red'
+COLOR_TIME='cyan'
 
-readonly SYMBOL_GIT_BRANCH='⑂'
-readonly SYMBOL_GIT_MODIFIED='*'
-readonly SYMBOL_GIT_PUSH='↑'
-readonly SYMBOL_GIT_PULL='↓'
+SYMBOL_GIT_BRANCH='⑂'
+SYMBOL_GIT_MODIFIED='*'
+SYMBOL_GIT_PUSH='↑'
+SYMBOL_GIT_PULL='↓'
 
 # Assign prompt symbol based on OS
 case "$(uname)" in
     Darwin)
-        readonly PS_SYMBOL=''
+        PS_SYMBOL=''
         ;;
     Linux)
-        readonly PS_SYMBOL='$'
+        PS_SYMBOL='$'
         ;;
     *)
-        readonly PS_SYMBOL='%'
+        PS_SYMBOL='%'
         ;;
 esac
 

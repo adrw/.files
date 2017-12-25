@@ -46,7 +46,7 @@ function safe_source {
 }
 
 function show_help {
-  status a "❓  Usage :: .files/bootstrap.sh {opts}"
+  status a "❓  Usage :: .files/bootstrap.sh <opts>"
   echo "Options |   Description                       |   Default (or alternate) Values"
   echo "${div}"
   echo "-h      |   Show help menu                    |                         "
@@ -73,7 +73,7 @@ function show_help {
 function secure_hostname_network {
   status a "🔐  Secure network and custom host name"
   read -p "Enter name for your Mac: " MAC_NAME
-  echo "  - MAC_NAME $MAC_NAME"
+  echo "  - MAC_NAME ${MAC_NAME}"
   # randomize MAC address
   sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
 
@@ -81,9 +81,9 @@ function secure_hostname_network {
   networksetup -setairportpower en0 off
 
   # set computer name (as done via System Preferences → Sharing)
-  sudo scutil --set ComputerName "$MAC_NAME"
-  sudo scutil --set HostName "$MAC_NAME"
-  sudo scutil --set LocalHostName "$MAC_NAME"
+  sudo scutil --set ComputerName "${MAC_NAME}"
+  sudo scutil --set HostName "${MAC_NAME}"
+  sudo scutil --set LocalHostName "${MAC_NAME}"
   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$MAC_NAME"
 
   # enable firewall, logging, and stealth mode
@@ -111,33 +111,33 @@ function mac_bootstrap {
     status b  "Install xcode-select (Command Line Tools)"
   fi
 
-  if [[ ! -x "$HOMEBREW_DIR/bin/brew" ]]; then
+  if [[ ! -x "${HOMEBREW_DIR}/bin/brew" ]]; then
     status a "Install Homebrew"
-    mkdir -p $HOMEBREW_DIR && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_DIR
+    mkdir -p ${HOMEBREW_DIR} && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_DIR
     status b "Install Homebrew"
   fi
 
-  export PATH=$HOMEBREW_DIR/sbin:$HOMEBREW_DIR/bin:$PATH
+  export PATH=${HOMEBREW_DIR}/sbin:${HOMEBREW_DIR}/bin:${PATH}
 
-  if [[ ! -x $HOMEBREW_DIR/bin/git ]]; then
+  if [[ ! -x ${HOMEBREW_DIR}/bin/git ]]; then
     status a "Install Git"
     brew install git
     status b "Install Git"
   fi
 
-  if [[ ! -x $HOMEBREW_DIR/bin/ansible ]]; then
+  if [[ ! -x ${HOMEBREW_DIR}/bin/ansible ]]; then
     status a "Install Ansible"
     brew install ansible
     status b "Install Ansible"
   fi
 
-  if [[ ! -d $MAIN_DIR ]]; then
+  if [[ ! -d ${MAIN_DIR} ]]; then
     status a "Clone .files"
-    git clone https://github.com/andrewparadi/.files.git $MAIN_DIR
+    git clone https://github.com/andrewparadi/.files.git ${MAIN_DIR}
     status b "Clone .files"
-  elif [[ "$TEST" == false ]]; then
+  elif [[ "${TEST}" == false ]]; then
     status a "Decapitate .files (headless mode)"
-    cd $MAIN_DIR
+    cd ${MAIN_DIR}
     git fetch --all
     git reset --hard origin/master
     git checkout origin/master
@@ -148,41 +148,41 @@ function mac_bootstrap {
   # chmod +x $MAIN_DIR/bin/shuttle.sh
   # ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
   status b "xcode-select, git, homebrew, ansible"
-  if [[ $PLAY == "mac_etchost_no_animate" ]]; then
-    status a "ansible-playbook | $PLAY @ $INVENTORY"
-    cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    status b "ansible-playbook | $PLAY @ $INVENTORY"
+  if [[ ${PLAY} == "mac_etchost_no_animate" ]]; then
+    status a "ansible-playbook | ${PLAY} @ ${INVENTORY}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-sudo-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    status b "ansible-playbook | ${PLAY} @ ${INVENTORY}"
 
-    if [ "$ONLY_ANSIBLE" = false ]; then
+    if [ "${ONLY_ANSIBLE}" = false ]; then
       status a "no_animate.macos"
-      $SCRIPTS/no_animate.macos
+      ${SCRIPTS}/no_animate.macos
       status b "no_animate.macos"
     fi
 
-  elif [[ $PLAY == "mac_jekyll" ]]; then
-    status a "ansible-playbook :: $PLAY @ $INVENTORY"
-    cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    status b "ansible-playbook :: $PLAY @ $INVENTORY"
+  elif [[ ${PLAY} == "mac_jekyll" ]]; then
+    status a "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-sudo-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    status b "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
 
   else
-    status a "ansible-playbook :: $PLAY @ $INVENTORY"
-    cd "$MAIN_DIR/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/$INVENTORY plays/provision/$PLAY.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    status b "ansible-playbook :: $PLAY @ $INVENTORY"
+    status a "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-sudo-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    status b "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
 
-    if [ "$ONLY_ANSIBLE" = false ]; then
+    if [ "${ONLY_ANSIBLE}" = false ]; then
       status a "custom.macos"
-      $SCRIPTS/custom.macos
+      ${SCRIPTS}/custom.macos
       status b "custom.macos"
 
       status a ".macos"
-      $SCRIPTS/.macos
+      ${SCRIPTS}/.macos
       status b ".macos"
     fi
 
     # Only works when system integrity protection is off
     if [[ $(csrutil status) != *enabled* ]]; then
       status a "homecall.sh fixmacos"
-      bash $SCRIPTS/homecall.sh fixmacos
+      bash ${SCRIPTS}/homecall.sh fixmacos
       status b "homecall.sh fixmacos"
     fi
   fi
@@ -220,10 +220,10 @@ status t "Welcome to .files bootstrap!"
 status s "Andrew Paradi. https://github.com/andrewparadi/.files"
 
 ONLY_ANSIBLE=false                  # -a
-MAIN_DIR="$HOME/.files"             # -d
-SCRIPTS="$MAIN_DIR/scripts"
-HOMEBREW_DIR="$HOME/.homebrew"      # -b
-HOMEBREW_INSTALL_DIR="$HOMEBREW_DIR"
+MAIN_DIR="${HOME}/.files"             # -d
+SCRIPTS="${MAIN_DIR}/scripts"
+HOMEBREW_DIR="${HOME}/.homebrew"      # -b
+HOMEBREW_INSTALL_DIR="${HOMEBREW_DIR}"
 INVENTORY=macbox/hosts              # -i
 LINUX=false                         # -l
 PLAY=mac_core                       # -p
@@ -243,28 +243,28 @@ while getopts "h?ad:b:i:p:m:n:sltu:" opt; do
     a)  echo "  - ONLY_ANSIBLE=true"
         ONLY_ANSIBLE=true
         ;;
-    d)  echo "  - MAIN_DIR $MAIN_DIR => $OPTARG"
-        MAIN_DIR=$OPTARG
-        SCRIPTS="$MAIN_DIR/scripts"
+    d)  echo "  - MAIN_DIR ${MAIN_DIR} => ${OPTARG}"
+        MAIN_DIR=${OPTARG}
+        SCRIPTS="${MAIN_DIR}/scripts"
         ;;
-    b)  echo "  - HOMEBREW_DIR $HOMEBREW_DIR => $OPTARG"
-        HOMEBREW_DIR=$OPTARG
-        HOMEBREW_INSTALL_DIR="$OPTARG/Homebrew"
+    b)  echo "  - HOMEBREW_DIR ${HOMEBREW_DIR} => ${OPTARG}"
+        HOMEBREW_DIR=${OPTARG}
+        HOMEBREW_INSTALL_DIR="${OPTARG}/Homebrew"
         ;;
-    i)  echo "  - INVENTORY $INVENTORY => $OPTARG"
-        INVENTORY=$OPTARG
+    i)  echo "  - INVENTORY ${INVENTORY} => ${OPTARG}"
+        INVENTORY=${OPTARG}
         ;;
     l)  echo "  - LINUX => PURE (no ansible)"
         LINUX=true
         ;;
-    p)  echo "  - PLAY $PLAY => $OPTARG"
-        PLAY=$OPTARG
+    p)  echo "  - PLAY ${PLAY} => ${OPTARG}"
+        PLAY=${OPTARG}
         ;;
-    m)  echo "  - MAS_EMAIL $MAS_EMAIL => $OPTARG"
+    m)  echo "  - MAS_EMAIL ${MAS_EMAIL} => ${OPTARG}"
         MAS_EMAIL=$OPTARG
         ;;
-    n)  echo "  - MAS_PASSWORD $MAS_PASSWORD => $OPTARG"
-        MAS_PASSWORD=$OPTARG
+    n)  echo "  - MAS_PASSWORD ${MAS_PASSWORD} => ${OPTARG}"
+        MAS_PASSWORD=${OPTARG}
         ;;
     s)  echo "  - Secure network and custom host name"
         SECURE=true
@@ -272,8 +272,9 @@ while getopts "h?ad:b:i:p:m:n:sltu:" opt; do
     t)  echo "  - Test Environment (Git Head still attached)"
         TEST=true
         ;;
-    u)  echo "  - USER $USER_NAME => $OPTARG"
-        USER_NAME=$OPTARG
+    u)  echo "  - USER ${USER_NAME} => ${OPTARG}"
+        USER_NAME=${OPTARG}
+        HOME="/Users/${USER_NAME}/"
         ;;
     esac
 done
@@ -281,7 +282,7 @@ done
 shift $((OPTIND-1))
 echo "Leftovers: $@"
 
-if [[ $SECURE == true ]]; then
+if [[ ${SECURE} == true ]]; then
   secure_hostname_network
 fi
 

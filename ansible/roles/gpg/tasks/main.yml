@@ -6,7 +6,7 @@
     state: link
     force: yes
 
-# copy gpg.conf to ~/.gnupg/gpg.conf
+# copy gpg.conf to {{home}}/.gnupg/gpg.conf
 #
 # $ curl -O https://sks-keyservers.net/sks-keyservers.netCA.pem
 #

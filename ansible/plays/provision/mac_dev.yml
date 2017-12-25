@@ -102,6 +102,7 @@
       # - musicbrainz-picard
       - onedrive
       - pomello
+      - quitter
       - sqlpro-for-sqlite
       # - skype
       - slack

@@ -77,15 +77,17 @@ function decap() {
 }
 
 # toggle etchosts, swap default and .merge
-# default.hosts .merge.hosts
+# .raw.hosts .merge.hosts
 function etc() {
   name="${prefix}/etc/hosts"
   if [ $# -eq 0 ]; then
-    default="default.hosts"; merge=".merge.hosts"
+    hosts_dir="/Users/me/.files/ansible/roles/etchosts/files"
+    default=".raw-ads.hosts"; merge=".merge.hosts"
+  elif [ $# -eq 2 ]; then
+    hosts_dir="/Users/me/.files/ansible/roles/etchosts/files"; default=$1; merge=$2
   else
-    default=$1; merge=$2
+    hosts_dir=""; default=$1; merge=$2
   fi
-  hosts_dir="$HOME/.files/ansible/roles/etchosts/files"
 
   # determine if default hosts is currently installed at /etc/hosts
   default_diff=`diff /etc/hosts ${hosts_dir}/${default} | wc | awk '{print $1}'`
@@ -131,7 +133,7 @@ function rename_first_line() {
       cp_err=$(cp "$file" "${out_dir}/${first_line}.${extension}" 2>&1)
       if [[ $cp_err != "" || $(diff -q $file ${out_dir}/${first_line}.${extension}) ]]; then
         status e "$file : $cp_err"
-      else
+      # else
         # status b "$file => ${out_dir}/${first_line}.${extension}"
       fi
     done

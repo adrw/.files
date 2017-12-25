@@ -1,9 +1,19 @@
 ---
 
-- name: download malware/ad blocked hosts
+- name: download ads blocked hosts
   get_url:
-    url: "{{ raw_hosts_url }}"
-    dest: "{{ roles_dir }}/etchosts/files/{{ raw_hosts_file }}"
+    url: "{{ raw_ads_hosts_url }}"
+    dest: "{{ roles_dir }}/etchosts/files/{{ raw_ads_hosts_file }}"
+    mode: 0644
+    force: yes
+    backup: yes
+  ignore_errors: true
+  become: false
+
+- name: download ad+social blocked hosts
+  get_url:
+    url: "{{ raw_social_hosts_url }}"
+    dest: "{{ roles_dir }}/etchosts/files/{{ raw_social_hosts_file }}"
     mode: 0644
     force: yes
     backup: yes
@@ -11,7 +21,7 @@
   become: false
 
 - name: ...but let messenger.com work
-  shell: sed '/{{ facebook_header }}/,/{{ twitter_header }}/d' {{ roles_dir }}/etchosts/files/{{ raw_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}
+  shell: sed '/{{ facebook_header }}/,/{{ twitter_header }}/d' {{ roles_dir }}/etchosts/files/{{ raw_social_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}
 
 - name: add back in Facebook header
   lineinfile:

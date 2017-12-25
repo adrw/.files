@@ -102,6 +102,7 @@
       - musicbrainz-picard
       - onedrive
       - pomello
+      - quitter
       - sqlpro-for-sqlite
       - skype
       - slack
@@ -136,17 +137,17 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
-      - name: Mail
-        path: "/Applications/Mail.app"
-        pos: 3
       - name: Slack
         path: "/Applications/Slack.app"
+        pos: 3
+      - name: WhatsApp
+        path: "/Applications/WhatsApp.app"
         pos: 4
       - name: Messages
         path: "/Applications/Messages.app"
         pos: 5
-      - name: WhatsApp
-        path: "/Applications/WhatsApp.app"
+      - name: Mail
+        path: "/Applications/Mail.app"
         pos: 6
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
