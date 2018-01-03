@@ -1,5 +1,7 @@
 ---
 
-zsh_powerline_source: 'source {{home}}/.zsh-powerline.sh'
+zsh_powerline_div: "### Theme"
+zsh_powerline_source: 'source {{home}}/.ap-zsh-powerline.sh'
 zsh_powerline_url: https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh
 zsh_powerline_file: .zsh-powerline.sh
+zsh_powerline_ap_file: .ap-zsh-powerline.sh

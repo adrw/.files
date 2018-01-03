@@ -7,9 +7,10 @@
     - etchosts
     # - oh-my-zsh
     - homebrew
-    - antibody-zsh
     - bash
     - zsh
+    - zsh-antibody
+    - fasd
     - aliases
     - functions
     - git
@@ -51,12 +52,13 @@
       - antibody
       - cheat
       - dockutil
-      # - gnupg2 # requires java...
+      # - fasd    # separate role
+      # - gnupg2  # requires java...
       - htop
-      - mas
+      # - mas
       - node
       - openssl
-      - privoxy
+      # - privoxy # separate role
       - python
       - python3
       - syncthing
@@ -66,53 +68,51 @@
       - yarn
     homebrew_cask_apps:
       - 1password
-      - adobe-digital-editions
+      # - adobe-digital-editions
       - alfred
-      - anaconda # python ML libraries
+      # - anaconda # python ML libraries
       - appcleaner
       - atom
-      - autodmg
+      # - autodmg
       - backblaze
-      - backblaze-downloader
+      # - backblaze-downloader
       - bartender
       - calibre
-      - createuserpkg
-      - coda
-      - dash
+      # - createuserpkg
+      # - coda
+      # - dash
       - docker
       - dropbox
-      - eloston-chromium
-      - firefox
-      # - flux
-      - gmvault
+      # - eloston-chromium
+      # - firefox
+      # - gmvault
       - google-chrome
-      - google-chrome-canary
-      - gpgtools-beta
-      - handbrake
-      - handbrakebatch
+      # - google-chrome-canary
+      # - gpgtools-beta
+      # - handbrake
+      # - handbrakebatch
       - imagealpha
       - insomnia
-      - ipartition
+      # - ipartition
       - iterm2
       - keybase
-      - kdiff3
+      # - kdiff3
       - ngrok
-      - notational-velocity
-      - microsoft-office
+      - microsoft-office  # requires password
       - musicbrainz-picard
-      - onedrive
+      - onedrive  # requires password
       - pomello
       - quitter
-      - sqlpro-for-sqlite
-      - skype
+      # - sqlpro-for-sqlite
+      # - skype
       - slack
       - spectacle
-      - sublime-text
-      - switch
-      - synology-assistant
+      # - sublime-text
+      # - synology-assistant
       - the-unarchiver
       - torbrowser
       - transmission
+      - virtualbox  # requires password
       - viscosity
       - vlc
       - whatsapp

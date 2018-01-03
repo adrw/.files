@@ -1,0 +1,4 @@
+---
+
+fasd_div: "### fasd"
+fasd_init: 'eval "$(fasd --init auto)"'

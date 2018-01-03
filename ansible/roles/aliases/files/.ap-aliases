@@ -23,43 +23,6 @@ alias st="syncthing"
 #Jupyter
 alias jn="jupyter notebook"
 
-# Directory Shortcuts
-alias .f="cd ~/.files"
-alias dx="cd ~/Dropbox"
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias sr="cd ~/src"
-alias sra="cd ~/src/ape"
-alias srg="cd ~/src/github.com"
-alias sri="cd ~/src/interviews"
-alias srj="cd ~/src/jupyter"
-alias sru="cd ~/src/uw"
-alias ap="cd ~/src/github.com/andrewparadi.github.io"
-alias qa="cd ~/src/github.com/Quantular-API"
-alias qw="cd ~/src/github.com/Quantular-Web-Client"
-
-# UW SSH
-alias uwssh="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
-alias uwssh1404="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1404.student.cs.uwaterloo.ca"
-alias uwssh1604="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604.student.cs.uwaterloo.ca"
-alias uwssh458="ssh adsparad@ugster19.student.cs.uwaterloo.ca"
-alias uw458scp="scp -r adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/* ./"
-alias uwscp458="scp -r ./ adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/"
-
-# UW Directories
-case "$(uname)" in
-    Darwin)   uwsrc="${HOME}/src/uw";   uwpost="-work"  ;;
-    Linux)    uwsrc="${HOME}";          uwpost=""       ;;
-    *)                                                  ;;
-esac
-alias uw="cd ~/docs/UW/4b"
-alias 456="cd ${uwsrc}/cs456${uwpost}"
-alias 458="cd ${uwsrc}/cs458${uwpost}"
-alias 451="cd ${uwsrc}/cs451${uwpost}"
-alias 454="cd ${uwsrc}/cs454${uwpost}"
-alias 487="cd ${uwsrc}/co487${uwpost}"
-alias 492="cd ${uwsrc}/cs492${uwpost}"
-
 #Git
 alias gs="git status"
 alias ga="git add"
@@ -68,6 +31,45 @@ alias grau="git remote add upstream"
 alias gra="git remote add"
 alias gl="git log --oneline"
 alias gr="git rebase -i"
+
+# Docker
+alias dc="docker-compose"
+alias dka="docker kill $(docker ps -q)"
+alias dvp="docker volume prune"
+alias drmc="docker rm $(docker ps -a -q)"
+alias drmi="docker rmi -f $(docker images -q)"
+
+# fasd
+alias fa='fasd -a'        # any
+alias s='fasd -si'       # show / search / select
+alias d='fasd -d'        # directory
+alias f='fasd -f'        # file
+alias sd='fasd -sid'     # interactive directory selection
+alias sf='fasd -sif'     # interactive file selection
+alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i' # cd with interactive selection
+alias jj='fasd_cd -i'
+alias j='fasd_cd -i -1'
+
+# UW Directories
+case "$(uname)" in
+    Darwin)   uwsrc="${HOME}/src/uw";   uwpost="-work"  ;;
+    Linux)    uwsrc="${HOME}";          uwpost=""       ;;
+    *)                                                  ;;
+esac
+alias uw="cd ~/docs/UW/4b"
+alias 349="cd ${uwsrc}/cs349${uwpost}"
+alias 451="cd ${uwsrc}/cs451${uwpost}"
+alias 454="cd ${uwsrc}/cs454${uwpost}"
+alias 487="cd ${uwsrc}/co487${uwpost}"
+
+# UW SSH
+alias uwssh="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
+alias uwssh1404="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1404.student.cs.uwaterloo.ca"
+alias uwssh1604="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604.student.cs.uwaterloo.ca"
+alias uwssh458="ssh adsparad@ugster19.student.cs.uwaterloo.ca"
+alias uw458scp="scp -r adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/* ./"
+alias uwscp458="scp -r ./ adsparad@ugster19.student.cs.uwaterloo.ca:uml/share/"
 
 #Web Download files off of a webpage
 # - Every file: wd ""  {url}

@@ -1,6 +1,7 @@
 ---
 
 bash_powerline_div: "### Theme"
-bash_powerline_source: 'source {{home}}/.bash-powerline.sh'
+bash_powerline_source: 'source {{home}}/.ap-bash-powerline.sh'
 bash_powerline_url: https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh
 bash_powerline_file: .bash-powerline.sh
+bash_powerline_ap_file: .ap-bash-powerline.sh

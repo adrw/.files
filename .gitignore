@@ -1,3 +1,5 @@
 .DS_store
 *.retry
 .*.hosts*
+.bash-powerline.*
+.zsh-powerline.*
