@@ -3,7 +3,6 @@
 - hosts: macbox
   connection: local
   roles:
-    # - calibre # only needs to be run once
     - etchosts
     # - oh-my-zsh
     - homebrew
@@ -77,6 +76,7 @@
       # - backblaze-downloader
       - bartender
       # - calibre
+      # - caffeine
       # - createuserpkg
       - coda
       - dash
@@ -97,10 +97,13 @@
       - keybase
       # - kdiff3
       - ngrok
+      # - mediahuman-audio-converter
+      # - mediahuman-youtube-downloader
       - microsoft-office
       # - musicbrainz-picard
       - onedrive
       - pomello
+      # - protonmail-bridge
       - quitter
       # - sqlpro-for-sqlite
       # - skype

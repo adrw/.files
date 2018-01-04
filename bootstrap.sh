@@ -45,6 +45,15 @@ function safe_source {
   if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
 }
 
+function run_script {
+  exec=$*
+  script=$1
+  name=$(basename ${script})
+  status a "${name}"
+  ${exec}
+  status b "${name}"
+}
+
 function show_help {
   status a "❓  Usage :: .files/bootstrap.sh <opts>"
   echo "Options |   Description                       |   Default (or alternate) Values"
@@ -87,6 +96,7 @@ function secure_hostname_network {
   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$MAC_NAME"
 
   # enable firewall, logging, and stealth mode
+  sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
   /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
   /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
   /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
@@ -102,10 +112,10 @@ function secure_hostname_network {
   status b "🔐  Host Name: ${MAC_NAME}. Firewall: On."
 }
 
-function mac_bootstrap {
-  status a "Bootstrap Script"
+function mac_install_dependencies {
+  status a "xcode-select, git, homebrew, ansible"
 
-  if [[ ! -x /usr/bin/gcc ]]; then
+  if ! xcode-select -p 2> /dev/null; then
     status a "Install xcode-select (Command Line Tools)"
     xcode-select --install
     status b  "Install xcode-select (Command Line Tools)"
@@ -131,6 +141,34 @@ function mac_bootstrap {
     status b "Install Ansible"
   fi
 
+  status b "xcode-select, git, homebrew, ansible"
+}
+
+function mac_scripts {
+  status a "scripts | ${PLAY} @ ${INVENTORY}"
+  case "${PLAY}" in
+  "mac_core"|"mac_dev")
+    run_script ${SCRIPTS}/custom.macos
+    run_script ${SCRIPTS}/.macos
+    if [[ $(csrutil status) != *enabled* ]]; then
+      run_script ${SCRIPTS}/homecall.sh fixmacos
+    fi
+    ;;
+  "mac_etchost_no_animate")
+    run_script ${SCRIPTS}/no_animate.macos
+    ;;
+  *)
+    status e "no scripts"
+  esac
+  status b "scripts | ${PLAY} @ ${INVENTORY}"
+}
+
+function mac_bootstrap {
+  status a "Bootstrap Script"
+
+  mac_install_dependencies
+
+  status a "git/.files -> ${MAIN_DIR}"
   if [[ ! -d ${MAIN_DIR} ]]; then
     status a "Clone .files"
     git clone https://github.com/andrewparadi/.files.git ${MAIN_DIR}
@@ -143,49 +181,33 @@ function mac_bootstrap {
     git checkout origin/master
     status b "Decapitate .files (headless mode)"
   fi
+  status b "git/.files -> ${MAIN_DIR}"
 
-  # chmod -R 774 $MAIN_DIR
-  # chmod +x $MAIN_DIR/bin/shuttle.sh
-  # ln -sf $MAIN_DIR/bin/shuttle.sh /usr/local/bin/shuttle
-  status b "xcode-select, git, homebrew, ansible"
-  if [[ ${PLAY} == "mac_etchost_no_animate" ]]; then
-    status a "ansible-playbook | ${PLAY} @ ${INVENTORY}"
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    status b "ansible-playbook | ${PLAY} @ ${INVENTORY}"
-
-    if [ "${ONLY_ANSIBLE}" = false ]; then
-      status a "no_animate.macos"
-      ${SCRIPTS}/no_animate.macos
-      status b "no_animate.macos"
-    fi
-
-  elif [[ ${PLAY} == "mac_jekyll" ]]; then
-    status a "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    status b "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
-
-  else
-    status a "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
+  status a "ansible-playbook | ${PLAY} @ ${INVENTORY}"
+  case "${PLAY}" in
+  "mac_core"|"mac_dev")
     cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-    status b "ansible-playbook :: ${PLAY} @ ${INVENTORY}"
+    ;;
+  "mac_etchost_no_animate")
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    ;;
+  "mac_jekyll")
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    ;;
+  *)
+    status e "no matching play for ${PLAY}"
+  esac
+  status b "ansible-playbook | ${PLAY} @ ${INVENTORY}"
 
-    if [ "${ONLY_ANSIBLE}" = false ]; then
-      status a "custom.macos"
-      ${SCRIPTS}/custom.macos
-      status b "custom.macos"
-
-      status a ".macos"
-      ${SCRIPTS}/.macos
-      status b ".macos"
-    fi
-
-    # Only works when system integrity protection is off
-    if [[ $(csrutil status) != *enabled* ]]; then
-      status a "homecall.sh fixmacos"
-      bash ${SCRIPTS}/homecall.sh fixmacos
-      status b "homecall.sh fixmacos"
-    fi
+  if [ "${ONLY_ANSIBLE}" = false ]; then
+    mac_scripts
   fi
+
+  status a "${MAIN_DIR} git remote https:->git:"
+  cd ${MAIN_DIR}
+  git remote remove origin
+  git remote add origin git@github.com:andrewparadi/.files.git
+  status b "${MAIN_DIR} git remote https:->git:"
 
   sudo -k # remove sudo permissions
   status a "🍺  Fin. Bootstrap Script"
@@ -194,23 +216,26 @@ function mac_bootstrap {
 
 function linux_bootstrap {
   status a "Install Linux Base Shell"
-  # Bash Powerline Theme
-  safe_download ~/.bash-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/bash/files/.bash-powerline.sh
-  safe_source ~/.bash-powerline.sh ~/.bashrc
+  # AP Bash Powerline Theme
+  safe_download ~/.ap-bash-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/bash/files/.ap-bash-powerline.sh
+  safe_source ~/.ap-bash-powerline.sh ~/.bashrc
 
-  # ZSH Powerline Theme
-  safe_download ~/.zsh-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/zsh/files/.zsh-powerline.sh
-  safe_source ~/.zsh-powerline.sh ~/.zshrc
+  # AP ZSH Powerline Theme
+  safe_download ~/.ap-zsh-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/zsh/files/.ap-zsh-powerline.sh
+  safe_source ~/.ap-zsh-powerline.sh ~/.zshrc
 
-  # AP-Aliases
+  # AP Aliases
   safe_download ~/.ap-aliases https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/aliases/files/.ap-aliases
   safe_source ~/.ap-aliases ~/.bashrc
   safe_source ~/.ap-aliases ~/.zshrc
 
-  # AP-Functions
+  # AP Functions
   safe_download ~/.ap-functions https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/functions/files/.ap-functions
   safe_source ~/.ap-functions ~/.bashrc
   safe_source ~/.ap-functions ~/.zshrc
+
+  echo "curl -s https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh | bash -s" > .ap-update.sh
+  chmod +x .ap-update.sh
 
   status a "🍺  Fin. Bootstrap Script"
   exit 0

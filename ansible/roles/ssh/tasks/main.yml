@@ -5,7 +5,7 @@
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
-    mode: 0755
+    mode: 0700
   become: false
 
 
@@ -26,4 +26,8 @@
     ssh_key_bits: 4096
     ssh_key_file: "{{ id_rsa }}"
     ssh_key_passphrase: "{{ ssh_passphrase }}"
+  become: false
+
+- name: Add id_rsa to ssh agent
+  shell: "ssh-add -K {{ id_rsa }}"
   become: false

@@ -48,6 +48,16 @@ function safe_source() {
   if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
 }
 
+# runs script with bumper status output
+function run_script() {
+  exec=$*
+  script=$1
+  name=$(basename ${script})
+  status a "${name}"
+  ${exec}
+  status b "${name}"
+}
+
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
 function safe_k() {
   if type k &> /dev/null; then

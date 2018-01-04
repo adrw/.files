@@ -5,16 +5,16 @@
 
 __powerline() {
     # Colorscheme
-    readonly RESET='\[\033[m\]'
-    readonly COLOR_CWD='\[\033[0;34m\]' # blue
-    readonly COLOR_GIT='\[\033[0;36m\]' # cyan
-    readonly COLOR_SUCCESS='\[\033[0;32m\]' # green
-    readonly COLOR_FAILURE='\[\033[0;31m\]' # red
+    RESET='\[\033[m\]'
+    COLOR_CWD='\[\033[0;34m\]' # blue
+    COLOR_GIT='\[\033[0;36m\]' # cyan
+    COLOR_SUCCESS='\[\033[0;32m\]' # green
+    COLOR_FAILURE='\[\033[0;31m\]' # red
 
-    readonly SYMBOL_GIT_BRANCH='⑂'
-    readonly SYMBOL_GIT_MODIFIED='*'
-    readonly SYMBOL_GIT_PUSH='↑'
-    readonly SYMBOL_GIT_PULL='↓'
+    SYMBOL_GIT_BRANCH='⑂'
+    SYMBOL_GIT_MODIFIED='*'
+    SYMBOL_GIT_PUSH='↑'
+    SYMBOL_GIT_PULL='↓'
 
     if [[ -z "$PS_SYMBOL" ]]; then
       case "$(uname)" in
@@ -24,7 +24,7 @@ __powerline() {
       esac
     fi
 
-    __git_info() { 
+    __git_info() {
         [[ $POWERLINE_GIT = 0 ]] && return # disabled
         hash git 2>/dev/null || return # git not found
         local git_eng="env LANG=C git"   # force git output in English to make our work easier
@@ -61,7 +61,7 @@ __powerline() {
 
     ps1() {
         # Check the exit code of the previous command and display different
-        # colors in the prompt accordingly. 
+        # colors in the prompt accordingly.
         if [ $? -eq 0 ]; then
             local symbol="$COLOR_SUCCESS $PS_SYMBOL $RESET"
         else

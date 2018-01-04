@@ -3,7 +3,6 @@
 - hosts: macbox
   connection: local
   roles:
-    # - calibre # only needs to be run once
     - etchosts
     # - oh-my-zsh
     - homebrew
@@ -73,18 +72,19 @@
       # - anaconda # python ML libraries
       - appcleaner
       - atom
-      # - autodmg
+      - autodmg
       - backblaze
       # - backblaze-downloader
       - bartender
       - calibre
-      # - createuserpkg
+      - caffeine
+      - createuserpkg
       # - coda
       # - dash
       - docker
       - dropbox
       # - eloston-chromium
-      # - firefox
+      - firefox
       # - gmvault
       - google-chrome
       # - google-chrome-canary
@@ -93,15 +93,18 @@
       # - handbrakebatch
       - imagealpha
       - insomnia
-      # - ipartition
+      - ipartition
       - iterm2
       - keybase
       # - kdiff3
       - ngrok
+      - mediahuman-audio-converter
+      - mediahuman-youtube-downloader
       - microsoft-office  # requires password
       - musicbrainz-picard
       - onedrive  # requires password
       - pomello
+      - protonmail-bridge
       - quitter
       # - sqlpro-for-sqlite
       # - skype
@@ -121,6 +124,23 @@
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
+
+    atom_installed_packages:
+      - busy-signal
+      - language-babel
+      - language-docker
+      - language-gdb
+      - language-javascript-jsx
+      - language-markdown
+      - linter
+      - linter-eslint
+      - linter-ui-default
+      - intentions
+      - markdown-preview-plus
+      - markdown-scroll-sync
+      - markdown-writer
+      - multi-cursor
+      - remote-sync
 
     mas_email: ""
     mas_password: ""
@@ -152,27 +172,30 @@
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
         pos: 7
+      - name: Firefox
+        path: "/Applications/Firefox.app"
+        pos: 8
       - name: Atom
         path: /Applications/Atom.app
-        pos: 8
+        pos: 9
       - name: Byword
         path: /Applications/Byword.app
-        pos: 9
+        pos: 10
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 10
+        pos: 11
       - name: Preview
         path: /Applications/Preview.app
-        pos: 11
+        pos: 12
       - name: iStudiez Pro
         path: /Applications/iStudiez Pro.app
-        pos: 12
+        pos: 13
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 13
+        pos: 14
       - name: Pomello
         path: /Applications/Pomello.app
-        pos: 14
+        pos: 15
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 15
+        pos: 16

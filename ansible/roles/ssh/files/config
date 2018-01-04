@@ -1,5 +1,7 @@
 Host *
-  PasswordAuthentication no
-  ChallengeResponseAuthentication no
+  AddKeysToAgent yes
+  ChallengeResponseAuthentication yes
+  IdentityFile ~/.ssh/id_rsa
   HashKnownHosts yes
-  UseKeyChain no
+  PasswordAuthentication no
+  UseKeychain no
