@@ -5,3 +5,15 @@ Host *
   HashKnownHosts yes
   PasswordAuthentication no
   UseKeychain no
+
+Host altiscale
+  User adsparad
+  Hostname ia.z42.altiscale.com
+  Port 1763
+  IdentityFile ~/.ssh/id_rsa
+  Compression yes
+  ServerAliveInterval 15
+  DynamicForward localhost:1080
+  TCPKeepAlive yes
+  Protocol 2,1
+
