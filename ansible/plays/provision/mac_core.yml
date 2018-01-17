@@ -98,6 +98,7 @@
       - keybase
       # - kdiff3
       - ngrok
+      - macdown
       - mediahuman-audio-converter
       - mediahuman-youtube-downloader
       - microsoft-office  # requires password
@@ -106,10 +107,11 @@
       - pomello
       - protonmail-bridge
       - quitter
-      # - sqlpro-for-sqlite
+      - signal
       # - skype
       - slack
       - spectacle
+      # - sqlpro-for-sqlite
       # - sublime-text
       # - synology-assistant
       - the-unarchiver
@@ -132,6 +134,7 @@
       - language-gdb
       - language-javascript-jsx
       - language-markdown
+      - language-scala
       - linter
       - linter-eslint
       - linter-ui-default
@@ -157,29 +160,32 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
-      - name: Slack
-        path: "/Applications/Slack.app"
-        pos: 3
-      - name: WhatsApp
-        path: "/Applications/WhatsApp.app"
-        pos: 4
-      - name: Messages
-        path: "/Applications/Messages.app"
-        pos: 5
       - name: Mail
         path: "/Applications/Mail.app"
-        pos: 6
+        pos: 2
+      - name: Messages
+        path: "/Applications/Messages.app"
+        pos: 3
+      - name: Signal
+        path: "/Applications/Signal.app"
+        pos: 4
+      - name: Safari
+        path: "/Applications/Safari.app"
+        pos: 5
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 7
+        pos: 6
       - name: Firefox
         path: "/Applications/Firefox.app"
+        pos: 7
+      - name: TorBrowser
+        path: "/Applications/TorBrowser.app"
         pos: 8
       - name: Atom
         path: /Applications/Atom.app
         pos: 9
-      - name: Byword
-        path: /Applications/Byword.app
+      - name: MacDown
+        path: /Applications/MacDown.app
         pos: 10
       - name: iTerm
         path: /Applications/iTerm.app

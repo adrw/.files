@@ -105,10 +105,11 @@
       - pomello
       # - protonmail-bridge
       - quitter
-      # - sqlpro-for-sqlite
+      # - signal
       # - skype
       - slack
       - spectacle
+      # - sqlpro-for-sqlite
       - sublime-text
       # - synology-assistant
       - the-unarchiver
@@ -122,6 +123,24 @@
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
+
+    atom_installed_packages:
+      - busy-signal
+      - language-babel
+      - language-docker
+      - language-gdb
+      - language-javascript-jsx
+      - language-markdown
+      - language-scala
+      - linter
+      - linter-eslint
+      - linter-ui-default
+      - intentions
+      - markdown-preview-plus
+      - markdown-scroll-sync
+      - markdown-writer
+      - multi-cursor
+      - remote-sync
 
     mas_email: ""
     mas_password: ""

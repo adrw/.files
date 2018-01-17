@@ -108,7 +108,10 @@ function etc() {
     current="${merge}"; updated="${default}"
   fi
 
-  status t "${current} => ${updated}" "${name}"
+  status w "Updating ${current} => ${updated} in 10 seconds..."
+  sleep 10
+
+  status t "Update ${current} => ${updated}" "${name}"
   sudo cp ${hosts_dir}/${updated} /etc/hosts
 
   post_diff=`diff /etc/hosts ${hosts_dir}/${default} | wc | awk '{print $1}'`
