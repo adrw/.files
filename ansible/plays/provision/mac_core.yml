@@ -16,6 +16,7 @@
     - tmux
     - vim
     - atom
+    - sublime-text
     - ssh #id_rsa key generation
     - privoxy
     - syncthing
@@ -112,7 +113,7 @@
       - slack
       - spectacle
       # - sqlpro-for-sqlite
-      # - sublime-text
+      - sublime-text
       # - synology-assistant
       - the-unarchiver
       - torbrowser
@@ -127,7 +128,32 @@
       - font-fira-mono-for-powerline
       - font-fontawesome
 
-    atom_installed_packages:
+    sublime_packages:
+      - dest: "Solarized"
+        repo: "https://github.com/braver/Solarized.git"
+        version: "master"
+      - dest: "SideBarEnhancements"
+        repo: "https://github.com/titoBouzout/SideBarEnhancements"
+        version: "st3"
+      - dest: "GitGutter"
+        repo: "https://github.com/jisaacks/GitGutter.git"
+        version: "master"
+      - dest: "BracketHighlighter"
+        repo: "https://github.com/facelessuser/BracketHighlighter.git"
+        version: "master"
+      - dest: "ApplySyntax"
+        repo: "https://github.com/facelessuser/ApplySyntax.git"
+        version: "master"
+      - dest: "SublimeAllAutocomplete"
+        repo: "https://github.com/alienhard/SublimeAllAutocomplete"
+        version: "master"
+      - dest: "Ansible"
+        repo: "https://github.com/clifford-github/sublime-ansible.git"
+        version: "master"
+    sublime_text_color_scheme: "Packages/Solarized/Solarized (dark).tmTheme"
+    # sublime_text_theme: "Soda Dark 3.sublime-theme"
+
+    atom_packages:
       - busy-signal
       - language-babel
       - language-docker

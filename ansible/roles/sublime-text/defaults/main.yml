@@ -1,1 +1,6 @@
 ---
+
+sublime_role_file: "sublime-text/files"
+sublime_config: "Library/Application Support/Sublime Text 3"
+sublime_package_control_name: "Package Control.sublime-package"
+sublime_package_control_url: "https://packagecontrol.io/Package%20Control.sublime-package"

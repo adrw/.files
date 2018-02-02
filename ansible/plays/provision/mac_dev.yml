@@ -16,6 +16,7 @@
     - tmux
     - vim
     - atom
+    - sublime-text
     - ssh #id_rsa key generation
     - privoxy
     - syncthing

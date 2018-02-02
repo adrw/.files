@@ -2,5 +2,5 @@
 
 - name: Ensure configured atom packages are installed.
   shell: "apm install {{ item }}"
-  with_items: "{{ atom_installed_packages }}"
+  with_items: "{{ atom_packages }}"
   become: false
