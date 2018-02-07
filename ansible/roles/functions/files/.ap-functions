@@ -90,6 +90,7 @@ function decap() {
 # .raw.hosts .merge.hosts
 function etc() {
   name="${prefix}/etc/hosts"
+  wait=60
   if [ $# -eq 0 ]; then
     hosts_dir="/Users/me/.files/ansible/roles/etchosts/files"
     default=".raw-ads.hosts"; merge=".merge.hosts"
@@ -106,8 +107,8 @@ function etc() {
     current="${default}"; updated="${merge}"
   else
     current="${merge}"; updated="${default}"
-    status w "Updating ${current} => ${updated} in 10 seconds..."
-    sleep 10
+    status w "Updating ${current} => ${updated} in ${wait} seconds..."
+    sleep ${wait}
   fi
 
   status t "Update ${current} => ${updated}" "${name}"
@@ -159,6 +160,8 @@ function chmod_admin() {
   name="${prefix}chmod_admin"
   if [ $# -ne 1 ]; then
     status e "Usage: chmod_admin <username>"
+  elif [[ "$(uname)" != "Darwin"  ]]; then
+    status e "Usage: only run this command on macOS"
   else
     user=${1}
     status t "Remove '${user}' admin privileges" "${name}"
