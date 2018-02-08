@@ -89,7 +89,7 @@ function decap() {
 # toggle etchosts, swap default and .merge
 # .raw.hosts .merge.hosts
 function etc() {
-  name="${prefix}/etc/hosts"
+  name="${prefix}${0}"
   wait=60
   if [ $# -eq 0 ]; then
     hosts_dir="/Users/me/.files/ansible/roles/etchosts/files"
@@ -130,7 +130,7 @@ function etc() {
 # in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
 # in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
 function rename_first_line() {
-  name="${prefix}rename_first_line"
+  name="${prefix}${0}"
   if [ $# -ne 2 ]; then
     status e "Usage: rename_first_line <in_dir> <out_dir>"
   else
@@ -156,8 +156,14 @@ function rename_first_line() {
   status b "🍺  Fin. ${in_dir} => ${out_dir}"
 }
 
+# Removes admin privileges
+# Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
+# Find GeneratedUID of account with 
+#   $ dscl . -read /Users/<username> GeneratedUID
+# Remove from admin with 
+#   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
 function chmod_admin() {
-  name="${prefix}chmod_admin"
+  name="${prefix}${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: chmod_admin <username>"
   elif [[ "$(uname)" != "Darwin"  ]]; then
@@ -165,28 +171,83 @@ function chmod_admin() {
   else
     user=${1}
     status t "Remove '${user}' admin privileges" "${name}"
-
     # Check user is valid
     if ! dscl . list /users | grep -q "${user}"; then
       status e "'${user}' is not a user"
     elif [[ "${user}" == "admin" ]]; then
       status e "'${user}' should keep admin privileges"
     else
-      # Final confirmation
       status w "Removing '${user}' admin privileges in 3 seconds..."
       sleep 3
-
       status a "Remove '${user}' from admin"
-
       sudo dscl . -delete /Groups/admin GroupMembership ${user}
       status b "Delete '${user}' membership in /Groups/admin"
-
       user_UID=$(dscl . -read /Users/${user} GeneratedUID | cut -d ' ' -f 2)
       sudo dscl . -delete /Groups/admin GroupMembers ${user_UID}
       status b "Delete '${user_UID}' member in /Groups/admin"
-
       sudo -k
       status b "🍺  Fin. '${user}' = standard"
+    fi
+  fi
+}
+
+# Hide / unhide use profile from login screens and moves home directory to /var/
+# Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
+# https://support.apple.com/en-us/HT203998
+# Hide from login screen 
+#   $ sudo dscl . create /Users/hiddenuser IsHidden 1
+# Hide home directory and share point
+#   $ sudo mv /Users/hiddenuser /var/hiddenuser
+#   $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
+#   $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
+function mv_user() {
+  name="${prefix}${0}"
+  if [ $# -ne 1 ]; then
+    status e "Usage: hide_user <username>"
+  elif [[ "$(uname)" != "Darwin"  ]]; then
+    status e "Usage: only run this command on macOS"
+  else
+    user=${1}
+    status t "Hide '${user}' from login & Finder" "${name}"
+
+    # Check user is valid
+    if ! dscl . list /users | grep -q "${user}"; then
+      status e "'${user}' is not a user"
+    elif [[ "${user}" == "$(whoami)" ]]; then
+      status e "'${user}' should not hide oneself"
+    else
+      userStatus=$(dscl . read /Users/${user} IsHidden | cut -f 2 -d " ")
+      visible="0"
+      if [ "${userStatus}" = "${visible}" ]; then
+        status w "Hiding '${user}' from login & Finder in 3 seconds..."
+        sleep 3
+        status a "Hide '${user}' from login & Finder"
+        sudo dscl . create /Users/${user} IsHidden 1
+        status b "Hide '${user}' from login"
+        sudo mv /Users/${user} /var/${user}
+        status b "Move home directory to /var/${user}"
+        sudo dscl . -create /Users/${user} NFSHomeDirectory /var/${user}
+        status b "Update ${user} record with home directory /var/${user}"
+        sudo dscl . -delete "/SharePoints/${user}'s Public Folder"
+        status b "Remove ${user} Public Folder"
+        result="hidden"
+      else
+        status w "Restoring '${user}' to login & Finder in 3 seconds..."
+        sleep 3
+        status a "Restore '${user}' to login & Finder"
+        sudo dscl . create /Users/${user} IsHidden 0
+        status b "Restore '${user}' to login"
+        sudo mv /var/${user} /Users/${user}
+        status b "Move home directory to /Users/${user}"
+        sudo dscl . -create /Users/${user} NFSHomeDirectory /Users/${user}
+        status b "Update ${user} record with home directory /Users/${user}"
+        sudo dscl . -create "/SharePoints/${user}'s Public Folder"
+        status b "Restore ${user} Public Folder"
+        result="restored"
+      fi      
+
+      sudo -k
+      status b "🍺  Fin. '${user}' = ${result}"
     fi
   fi
 }
