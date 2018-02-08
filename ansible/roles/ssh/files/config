@@ -17,3 +17,42 @@ Host altiscale
   TCPKeepAlive yes
   Protocol 2,1
 
+Host uw
+  User adsparad
+  Hostname linux.student.cs.uwaterloo.ca
+  Port 22
+  IdentityFile ~/.ssh/id_rsa
+  Compression yes
+  ServerAliveInterval 15
+  TCPKeepAlive yes
+  Protocol 2,1
+
+Host uw1604
+  User adsparad
+  Hostname ubuntu1604.student.cs.uwaterloo.ca
+  Port 22
+  IdentityFile ~/.ssh/id_rsa
+  Compression yes
+  ServerAliveInterval 15
+  TCPKeepAlive yes
+  Protocol 2,1
+
+Host uw1604006
+  User adsparad
+  Hostname ubuntu1604-006.student.cs.uwaterloo.ca
+  Port 22
+  IdentityFile ~/.ssh/id_rsa
+  Compression yes
+  ServerAliveInterval 15
+  TCPKeepAlive yes
+  Protocol 2,1
+
+Host uw1404
+  User adsparad
+  Hostname ubuntu1404.student.cs.uwaterloo.ca
+  Port 22
+  IdentityFile ~/.ssh/id_rsa
+  Compression yes
+  ServerAliveInterval 15
+  TCPKeepAlive yes
+  Protocol 2,1

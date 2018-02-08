@@ -64,12 +64,6 @@ alias 451="cd ${uwsrc}/cs451${uwpost}"
 alias 454="cd ${uwsrc}/cs454${uwpost}"
 alias 487="cd ${uwsrc}/co487${uwpost}"
 
-# UW SSH
-alias uwssh="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@linux.student.cs.uwaterloo.ca"
-alias uwssh1604="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604-006.student.cs.uwaterloo.ca"
-alias uwssh1404="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1404.student.cs.uwaterloo.ca"
-alias uwssh1604="ssh -4 -i ~/.ssh/id_rsa -Y adsparad@ubuntu1604.student.cs.uwaterloo.ca"
-
 #Web Download files off of a webpage
 # - Every file: wd ""  {url}
 # - Only with extension: wd pdf {url}
