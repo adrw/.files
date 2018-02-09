@@ -3,6 +3,7 @@
 - hosts: macbox
   connection: local
   roles:
+    - spoof-mac
     - etchosts
     # - oh-my-zsh
     - homebrew
@@ -17,6 +18,7 @@
     - vim
     - atom
     - sublime-text
+    - macdown
     - ssh #id_rsa key generation
     - privoxy
     - syncthing
@@ -51,7 +53,7 @@
     homebrew_installed_packages:
       - antibody
       - cheat
-      - dockutil
+      # - dockutil  # separate role
       # - fasd    # separate role
       # - gnupg2  # requires java...
       - htop
@@ -70,9 +72,9 @@
       - 1password
       # - adobe-digital-editions
       - alfred
-      # - anaconda # python ML libraries
+      # - anaconda  # python ML libraries
       - appcleaner
-      - atom
+      # - atom      # separate role
       - autodmg
       - backblaze
       # - backblaze-downloader
@@ -99,12 +101,12 @@
       - keybase
       # - kdiff3
       - ngrok
-      - macdown
+      # - macdown     # separate role
       - mediahuman-audio-converter
       - mediahuman-youtube-downloader
       - microsoft-office  # requires password
       - musicbrainz-picard
-      - onedrive  # requires password
+      - onedrive      # requires password
       - pomello
       - protonmail-bridge
       - quitter
@@ -113,17 +115,17 @@
       - slack
       - spectacle
       # - sqlpro-for-sqlite
-      - sublime-text
+      # - sublime-text # separate role
       # - synology-assistant
       - the-unarchiver
       - torbrowser
       - transmission
-      - virtualbox  # requires password
+      - virtualbox    # requires password
       - viscosity
       - vlc
       - whatsapp
     # fonts
-      - font-arvo # for OAKWEAR & CO.
+      - font-arvo     # for OAKWEAR & CO.
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
@@ -198,36 +200,42 @@
       - name: Safari
         path: "/Applications/Safari.app"
         pos: 5
-      - name: Google Chrome
-        path: "/Applications/Google Chrome.app"
-        pos: 6
-      - name: Firefox
-        path: "/Applications/Firefox.app"
-        pos: 7
-      - name: TorBrowser
-        path: "/Applications/TorBrowser.app"
-        pos: 8
-      - name: Atom
-        path: /Applications/Atom.app
-        pos: 9
       - name: MacDown
         path: /Applications/MacDown.app
-        pos: 10
+        pos: 6
+      - name: Atom
+        path: /Applications/Atom.app
+        pos: 7
+      - name: Sublime Text
+        path: /Applications/Sublime Text.app
+        pos: 8
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 11
+        pos: 9
       - name: Preview
         path: /Applications/Preview.app
-        pos: 12
+        pos: 10
       - name: iStudiez Pro
         path: /Applications/iStudiez Pro.app
-        pos: 13
+        pos: 11
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 14
+        pos: 12
       - name: Pomello
         path: /Applications/Pomello.app
-        pos: 15
+        pos: 13
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 16
+        pos: 14
+
+            # - name: Google Chrome
+      #   path: "/Applications/Google Chrome.app"
+      #   pos: 6
+      # - name: Firefox
+      #   path: "/Applications/Firefox.app"
+      #   pos: 7
+      # - name: TorBrowser
+      #   path: "/Applications/TorBrowser.app"
+      #   pos: 8
+
+    dockitems_to_remove:

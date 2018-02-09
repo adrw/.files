@@ -1,0 +1,5 @@
+---
+
+spoof_mac_role_file: "spoof-mac/files"
+spoof_mac_plist_url: "https://raw.githubusercontent.com/feross/SpoofMAC/master/misc/local.macspoof.plist"
+spoof_mac_plist_dest: "/Library/LaunchDaemons/local.macspoof.plist"

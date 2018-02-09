@@ -1,0 +1,21 @@
+---
+
+# https://github.com/feross/SpoofMAC
+
+- name: Install SpoofMAC
+  pip:
+    name: SpoofMAC
+  become: false
+  ignore_errors: true
+
+- name: Copy plist to LaunchDaemons
+  file:
+    src: "{{ roles_dir }}/{{ spoof_mac_role_file }}/local.macspoof.plist"
+    dest: "{{ spoof_mac_plist_dest }}"
+    state: link
+    owner: root
+    group: wheel
+    mode: 0644
+    force: yes
+  become: true
+  ignore_errors: true

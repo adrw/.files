@@ -208,7 +208,7 @@ function mv_user() {
     status e "Usage: only run this command on macOS"
   else
     user=${1}
-    status t "Hide '${user}' from login & Finder" "${name}"
+    status t "Hide/Restore '${user}' from login & Finder" "${name}"
 
     # Check user is valid
     if ! dscl . list /users | grep -q "${user}"; then

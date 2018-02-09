@@ -2,6 +2,14 @@
 
 # package manager https://packagecontrol.io/installation
 
+- name: Install Sublime Text 3
+  homebrew_cask:
+    name: sublime-text
+    state: present
+    install_options: "appdir={{ homebrew_cask_appdir }}"
+  become: false
+  ignore_errors: true
+
 - name: Create Directories
   file:
     path: "{{item}}"
@@ -13,6 +21,7 @@
     - "{{ home }}/{{ sublime_config }}/Packages/User"
     - "{{ home }}/{{ sublime_config }}/Installed Packages"
   become: false
+  ignore_errors: true
 
 - name: Install Package Control
   get_url:

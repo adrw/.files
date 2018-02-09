@@ -1,9 +1,8 @@
 ---
 
-dockitems_to_remove:
+default_dockitems_to_remove:
   - Siri
   - Launchpad
-  - Safari
   - Contacts
   - Calendar
   - Notes
@@ -14,7 +13,4 @@ dockitems_to_remove:
   - iBooks
   - App Store
 
-dockitems_to_persist:
-  # - name: Messages
-  #   path: "/Applications/Messages.app"
-  #   pos: 2
+dockitems_to_remove:

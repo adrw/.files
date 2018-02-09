@@ -1,6 +1,15 @@
 ---
 
+- name: Install Atom
+  homebrew_cask:
+    name: atom
+    state: present
+    install_options: "appdir={{ homebrew_cask_appdir }}"
+  become: false
+  ignore_errors: true
+
 - name: Ensure configured atom packages are installed.
   shell: "apm install {{ item }}"
   with_items: "{{ atom_packages }}"
   become: false
+  ignore_errors: true

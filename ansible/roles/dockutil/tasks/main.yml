@@ -10,6 +10,11 @@
   with_items: "{{dockitems_to_remove}}"
   become: false
 
+- name: wipe defaults
+  shell: dockutil --remove "{{ item }}"
+  with_items: "{{default_dockitems_to_remove}}"
+  become: false
+
 - name: if item exists, add to dock
   shell: dockutil --find "{{ item.name }}" || dockutil --add "{{ item.path }}"
   with_items: "{{dockitems_to_persist}}"
