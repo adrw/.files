@@ -27,10 +27,12 @@
   get_url:
     url: "{{ sublime_package_control_url }}"
     dest: "{{ home }}/{{ sublime_config }}/Installed Packages/{{ sublime_package_control_name }}"
+  become: false    
 
 - name: Get and Update all Sublime plugins
   git: update=yes version="{{item.version|default('master')}}" repo="{{item.repo}}" dest="{{ home }}/{{ sublime_config }}/Packages/{{item.dest}}"
   with_items: "{{ sublime_packages }}"
+  become: false  
 
 - name: Link over Preferences.sublime-settings
   file:
