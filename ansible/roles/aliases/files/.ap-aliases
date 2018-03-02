@@ -16,6 +16,7 @@ alias -- -="cd -"
 # alias l="ls -la" || "k -a" => ap-functions::l()
 alias l="safe_k"
 alias ka="killall"
+alias unzip="extract"
 
 #Syncthing
 alias st="syncthing"
@@ -35,10 +36,7 @@ alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 
 # Docker
 alias dc="docker-compose"
-alias dka="docker kill $(docker ps -q)"
 alias dvp="docker volume prune"
-alias drmc="docker rm $(docker ps -a -q)"
-alias drmi="docker rmi -f $(docker images -q)"
 
 # fasd
 alias fa='fasd -a'        # any

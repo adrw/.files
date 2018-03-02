@@ -3,20 +3,20 @@
 - hosts: macbox
   connection: local
   roles:
-    # - spoof-mac
-    # - etchosts
-    # # - oh-my-zsh
-    # - homebrew
-    # - bash
-    # - zsh
-    # - zsh-antibody
-    # - fasd
-    # - aliases
-    # - functions
-    # - git
-    # - tmux
-    # - vim
-    # - atom
+    - spoof-mac
+    - etchosts
+    # - oh-my-zsh
+    - homebrew
+    - bash
+    - zsh
+    - zsh-antibody
+    - fasd
+    - aliases
+    - functions
+    - git
+    - tmux
+    - vim
+    - atom
     - sublime-text
     - macdown
     - ssh #id_rsa key generation

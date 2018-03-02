@@ -54,6 +54,17 @@ function run_script {
   status b "${name}"
 }
 
+
+# rewrite help with cat
+
+# cat<<'EOF'
+# Different characters can be represented and supported
+# in the print command, for example:
+# x-y, X+Y, –, +, <, >, %, $, #, &.
+# EOF
+
+
+
 function show_help {
   status a "❓  Usage :: .files/bootstrap.sh <opts>"
   echo "Options |   Description                       |   Default (or alternate) Values"
@@ -234,6 +245,9 @@ function linux_bootstrap {
   safe_source ~/.ap-functions ~/.bashrc
   safe_source ~/.ap-functions ~/.zshrc
 
+  # AP .vimrc
+  safe_download ~/.vimrc https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/vim/files/.vimrc
+  
   echo "curl -s https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh | bash -s" > .ap-update.sh
   chmod +x .ap-update.sh
 
