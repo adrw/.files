@@ -56,6 +56,7 @@
       - cheat
       # - dockutil  # separate role
       # - fasd    # separate role
+      - figlet
       # - gnupg2  # requires java...
       - htop
       # - mas
