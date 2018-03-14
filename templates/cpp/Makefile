@@ -4,19 +4,19 @@ CXXFLAGS = -g -Wall -Werror -std=c++11 -MMD			# compiler flags
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}			# makefile name
 
 OBJECTS1 = folder/file.o			# object files forming executable
-EXEC1 = execname									# executable name
+EXEC1 = execname						  # executable name
 
-OBJECTS2 =  folder/file1.o folder/file2.o   	# object files forming executable
-EXEC2 =  execname2        # executable name
+OBJECTS2 =  folder/file1.o folder/file2.o
+EXEC2 =  execname2
 
-OBJECTS3 =            	# object files forming executable
-EXEC3 =            # executable name
+OBJECTS3 =
+EXEC3 =
 
-OBJECTS4 =           			# object files forming executable
-EXEC4 =            # executable name
+OBJECTS4 =
+EXEC4 =
 
-OBJECTS5 =           		# object files forming executable
-EXEC5 =            # executable name
+OBJECTS5 =
+EXEC5 =
 
 OBJECTS = ${OBJECTS1} ${OBJECTS2} ${OBJECTS3} ${OBJECTS4} ${OBJECTS5}
 EXECS = ${EXEC1} ${EXEC2} ${EXEC3} ${EXEC4} ${EXEC5}

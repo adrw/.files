@@ -104,42 +104,63 @@ function decap() {
   fi
 }
 
-# toggle etchosts, swap default and .merge
-# .raw.hosts .merge.hosts
+# update etchosts. has bias towards maintaining the default (locked down) state
 function etc() {
   name="${prefix}${0}"
+  hosts="/etc/hosts"
+  default_hosts=".no-social.hosts"
+  default_hosts_dir="/Users/me/.files/ansible/roles/etchosts/files/"
+  alt_hosts=".raw-ads.hosts"
   wait=60
+  
   if [ $# -eq 0 ]; then
-    hosts_dir="/Users/me/.files/ansible/roles/etchosts/files"
-    default=".raw-ads.hosts"; merge=".merge.hosts"
+    hosts_dir="$default_hosts_dir"; new_hosts="$default_hosts"
+  elif [ $# -eq 1 ]; then
+    hosts_dir="$default_hosts_dir"; new_hosts="$1"
   elif [ $# -eq 2 ]; then
-    hosts_dir="/Users/me/.files/ansible/roles/etchosts/files"; default=$1; merge=$2
+    hosts_dir="$1"; new_hosts="$2"
   else
-    hosts_dir=""; default=$1; merge=$2
+    status e "Invalid operation."
+    status t "Usage: default dir dhr = ${default_hosts_dir}"
+    status t " etc              toggles dhr/${default_hosts} <-> dhr/${alt_hosts}"
+    status t " etc {new}        installs dhr/{new}"
+    status t " etc {dir} {new}  installs {dir}{new}"
+    status t " etc {dir} \"\"     installs {new}"
+    return
   fi
 
   # determine if default hosts is currently installed at /etc/hosts
-  default_diff=`diff /etc/hosts ${hosts_dir}/${default} | wc | awk '{print $1}'`
+  etc_default_diff=`diff ${hosts} ${default_hosts_dir}${default_hosts} | wc | awk '{print $1}'`
+  etc_new_diff=`diff ${hosts} ${hosts_dir}${new_hosts} | wc | awk '{print $1}'`
 
-  if [ $default_diff -eq 0 ]; then
-    current="${default}"; updated="${merge}"
-  else
-    current="${merge}"; updated="${default}"
-    status w "Updating ${current} => ${updated} in ${wait} seconds..."
+  if [[ $etc_new_diff -eq 0 && $etc_default_diff -ne 0 ]]; then
+    status b "🍺  ${hosts} already = ${new_hosts}"
+    sudo -k
+    return
+  elif [[ $etc_new_diff -eq 0 && $etc_default_diff -eq 0 ]]; then
+    updated_hosts="${alt_hosts}"
+    etc_new_diff=`diff ${hosts} ${hosts_dir}${alt_hosts} | wc | awk '{print $1}'`
+    status w "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
     sleep ${wait}
+  elif [[ $etc_new_diff -ne 0 && $etc_default_diff -eq 0 ]]; then
+    updated_hosts="${new_hosts}"
+    status w "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
+    sleep ${wait}
+  else
+    updated_hosts="${new_hosts}"    
   fi
 
-  status t "Update ${current} => ${updated}" "${name}"
-  sudo cp ${hosts_dir}/${updated} /etc/hosts
+  status t "Update ${hosts} => ${updated_hosts}" "${name}"
+  sudo cp ${hosts_dir}${updated_hosts} /etc/hosts
 
-  post_diff=`diff /etc/hosts ${hosts_dir}/${default} | wc | awk '{print $1}'`
+  etc_new_diff=`diff ${hosts} ${hosts_dir}${updated_hosts} | wc | awk '{print $1}'`
 
-  if [ $default_diff -eq $post_diff ]; then
-    status e "${name} = ${current}. update failed."
-  else
+  if [ $etc_new_diff -eq 0 ]; then
     sudo dscacheutil -flushcache  # flush dns cache
     sudo killall -HUP mDNSResponder
-    status b "🍺  Fin. ${name} = ${updated}"
+    status b "🍺  Fin. ${hosts} = ${updated_hosts}"
+  else    
+    status e "${hosts} update failed."
   fi
   sudo -k # remove sudo permissions
 }

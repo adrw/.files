@@ -255,6 +255,7 @@ function linux_bootstrap {
   exit 0
 }
 
+figlet -f slant "Andrew Paradi"
 status t "Welcome to .files bootstrap!"
 status s "Andrew Paradi. https://github.com/andrewparadi/.files"
 
