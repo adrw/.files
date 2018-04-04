@@ -1,0 +1,27 @@
+---
+
+- name: add to bashrc
+  lineinfile:
+      dest: "{{ home }}/.bashrc"
+      state: present
+      line: "{{ zmv_div }}"
+  become: false
+
+- lineinfile:
+      dest: "{{ home }}/.bashrc"
+      state: present
+      line: "{{ zmv_bash }}"
+  become: false
+
+- name: add to zshrc
+  lineinfile:
+      dest: "{{ home }}/.zshrc"
+      state: present
+      line: "{{ zmv_div }}"
+  become: false
+
+- lineinfile:
+      dest: "{{ home }}/.zshrc"
+      state: present
+      line: "{{ zmv_init }}"
+  become: false

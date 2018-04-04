@@ -3,13 +3,14 @@
 - hosts: macbox
   connection: local
   roles:
-    - spoof-mac
-    - etchosts
-    # - oh-my-zsh
-    - homebrew
-    - bash
-    - zsh
-    - zsh-antibody
+    # - spoof-mac
+    # - etchosts
+    # # - oh-my-zsh
+    # - homebrew
+    # - bash
+    # - zsh
+    # - zsh-antibody
+    - zmv
     - fasd
     - aliases
     - functions

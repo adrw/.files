@@ -9,6 +9,7 @@
     - bash
     - zsh
     - zsh-antibody
+    - zmv
     - fasd
     - aliases
     - functions

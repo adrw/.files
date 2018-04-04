@@ -38,15 +38,19 @@ alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 alias dc="docker-compose"
 alias dvp="docker volume prune"
 
+# zmv                     # rename all ext1 -> ext2   zmv '*.ext1' '$(basename $f .ext1).ext2'
+alias zmv="zmv -n"        # test mode
+alias zm4b="zmv '*.m4a' '\$(basename \$f .m4a).m4b'"   # test mode all *.m4a -> *.m4b audiobooks. Real: \zm4b
+
 # fasd
 alias fa='fasd -a'        # any
-alias s='fasd -si'       # show / search / select
-alias d='fasd -d'        # directory
-alias f='fasd -f'        # file
-alias sd='fasd -sid'     # interactive directory selection
-alias sf='fasd -sif'     # interactive file selection
-alias z='fasd_cd -d'     # cd, same functionality as j in autojump
-alias zz='fasd_cd -d -i' # cd with interactive selection
+alias s='fasd -si'        # show / search / select
+alias d='fasd -d'         # directory
+alias f='fasd -f'         # file
+alias sd='fasd -sid'      # interactive directory selection
+alias sf='fasd -sif'      # interactive file selection
+alias z='fasd_cd -d'      # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i'  # cd with interactive selection
 alias jj='fasd_cd -i'
 alias j='fasd_cd -i -1'
 

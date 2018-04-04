@@ -302,6 +302,11 @@ function drmi() {
   docker rmi -f $(docker images -q)
 }
 
+# zmv
+function zm4b() {
+  \zmv '*.m4a' '$(basename $f .m4a).m4b'   # all *.m4a -> *.m4b bookmarkable audiobooks
+}
+
 
 # Other Sources
 # https://github.com/mathiasbynens/dotfiles/blob/master/.functions
