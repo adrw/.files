@@ -85,7 +85,8 @@
       - docker
       - dropbox
       - eloston-chromium
-      - firefox
+      # - firefox
+      - firefox-esr
       - gmvault
       - google-chrome
       - google-chrome-canary
