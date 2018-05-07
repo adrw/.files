@@ -2,7 +2,7 @@
 
   - file:
       src: "{{ roles_dir }}/vim/files/.vimrc"
-      dest: "{{ home }}/.vimrc"
+      dest: "{{ home }}.vimrc"
       state: link
       owner: "{{ user_name }}"
       group: "{{ user_group }}"

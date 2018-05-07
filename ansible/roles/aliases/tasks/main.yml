@@ -2,7 +2,7 @@
 
 - file:
     src: "{{ roles_dir }}/aliases/files/{{ aliases__filename }}"
-    dest: "{{ home }}/{{ aliases__filename }}"
+    dest: "{{ home }}{{ aliases__filename }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -12,20 +12,20 @@
 
 - name: add other section to zshrc
   lineinfile:
-    dest: "{{ home }}/.zshrc"
+    dest: "{{ home }}.zshrc"
     state: present
     line: "{{ aliases__div }}"
   become: false
 
 - name: save aliases path to zshrc
   lineinfile:
-    dest: "{{ home }}/.zshrc"
+    dest: "{{ home }}.zshrc"
     state: present
     line: "{{ aliases__source }}"
   become: false
 
 - file:
-    path: "{{ home }}/.bashrc"
+    path: "{{ home }}.bashrc"
     state: touch
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -34,14 +34,14 @@
 
 - name: add other section to bashrc
   lineinfile:
-    dest: "{{ home }}/.bashrc"
+    dest: "{{ home }}.bashrc"
     state: present
     line: "{{ aliases__div }}"
   become: false
 
 - name: save aliases path to bashrc
   lineinfile:
-    dest: "{{ home }}/.bashrc"
+    dest: "{{ home }}.bashrc"
     state: present
     line: "{{ aliases__source }}"
   become: false

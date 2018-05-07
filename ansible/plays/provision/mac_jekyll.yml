@@ -10,8 +10,8 @@
 
   vars:
     home: "~"
-    roles_dir: "{{ home }}/.files/ansible/roles"
-    id_rsa: "{{ home }}/.ssh/id_rsa"
+    roles_dir: "{{ home }}.files/ansible/roles"
+    id_rsa: "{{ home }}.ssh/id_rsa"
 
     filevault_auto_evict: true
 

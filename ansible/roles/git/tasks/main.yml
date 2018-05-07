@@ -2,7 +2,7 @@
 
 - file:
     src: "{{ roles_dir }}/git/files/.gitconfig"
-    dest: "{{ home }}/.gitconfig"
+    dest: "{{ home }}.gitconfig"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

@@ -3,7 +3,8 @@
 - hosts: macbox
   connection: local
   roles:
-    - etchosts
+    # - spoof-mac
+    # - etchosts
     # - oh-my-zsh
     - homebrew
     - bash
@@ -18,11 +19,12 @@
     - vim
     - atom
     - sublime-text
+    - macdown
     - ssh #id_rsa key generation
     - privoxy
-    - syncthing
+    # - syncthing
     - automator-workflows
-    - anaconda
+    # - anaconda
     # - dnscrypt
     # - gpg
     # - mas
@@ -34,15 +36,16 @@
   become_method: sudo
 
   vars:
-    user_name: me
+    user_name: aparadi
     user_group: staff
     home: "~"
     roles_dir: "{{ home }}.files/ansible/roles"
     id_rsa: "{{ home }}.ssh/id_rsa"
 
-    filevault_auto_evict: true
+    filevault_auto_evict: false
 
     homebrew_cask_require_sha: false
+    homebrew_cask_appdir: /Applications
     homebrew_taps:
       - homebrew/core
       - caskroom/cask
@@ -52,59 +55,63 @@
     homebrew_installed_packages:
       - antibody
       - cheat
-      - dockutil
-      # - gnupg2 # requires java...
+      # - dockutil  # separate role
+      # - fasd    # separate role
+      - figlet
+      # - gnupg2  # requires java...
       - htop
       # - mas
       - node
       - openssl
-      - privoxy
+      # - privoxy # separate role
       - python
       - python3
-      - syncthing
+      # - syncthing
       - tldr
       - tmux
       - wget
       - yarn
     homebrew_cask_apps:
       - 1password
-    #   - adobe-digital-editions
+      # - adobe-digital-editions
       - alfred
-      # - anaconda # python ML libraries
+      # - anaconda  # python ML libraries
       - appcleaner
-      - atom
+      # - atom      # separate role
       # - autodmg
       # - backblaze
       # - backblaze-downloader
       - bartender
       # - calibre
-      # - caffeine
+      - caffeine
       # - createuserpkg
-      - coda
-      - dash
+      # - coda
+      # - dash
       - docker
       - dropbox
-      - eloston-chromium
-      # - firefox
-      - firefox-esr
-      - gmvault
+      # - eloston-chromium
+      - firefox
+      # - firefox-esr
+      # - gmvault
       - google-chrome
-      - google-chrome-canary
-      - gpgtools-beta
+      # - google-chrome-canary
+      # - gpgtools-beta
       # - handbrake
       # - handbrakebatch
       # - imagealpha
-      - insomnia
+      # - insomnia
+      - intellij-idea-ce
       # - ipartition
       - iterm2
-      - keybase
+      # - keybase
       # - kdiff3
       - ngrok
+      # - macdown     # separate role
       # - mediahuman-audio-converter
       # - mediahuman-youtube-downloader
-      - microsoft-office
+      # - microsoft-office  # requires password
       # - musicbrainz-picard
-      - onedrive
+      # - onedrive      # requires password
       - pomello
       # - protonmail-bridge
       - quitter
@@ -113,21 +120,47 @@
       - slack
       - spectacle
       # - sqlpro-for-sqlite
-      - sublime-text
+      # - sublime-text # separate role
       # - synology-assistant
       - the-unarchiver
       - torbrowser
       # - transmission
+      # - virtualbox    # requires password
       # - viscosity
-      - vlc
-      - whatsapp
+      # - vlc
+      # - whatsapp
     # fonts
-      # - font-arvo # for OAKWEAR & CO.
+      - font-arvo     # for OAKWEAR & CO.
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
 
-    atom_installed_packages:
+    sublime_packages:
+      - dest: "Solarized"
+        repo: "https://github.com/braver/Solarized.git"
+        version: "master"
+      - dest: "SideBarEnhancements"
+        repo: "https://github.com/titoBouzout/SideBarEnhancements"
+        version: "st3"
+      - dest: "GitGutter"
+        repo: "https://github.com/jisaacks/GitGutter.git"
+        version: "master"
+      - dest: "BracketHighlighter"
+        repo: "https://github.com/facelessuser/BracketHighlighter.git"
+        version: "master"
+      - dest: "ApplySyntax"
+        repo: "https://github.com/facelessuser/ApplySyntax.git"
+        version: "master"
+      - dest: "SublimeAllAutocomplete"
+        repo: "https://github.com/alienhard/SublimeAllAutocomplete"
+        version: "master"
+      - dest: "Ansible"
+        repo: "https://github.com/clifford-github/sublime-ansible.git"
+        version: "master"
+    sublime_text_color_scheme: "Packages/Solarized/Solarized (dark).tmTheme"
+    # sublime_text_theme: "Soda Dark 3.sublime-theme"
+
+    atom_packages:
       - busy-signal
       - language-babel
       - language-docker
@@ -148,13 +181,13 @@
     mas_email: ""
     mas_password: ""
     mas_installed_apps:
-      # - { id: 824183456, name: "Affinity Photo" }
-      # - { id: 824171161, name: "Affinity Designer" }
+      - { id: 824183456, name: "Affinity Photo" }
+      - { id: 824171161, name: "Affinity Designer" }
       - { id: 979047768, name: "Browserism for Chrome" }
       - { id: 420212497, name: "Byword (2.8)" }
       - { id: 975937182, name: "Fantastical 2 - Calendar and Reminders" }
-      # - { id: 424389933, name: "Final Cut Pro" }
-      # - { id: 402989379, name: "iStudiez Pro - Homework, Schedule, Grades" }
+      - { id: 424389933, name: "Final Cut Pro" }
+      - { id: 402989379, name: "iStudiez Pro - Homework, Schedule, Grades" }
       - { id: 409201541, name: "Pages" }
     mas_upgrade_all_apps: no
     mas_signin_dialog: yes
@@ -162,40 +195,36 @@
     dockitems_to_persist:
       - name: Mail
         path: "/Applications/Mail.app"
-        pos: 3
+        pos: 1
       - name: Slack
         path: "/Applications/Slack.app"
-        pos: 4
-      - name: Messages
-        path: "/Applications/Messages.app"
-        pos: 5
-      - name: WhatsApp
-        path: "/Applications/WhatsApp.app"
-        pos: 6
+        pos: 2
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 7
-      - name: Google Chrome Canary
-        path: "/Applications/Google Chrome Canary.app"
-        pos: 8
+        pos: 3
       - name: Firefox
         path: "/Applications/Firefox.app"
-        pos: 9
-      - name: TorBrowser
-        path: "/Applications/TorBrowser.app"
-        pos: 10
+        pos: 4
+      - name: MacDown
+        path: /Applications/MacDown.app
+        pos: 5
       - name: Atom
         path: /Applications/Atom.app
-        pos: 11
-      - name: Byword
-        path: /Applications/Byword.app
-        pos: 12
+        pos: 6
+      - name: Sublime Text
+        path: /Applications/Sublime Text.app
+        pos: 7
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 13
+        pos: 8
+      - name: Preview
+        path: /Applications/Preview.app
+        pos: 9
       - name: Pomello
         path: /Applications/Pomello.app
-        pos: 14
+        pos: 10
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 15
+        pos: 11
+
+    dockitems_to_remove:

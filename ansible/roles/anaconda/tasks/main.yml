@@ -2,26 +2,26 @@
 
 - name: anaconda path added bashrc
   lineinfile:
-      dest: "{{ home }}/.bashrc"
+      dest: "{{ home }}.bashrc"
       state: present
       line: "{{ anaconda__div }}"
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.bashrc"
+      dest: "{{ home }}.bashrc"
       state: present
       line: "{{ anaconda__path }}"
   become: false
 
 - name: anaconda path added zshrc
   lineinfile:
-      dest: "{{ home }}/.zshrc"
+      dest: "{{ home }}.zshrc"
       state: present
       line: "{{ anaconda__div }}"
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.zshrc"
+      dest: "{{ home }}.zshrc"
       state: present
       line: "{{ anaconda__path }}"
   become: false
