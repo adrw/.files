@@ -90,17 +90,17 @@
       - docker
       - dropbox
       # - eloston-chromium
-      # - firefox
-      - firefox-esr
+      - firefox
+      # - firefox-esr
       # - gmvault
-      - google-chrome
+      # - google-chrome
       # - google-chrome-canary
       # - gpgtools-beta
       # - handbrake
       # - handbrakebatch
       - imagealpha
       - insomnia
-      - ipartition
+      # - ipartition
       - iterm2
       - keybase
       # - kdiff3
@@ -124,12 +124,12 @@
       - the-unarchiver
       - torbrowser
       - transmission
-      - virtualbox    # requires password
+      # - virtualbox    # requires password
       - viscosity
       - vlc
       - whatsapp
     # fonts
-      - font-arvo     # for OAKWEAR & CO.
+      # - font-arvo     # for OAKWEAR & CO.
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
@@ -201,26 +201,26 @@
       - name: Signal
         path: "/Applications/Signal.app"
         pos: 4
+      - name: Firefox
+        path: "/Applications/Firefox.app"
+        pos: 5
       - name: Safari
         path: "/Applications/Safari.app"
-        pos: 5
+        pos: 6
       - name: MacDown
         path: /Applications/MacDown.app
-        pos: 6
+        pos: 7
       - name: Atom
         path: /Applications/Atom.app
-        pos: 7
+        pos: 8
       - name: Sublime Text
         path: /Applications/Sublime Text.app
-        pos: 8
+        pos: 9
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 9
+        pos: 10
       - name: Preview
         path: /Applications/Preview.app
-        pos: 10
-      - name: iStudiez Pro
-        path: /Applications/iStudiez Pro.app
         pos: 11
       - name: iTunes
         path: /Applications/iTunes.app
@@ -231,15 +231,5 @@
       - name: System Preferences
         path: /Applications/System Preferences.app
         pos: 14
-
-            # - name: Google Chrome
-      #   path: "/Applications/Google Chrome.app"
-      #   pos: 6
-      # - name: Firefox
-      #   path: "/Applications/Firefox.app"
-      #   pos: 7
-      # - name: TorBrowser
-      #   path: "/Applications/TorBrowser.app"
-      #   pos: 8
 
     dockitems_to_remove:

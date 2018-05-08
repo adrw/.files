@@ -3,6 +3,7 @@
 - hosts: macbox
   connection: local
   roles:
+    - spoof-mac
     - etchosts
     # - oh-my-zsh
     - homebrew
@@ -18,6 +19,7 @@
     - vim
     - atom
     - sublime-text
+    - macdown
     - ssh #id_rsa key generation
     - privoxy
     - syncthing
@@ -43,6 +45,7 @@
     filevault_auto_evict: true
 
     homebrew_cask_require_sha: false
+    homebrew_cask_appdir: /Applications
     homebrew_taps:
       - homebrew/core
       - caskroom/cask
