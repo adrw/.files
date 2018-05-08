@@ -1,0 +1,68 @@
+---
+
+- name: Franklin If Block
+  lineinfile:
+      dest: "{{ home }}.bashrc"
+      state: present
+      line: "{{ square_init_div }}"
+  become: false
+
+- shell: "cat {{ franklin_file }} >> {{ home }}.bashrc"
+  become: false
+  ignore_errors: true
+
+- lineinfile:
+    dest: "{{ home }}.zshrc"
+    state: present
+    line: "{{ square_init_div }}"
+  become: false
+
+- shell: "cat {{ franklin_file }} >> {{ home }}.zshrc"
+  become: false
+  ignore_errors: true
+
+- name: AP-Square-Aliases
+  file:
+    src: "{{ roles_dir }}/square/files/{{ square_aliases_filename }}"
+    dest: "{{ home }}{{ square_aliases_filename }}"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+  become: false
+
+- lineinfile:
+    dest: "{{ home }}.bashrc"
+    state: present
+    line: "{{ square_aliases_source }}"
+  become: false
+
+- lineinfile:
+    dest: "{{ home }}.zshrc"
+    state: present
+    line: "{{ square_aliases_source }}"
+  become: false
+
+- name: AP-Square-Functions
+  file:
+    src: "{{ roles_dir }}/square/files/{{ square_functions_filename }}"
+    dest: "{{ home }}{{ square_functions_filename }}"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+  become: false
+
+- lineinfile:
+    dest: "{{ home }}.bashrc"
+    state: present
+    line: "{{ square_functions_source }}"
+  become: false
+
+- lineinfile:
+    dest: "{{ home }}.zshrc"
+    state: present
+    line: "{{ square_functions_source }}"
+  become: false

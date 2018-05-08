@@ -1,5 +1,11 @@
 ---
 
+- lineinfile:
+      dest: "{{ home }}.bashrc"
+      state: present
+      line: "{{ bash_init_div }}"
+  become: false
+
 - name: Install Bash Powerline Theme
   get_url:
     url: "{{ bash_powerline_url }}"

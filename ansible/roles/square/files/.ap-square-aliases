@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# SOURCE Andrew Paradi | https://github.com/andrewparadi/.files
+
+alias gpg2="gpg"
+
+alias sqb="curl -L 'https://go.squareup.com/devbootstrap' | bash"
+alias sqc="~/Development/topsoil/compost"

@@ -3,6 +3,7 @@
 - hosts: macbox
   connection: local
   roles:
+    - square
     # - spoof-mac
     # - etchosts
     # - oh-my-zsh

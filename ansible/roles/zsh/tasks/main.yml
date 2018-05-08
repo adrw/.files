@@ -1,5 +1,11 @@
 ---
 
+- lineinfile:
+      dest: "{{ home }}.zshrc"
+      state: present
+      line: "{{ zsh_init_div }}"
+  become: false
+
 - name: Install zsh Powerline Theme
   get_url:
     url: "{{ zsh_powerline_url }}"

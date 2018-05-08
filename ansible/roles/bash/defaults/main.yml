@@ -1,5 +1,6 @@
 ---
 
+bash_init_div: "\n### Andrew Paradi bashrc"
 bash_powerline_div: "### Theme"
 bash_powerline_source: 'source {{home}}.ap-bash-powerline.sh'
 bash_powerline_url: https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh
