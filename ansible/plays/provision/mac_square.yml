@@ -22,7 +22,7 @@
     - sublime-text
     - macdown
     - ssh #id_rsa key generation
-    - privoxy
+    # - privoxy
     # - syncthing
     - automator-workflows
     # - anaconda
@@ -209,23 +209,20 @@
       - name: MacDown
         path: /Applications/MacDown.app
         pos: 5
-      - name: Atom
-        path: /Applications/Atom.app
-        pos: 6
       - name: Sublime Text
         path: /Applications/Sublime Text.app
-        pos: 7
+        pos: 6
       - name: iTerm
         path: /Applications/iTerm.app
+        pos: 7
+      - name: IntelliJ IDEA CE
+        path: /Applications/IntelliJ IDEA CE.app
         pos: 8
       - name: Preview
         path: /Applications/Preview.app
         pos: 9
-      - name: Pomello
-        path: /Applications/Pomello.app
-        pos: 10
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 11
+        pos: 10
 
     dockitems_to_remove:

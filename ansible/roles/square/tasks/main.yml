@@ -1,15 +1,10 @@
 ---
 
-- name: Franklin If Block
-  lineinfile:
-      dest: "{{ home }}.bashrc"
-      state: present
-      line: "{{ square_init_div }}"
+- lineinfile:
+    dest: "{{ home }}.bashrc"
+    state: present
+    line: "{{ square_init_div }}"
   become: false
-
-- shell: "cat {{ franklin_file }} >> {{ home }}.bashrc"
-  become: false
-  ignore_errors: true
 
 - lineinfile:
     dest: "{{ home }}.zshrc"
@@ -17,7 +12,21 @@
     line: "{{ square_init_div }}"
   become: false
 
-- shell: "cat {{ franklin_file }} >> {{ home }}.zshrc"
+- blockinfile:
+    dest: "{{ home }}.bashrc"
+    marker: "### Square Franklin Aliases"
+    content: "if [[ -f \"$SQUARE_HOME/java/franklin/bash_aliases\" ]]; then
+      \n\tsource $SQUARE_HOME/java/franklin/bash_aliases
+      \nfi"
+  become: false
+  ignore_errors: true
+
+- blockinfile:
+    dest: "{{ home }}.zshrc"
+    marker: "### Square Franklin Aliases"
+    content: "if [[ -f \"$SQUARE_HOME/java/franklin/bash_aliases\" ]]; then
+      \n\tsource $SQUARE_HOME/java/franklin/bash_aliases
+      \nfi"
   become: false
   ignore_errors: true
 

@@ -1,6 +1,6 @@
 ---
 
-zsh_init_div: "\n### Andrew Paradi zshrc"
+zsh_init_div: "### Andrew Paradi zshrc"
 zsh_powerline_div: "### Theme"
 zsh_powerline_source: 'source {{home}}.ap-zsh-powerline.sh'
 zsh_powerline_url: https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh

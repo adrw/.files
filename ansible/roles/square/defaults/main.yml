@@ -1,7 +1,6 @@
 ---
 
-square_init_div: "\n### Square Cash bashrc"
-franklin_file: "{{ roles_dir }}/square/files/franklin.sh"
+square_init_div: "### Square Andrew Paradi"
 
 square_aliases_filename: .ap-square-aliases
 square_aliases_source: 'source {{home}}.ap-square-aliases'
