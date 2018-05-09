@@ -158,6 +158,10 @@
       - dest: "Ansible"
         repo: "https://github.com/clifford-github/sublime-ansible.git"
         version: "master"
+      - dest: "Kotlin"
+        repo: "https://github.com/vkostyukov/kotlin-sublime-package.git"
+        version: "master"
+
     sublime_text_color_scheme: "Packages/Solarized/Solarized (dark).tmTheme"
     # sublime_text_theme: "Soda Dark 3.sublime-theme"
 
