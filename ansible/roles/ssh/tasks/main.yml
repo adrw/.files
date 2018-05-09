@@ -1,7 +1,7 @@
 ---
 
 - file:
-    path: "{{ home }}/.ssh/"
+    path: "{{ home }}.ssh/"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -11,7 +11,7 @@
 
 - file:
     src: "{{ roles_dir }}/ssh/files/config"
-    dest: "{{ home }}/.ssh/config"
+    dest: "{{ home }}.ssh/config"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

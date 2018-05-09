@@ -1,5 +1,6 @@
 ---
 - include: provision/mac_core.yml
+- include: provision/mac_square.yml
 - include: provision/mac_dev.yml
 - include: provision/mac_etchost_no_animate.yml
 - include: provision/mac_jekyll.yml

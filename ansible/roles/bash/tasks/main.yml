@@ -1,5 +1,11 @@
 ---
 
+- lineinfile:
+      dest: "{{ home }}.bashrc"
+      state: present
+      line: "{{ bash_init_div }}"
+  become: false
+
 - name: Install Bash Powerline Theme
   get_url:
     url: "{{ bash_powerline_url }}"
@@ -12,7 +18,7 @@
 
 - file:
     src: "{{ roles_dir }}/bash/files/{{ bash_powerline_ap_file }}"
-    dest: "{{ home }}/{{ bash_powerline_ap_file }}"
+    dest: "{{ home }}{{ bash_powerline_ap_file }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -21,7 +27,7 @@
   become: false
 
 - file:
-    path: "{{ home }}/.bashrc"
+    path: "{{ home }}.bashrc"
     state: touch
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -29,25 +35,25 @@
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.bashrc"
+      dest: "{{ home }}.bashrc"
       state: present
       line: "{{ bash_powerline_div }}"
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.bashrc"
+      dest: "{{ home }}.bashrc"
       state: present
       line: "{{ bash_powerline_source }}"
   become: false
 
 - name: Add .bashrc to .bash_profile so it runs on launch
   file:
-    path: "{{ home }}/.bash_profile"
+    path: "{{ home }}.bash_profile"
     state: touch
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.bash_profile"
+      dest: "{{ home }}.bash_profile"
       state: present
-      line: "source {{ home }}/.bashrc"
+      line: "source {{ home }}.bashrc"
   become: false

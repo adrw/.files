@@ -2,7 +2,7 @@
 
 - file:
     src: "{{ roles_dir }}/gpg/files/gpg.conf"
-    dest: "{{ home }}/.gnupg/gpg.conf"
+    dest: "{{ home }}.gnupg/gpg.conf"
     state: link
     force: yes
 

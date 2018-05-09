@@ -16,28 +16,28 @@
     state: directory
     recurse: yes
   with_items:
-    - "{{ home }}/{{ sublime_config }}"
-    - "{{ home }}/{{ sublime_config }}/Packages"
-    - "{{ home }}/{{ sublime_config }}/Packages/User"
-    - "{{ home }}/{{ sublime_config }}/Installed Packages"
+    - "{{ home }}{{ sublime_config }}"
+    - "{{ home }}{{ sublime_config }}/Packages"
+    - "{{ home }}{{ sublime_config }}/Packages/User"
+    - "{{ home }}{{ sublime_config }}/Installed Packages"
   become: false
   ignore_errors: true
 
 - name: Install Package Control
   get_url:
     url: "{{ sublime_package_control_url }}"
-    dest: "{{ home }}/{{ sublime_config }}/Installed Packages/{{ sublime_package_control_name }}"
+    dest: "{{ home }}{{ sublime_config }}/Installed Packages/{{ sublime_package_control_name }}"
   become: false    
 
 - name: Get and Update all Sublime plugins
-  git: update=yes version="{{item.version|default('master')}}" repo="{{item.repo}}" dest="{{ home }}/{{ sublime_config }}/Packages/{{item.dest}}"
+  git: update=yes version="{{item.version|default('master')}}" repo="{{item.repo}}" dest="{{ home }}{{ sublime_config }}/Packages/{{item.dest}}"
   with_items: "{{ sublime_packages }}"
   become: false  
 
 - name: Link over Preferences.sublime-settings
   file:
     src: "{{ roles_dir }}/{{ sublime_role_file }}/Preferences.sublime-settings"
-    dest: "{{ home }}/{{ sublime_config }}/Packages/User/Preferences.sublime-settings"
+    dest: "{{ home }}{{ sublime_config }}/Packages/User/Preferences.sublime-settings"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

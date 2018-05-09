@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# SOURCE Andrew Paradi | https://github.com/andrewparadi/.files
+
+alias gpg2="gpg"
+
+alias sqb="curl -L 'https://go.squareup.com/devbootstrap' | bash"
+alias sqc="~/Development/topsoil/compost"
+
+alias cidea="cd ~/Development/java; pants idea banklin:: franklin:: --idea-project-name=cash"
+alias cfast="cd ~/Development/java; pants fast-idea --compile franklin:: banklin/banklin-shared:: --fast-idea-project-name=cash"
+

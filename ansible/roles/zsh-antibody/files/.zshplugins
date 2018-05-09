@@ -11,3 +11,8 @@ zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 zsh-users/zsh-history-substring-search
 zsh-users/zsh-syntax-highlighting
+
+# Square
+dijitalmunky/nvm-auto
+johnhamelink/rvm-zsh
+lukechilds/zsh-nvm

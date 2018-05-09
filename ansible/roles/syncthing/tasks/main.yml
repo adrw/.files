@@ -18,11 +18,11 @@
 #
 # - copy:
 #     src: "{{ syncthing_plist_path.files[0]['path'] }}"
-#     dest: "{{ home }}/Library/LaunchAgents/syncthing.plist"
+#     dest: "{{ home }}Library/LaunchAgents/syncthing.plist"
 #     owner: root
 #     group: wheel
 #     mode: 0644
 #   become: true
 #
-# - command: "launchctl load {{ home }}/Library/LaunchAgents/syncthing.plist"
+# - command: "launchctl load {{ home }}Library/LaunchAgents/syncthing.plist"
 #   become: true

@@ -1,7 +1,7 @@
 ---
 
 - file:
-    path: "{{ home }}/.zshrc"
+    path: "{{ home }}.zshrc"
     state: touch
   become: false
 
@@ -12,20 +12,20 @@
 
 - name: Add Antibody to zshrc
   lineinfile:
-      dest: "{{ home }}/.zshrc"
+      dest: "{{ home }}.zshrc"
       state: present
       line: "{{ antibody__div }}"
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.zshrc"
+      dest: "{{ home }}.zshrc"
       state: present
       line: "{{ antibody_source.stdout }}"
   become: false
 
 - file:
     src: "{{ roles_dir }}/{{ antibody__rolename }}/files/{{ antibody__plugins_list }}"
-    dest: "{{ home }}/{{ antibody__plugins_list }}"
+    dest: "{{ home }}{{ antibody__plugins_list }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -34,19 +34,19 @@
   become: false
 
 - name: Antibody Bundle
-  shell: antibody bundle < "{{ home }}/{{ antibody__plugins_list }}" > "{{ home }}/{{ antibody__plugins_zsh }}"
+  shell: antibody bundle < "{{ home }}{{ antibody__plugins_list }}" > "{{ home }}{{ antibody__plugins_zsh }}"
   become: false
 
 - name: Source plugins
   lineinfile:
-      dest: "{{ home }}/.zshrc"
+      dest: "{{ home }}.zshrc"
       state: present
-      line: "source {{ home }}/{{ antibody__plugins_zsh }}"
+      line: "source {{ home }}{{ antibody__plugins_zsh }}"
   become: false
 
 - name: "set .zshrc default_user as '{{ home | win_basename }}' for shorter cmd prompt"
   lineinfile:
-    dest: "{{ home }}/.zshrc"
+    dest: "{{ home }}.zshrc"
     state: present
     line: "{{ zsh__default_user }}"
   become: false
