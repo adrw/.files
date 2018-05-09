@@ -2,7 +2,7 @@
 
 - file:
     src: "{{ roles_dir }}/functions/files/{{ functions__filename }}"
-    dest: "{{ home }}{{ functions__filename }}"
+    dest: "{{ home }}/{{ functions__filename }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -12,13 +12,13 @@
 
 - name: save functions path to zshrc
   lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     line: "{{ functions__source }}"
   become: false
 
 - file:
-    path: "{{ home }}.bashrc"
+    path: "{{ home }}/.bashrc"
     state: touch
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -27,7 +27,7 @@
 
 - name: save functions path to bashrc
   lineinfile:
-    dest: "{{ home }}.bashrc"
+    dest: "{{ home }}/.bashrc"
     state: present
     line: "{{ functions__source }}"
   become: false
