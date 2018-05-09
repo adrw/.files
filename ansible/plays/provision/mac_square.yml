@@ -61,6 +61,7 @@
       - figlet
       # - gnupg2  # requires java...
       - htop
+      # - kotlin-compiler
       # - mas
       - node
       - openssl
