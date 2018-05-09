@@ -7,26 +7,26 @@
 
 - name: add to bashrc
   lineinfile:
-      dest: "{{ home }}.bashrc"
+      dest: "{{ home }}/.bashrc"
       state: present
       line: "{{ fasd_div }}"
   become: false
 
 - lineinfile:
-      dest: "{{ home }}.bashrc"
+      dest: "{{ home }}/.bashrc"
       state: present
       line: "{{ fasd_init }}"
   become: false
 
 - name: add to zshrc
   lineinfile:
-      dest: "{{ home }}.zshrc"
+      dest: "{{ home }}/.zshrc"
       state: present
       line: "{{ fasd_div }}"
   become: false
 
 - lineinfile:
-      dest: "{{ home }}.zshrc"
+      dest: "{{ home }}/.zshrc"
       state: present
       line: "{{ fasd_init }}"
   become: false

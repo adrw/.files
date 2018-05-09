@@ -314,7 +314,7 @@ while getopts "h?ad:b:i:p:m:n:sltu:" opt; do
         ;;
     u)  echo "  - USER ${USER_NAME} => ${OPTARG}"
         USER_NAME=${OPTARG}
-        HOME="/Users/${USER_NAME}/"
+        HOME="/Users/${USER_NAME}"
         ;;
     esac
 done

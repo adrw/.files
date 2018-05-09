@@ -5,14 +5,14 @@
   become: false
 
 - name: "store .zshrc location"
-  shell: echo {{ home }}.zshrc
+  shell: echo {{ home }}/.zshrc
   register: shellrc
   become: false
 
 - assert:
     that:
       - shellrc.stdout.find('zshrc') != -1
-    msg: "shellrc is {{ home }}.zshrc"
+    msg: "shellrc is {{ home }}/.zshrc"
 
 - name: "store zshrc as variable"
   shell: cat {{ shellrc.stdout }}
@@ -28,17 +28,17 @@
 
 - name: "check if Powerlevel9k"
   stat:
-    path: "{{ home }}.oh-my-zsh/custom/themes/powerlevel9k"
+    path: "{{ home }}/.oh-my-zsh/custom/themes/powerlevel9k"
   register: powershell_exists
 
 - name: "install Powerlevel9k"
-  shell: git clone https://github.com/bhilburn/powerlevel9k.git {{ home }}.oh-my-zsh/custom/themes/powerlevel9k
+  shell: git clone https://github.com/bhilburn/powerlevel9k.git {{ home }}/.oh-my-zsh/custom/themes/powerlevel9k
   when: powershell_exists.stat.isdir is not defined
   become: false
 
 - name: "add Powerlevel9k to .zshrc"
   lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     regexp: "^{{ zsh__theme_prefix }}"
     insertafter: "{{ zsh__pre_theme }}"
@@ -47,7 +47,7 @@
 
 - name: "set .zshrc default_user as '{{ home | win_basename }}' for shorter cmd prompt"
   lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     regexp: "^{{ zsh__default_user }}"
     insertafter: "{{ zsh__powerlevel_theme }}"
@@ -56,17 +56,17 @@
 
 - name: "check if autosuggestions"
   stat:
-    path: "{{ home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    path: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
   register: autosuggestions_exists
 
 - name: "install autosuggestions"
-  shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   when: autosuggestions_exists.stat.isdir is not defined
   become: false
 
 - name: "add autosuggestions to .zshrc"
   lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     insertafter: "{{ zsh__plugin_prefix }}"
     line: "{{ zsh__autosuggestions_plugin }}"
@@ -79,7 +79,7 @@
 
 - name: "add syntax_highlighting to .zshrc"
   lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     line: "{{ zsh__syntax_highlighting }}"
   when: syntax_exists

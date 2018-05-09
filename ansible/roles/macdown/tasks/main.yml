@@ -13,7 +13,7 @@
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/GitHubAP.css"
-    dest: "{{ home }}{{ macdown_styles_dest }}/GitHubAP.css"
+    dest: "{{ home }}/{{ macdown_styles_dest }}/GitHubAP.css"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -24,7 +24,7 @@
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/LatexAP.css"
-    dest: "{{ home }}{{ macdown_styles_dest }}/LatexAP.css"
+    dest: "{{ home }}/{{ macdown_styles_dest }}/LatexAP.css"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -35,7 +35,7 @@
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/PrintAP.css"
-    dest: "{{ home }}{{ macdown_styles_dest }}/PrintAP.css"
+    dest: "{{ home }}/{{ macdown_styles_dest }}/PrintAP.css"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

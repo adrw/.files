@@ -1,19 +1,19 @@
 ---
 
 - lineinfile:
-    dest: "{{ home }}.bashrc"
+    dest: "{{ home }}/.bashrc"
     state: present
     line: "{{ square_init_div }}"
   become: false
 
 - lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     line: "{{ square_init_div }}"
   become: false
 
 - blockinfile:
-    dest: "{{ home }}.bashrc"
+    dest: "{{ home }}/.bashrc"
     marker: "### Square Franklin Aliases"
     content: "if [[ -f \"$SQUARE_HOME/java/franklin/bash_aliases\" ]]; then
       \n\tsource $SQUARE_HOME/java/franklin/bash_aliases
@@ -22,7 +22,7 @@
   ignore_errors: true
 
 - blockinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     marker: "### Square Franklin Aliases"
     content: "if [[ -f \"$SQUARE_HOME/java/franklin/bash_aliases\" ]]; then
       \n\tsource $SQUARE_HOME/java/franklin/bash_aliases
@@ -33,7 +33,7 @@
 - name: AP-Square-Aliases
   file:
     src: "{{ roles_dir }}/square/files/{{ square_aliases_filename }}"
-    dest: "{{ home }}{{ square_aliases_filename }}"
+    dest: "{{ home }}/{{ square_aliases_filename }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -42,13 +42,13 @@
   become: false
 
 - lineinfile:
-    dest: "{{ home }}.bashrc"
+    dest: "{{ home }}/.bashrc"
     state: present
     line: "{{ square_aliases_source }}"
   become: false
 
 - lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     line: "{{ square_aliases_source }}"
   become: false
@@ -56,7 +56,7 @@
 - name: AP-Square-Functions
   file:
     src: "{{ roles_dir }}/square/files/{{ square_functions_filename }}"
-    dest: "{{ home }}{{ square_functions_filename }}"
+    dest: "{{ home }}/{{ square_functions_filename }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -65,13 +65,13 @@
   become: false
 
 - lineinfile:
-    dest: "{{ home }}.bashrc"
+    dest: "{{ home }}/.bashrc"
     state: present
     line: "{{ square_functions_source }}"
   become: false
 
 - lineinfile:
-    dest: "{{ home }}.zshrc"
+    dest: "{{ home }}/.zshrc"
     state: present
     line: "{{ square_functions_source }}"
   become: false

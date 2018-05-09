@@ -20,7 +20,6 @@ Firefox
 - uBlock Origin
 - DuckDuckGo Privacy Essentials
 - Privacy Badger
-- Disconnect.me
 - HTTPS Everywhere
 - Firefox Multi-Account Containers
 - Facebook Container

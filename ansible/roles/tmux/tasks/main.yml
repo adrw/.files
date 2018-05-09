@@ -2,7 +2,7 @@
 
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf"
-    dest: "{{ home }}.tmux.conf"
+    dest: "{{ home }}/.tmux.conf"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -12,7 +12,7 @@
 
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf.local"
-    dest: "{{ home }}.tmux.conf.local"
+    dest: "{{ home }}/.tmux.conf.local"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
