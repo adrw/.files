@@ -449,7 +449,7 @@ function tre() {
 # Description: extracts archived files / mounts disk images
 # Note: .dmg/hdiutil is Mac OS X-specific.
 # credit: http://nparikh.org/notes/zshrc.txt
-extract () {
+function extract() {
   if [ -f "$1" ]; then
     case "$1" in
       *.tar.bz2)  tar -jxvf "$1"                        ;;
