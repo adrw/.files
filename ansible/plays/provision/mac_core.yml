@@ -48,18 +48,20 @@
     homebrew_cask_appdir: /Applications
     homebrew_taps:
       - homebrew/core
-      - caskroom/cask
-      - caskroom/versions
-      - caskroom/fonts
+      - homebrew/cask
+      - homebrew/cask-versions
+      - homebrew/cask-fonts
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
       - cheat
       # - dockutil  # separate role
+      - exiftool  # photo manipulation script
       # - fasd    # separate role
       - figlet
       # - gnupg2  # requires java...
       - htop
+      - jhead     # photo manipulation script
       # - mas
       - node
       - openssl
@@ -111,7 +113,6 @@
       - microsoft-office  # requires password
       - musicbrainz-picard
       - onedrive      # requires password
-      - pomello
       - protonmail-bridge
       - quitter
       - signal
@@ -119,6 +120,7 @@
       - slack
       - spectacle
       # - sqlpro-for-sqlite
+      - standard-notes
       # - sublime-text # separate role
       # - synology-assistant
       - the-unarchiver
