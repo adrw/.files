@@ -4,6 +4,8 @@
 
 alias gpg2="gpg"
 
+alias INTELLIJ_HOME="/Applications/IntelliJ IDEA.app"
+
 alias sqb="curl -L 'https://go.squareup.com/devbootstrap' | bash"
 alias sqc="~/Development/topsoil/compost"
 

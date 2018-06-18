@@ -16,13 +16,11 @@ alias -- -="cd -"
 # alias l="ls -la" || "k -a" => ap-functions::l()
 alias l="safe_k"
 alias ka="killall"
-alias unzip="extract"
 
-#Syncthing
-alias st="syncthing"
-
-#Jupyter
+# Applications
 alias jn="jupyter notebook"
+alias npm="yarn"
+alias st="syncthing"
 
 #Git
 alias gs="git status"

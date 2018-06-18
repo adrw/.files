@@ -61,6 +61,7 @@
       - figlet
       # - gnupg2  # requires java...
       - htop
+      # - kotlin-compiler
       # - mas
       - node
       - openssl
@@ -101,7 +102,8 @@
       # - handbrakebatch
       # - imagealpha
       # - insomnia
-      - intellij-idea-ce
+      - intellij-idea
+      # - intellij-idea-ce
       # - ipartition
       - iterm2
       # - keybase
@@ -158,6 +160,10 @@
       - dest: "Ansible"
         repo: "https://github.com/clifford-github/sublime-ansible.git"
         version: "master"
+      - dest: "Kotlin"
+        repo: "https://github.com/vkostyukov/kotlin-sublime-package.git"
+        version: "master"
+
     sublime_text_color_scheme: "Packages/Solarized/Solarized (dark).tmTheme"
     # sublime_text_theme: "Soda Dark 3.sublime-theme"
 
@@ -215,8 +221,8 @@
       - name: iTerm
         path: /Applications/iTerm.app
         pos: 7
-      - name: IntelliJ IDEA CE
-        path: /Applications/IntelliJ IDEA CE.app
+      - name: IntelliJ IDEA
+        path: /Applications/IntelliJ IDEA.app
         pos: 8
       - name: Preview
         path: /Applications/Preview.app
