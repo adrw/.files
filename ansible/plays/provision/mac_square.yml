@@ -49,9 +49,9 @@
     homebrew_cask_appdir: /Applications
     homebrew_taps:
       - homebrew/core
-      - caskroom/cask
-      - caskroom/versions
-      - caskroom/fonts
+      - homebrew/cask
+      - homebrew/cask-versions
+      - homebrew/cask-fonts
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
@@ -124,6 +124,7 @@
       - spectacle
       - spotify
       # - sqlpro-for-sqlite
+      # - standard-notes
       # - sublime-text # separate role
       # - synology-assistant
       - the-unarchiver

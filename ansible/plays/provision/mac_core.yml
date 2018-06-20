@@ -48,18 +48,20 @@
     homebrew_cask_appdir: /Applications
     homebrew_taps:
       - homebrew/core
-      - caskroom/cask
-      - caskroom/versions
-      - caskroom/fonts
+      - homebrew/cask
+      - homebrew/cask-versions
+      - homebrew/cask-fonts
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
       - cheat
       # - dockutil  # separate role
+      - exiftool  # photo manipulation script
       # - fasd    # separate role
       - figlet
       # - gnupg2  # requires java...
       - htop
+      - jhead     # photo manipulation script
       # - mas
       - node
       - openssl
@@ -120,6 +122,7 @@
       - spectacle
       - spotify
       # - sqlpro-for-sqlite
+      - standard-notes
       # - sublime-text # separate role
       # - synology-assistant
       - the-unarchiver
@@ -212,26 +215,20 @@
       - name: MacDown
         path: /Applications/MacDown.app
         pos: 7
-      - name: Atom
-        path: /Applications/Atom.app
+      - name: Visual Studio Code
+        path: /Applications/Visual Studio Code.app
         pos: 8
-      - name: Sublime Text
-        path: /Applications/Sublime Text.app
-        pos: 9
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 10
+        pos: 9
       - name: Preview
         path: /Applications/Preview.app
-        pos: 11
+        pos: 10
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 12
-      - name: Pomello
-        path: /Applications/Pomello.app
-        pos: 13
+        pos: 11
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 14
+        pos: 12
 
     dockitems_to_remove:
