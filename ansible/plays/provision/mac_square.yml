@@ -130,6 +130,7 @@
       # - transmission
       # - virtualbox    # requires password
       # - viscosity
+      - visual-studio-code
       # - vlc
       # - whatsapp
     # fonts
