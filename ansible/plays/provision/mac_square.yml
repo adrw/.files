@@ -215,14 +215,14 @@
       - name: MacDown
         path: /Applications/MacDown.app
         pos: 4
-      - name: Sublime Text
-        path: /Applications/Sublime Text.app
+      - name: Visual Studio Code
+        path: /Applications/Visual Studio Code.app
         pos: 5
-      - name: iTerm
-        path: /Applications/iTerm.app
-        pos: 6
       - name: IntelliJ IDEA
         path: /Applications/IntelliJ IDEA.app
+        pos: 6
+        - name: iTerm
+        path: /Applications/iTerm.app
         pos: 7
       - name: Preview
         path: /Applications/Preview.app
