@@ -71,6 +71,7 @@
       # - syncthing
       - tldr
       - tmux
+      - tree
       - wget
       - yarn
     homebrew_cask_apps:
@@ -88,7 +89,7 @@
       - caffeine
       # - createuserpkg
       # - coda
-      # - dash
+      - dash
       - docker
       - dropbox
       # - eloston-chromium
@@ -115,13 +116,13 @@
       # - microsoft-office  # requires password
       # - musicbrainz-picard
       # - onedrive      # requires password
-      - pomello
       # - protonmail-bridge
       - quitter
       # - signal
       # - skype
       - slack
       - spectacle
+      - spotify
       # - sqlpro-for-sqlite
       # - sublime-text # separate role
       # - synology-assistant
@@ -130,6 +131,7 @@
       # - transmission
       # - virtualbox    # requires password
       # - viscosity
+      - visual-studio-code
       # - vlc
       # - whatsapp
     # fonts
@@ -200,35 +202,32 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
-      - name: Mail
-        path: "/Applications/Mail.app"
-        pos: 1
       - name: Slack
         path: "/Applications/Slack.app"
-        pos: 2
+        pos: 1
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 3
+        pos: 2
       - name: Firefox
         path: "/Applications/Firefox.app"
-        pos: 4
+        pos: 3
       - name: MacDown
         path: /Applications/MacDown.app
-        pos: 5
+        pos: 4
       - name: Sublime Text
         path: /Applications/Sublime Text.app
-        pos: 6
+        pos: 5
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 7
+        pos: 6
       - name: IntelliJ IDEA
         path: /Applications/IntelliJ IDEA.app
-        pos: 8
+        pos: 7
       - name: Preview
         path: /Applications/Preview.app
-        pos: 9
+        pos: 8
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 10
+        pos: 9
 
     dockitems_to_remove:

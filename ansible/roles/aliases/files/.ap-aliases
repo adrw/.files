@@ -19,8 +19,9 @@ alias ka="killall"
 
 # Applications
 alias jn="jupyter notebook"
-alias npm="yarn"
+# alias npm="yarn"
 alias st="syncthing"
+alias c="code ."
 
 #Git
 alias gs="git status"

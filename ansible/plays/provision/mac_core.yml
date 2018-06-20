@@ -69,6 +69,7 @@
       - syncthing
       - tldr
       - tmux
+      - tree
       - wget
       - yarn
     homebrew_cask_apps:
@@ -111,13 +112,13 @@
       - microsoft-office  # requires password
       - musicbrainz-picard
       - onedrive      # requires password
-      - pomello
       - protonmail-bridge
       - quitter
       - signal
       # - skype
       - slack
       - spectacle
+      - spotify
       # - sqlpro-for-sqlite
       # - sublime-text # separate role
       # - synology-assistant
@@ -126,6 +127,7 @@
       - transmission
       # - virtualbox    # requires password
       - viscosity
+      - visual-studio-code
       - vlc
       - whatsapp
     # fonts
