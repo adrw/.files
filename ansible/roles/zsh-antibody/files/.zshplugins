@@ -7,12 +7,13 @@ peterhurford/git-it-on.zsh
 supercrabtree/k
 Tarrasch/zsh-autoenv
 Tarrasch/zsh-colors
+tevren/gitfast-zsh-plugin
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 zsh-users/zsh-history-substring-search
 zsh-users/zsh-syntax-highlighting
 
 # Square
-dijitalmunky/nvm-auto
-johnhamelink/rvm-zsh
-lukechilds/zsh-nvm
+# dijitalmunky/nvm-auto
+# johnhamelink/rvm-zsh
+# lukechilds/zsh-nvm
