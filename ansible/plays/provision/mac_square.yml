@@ -221,7 +221,7 @@
       - name: IntelliJ IDEA
         path: /Applications/IntelliJ IDEA.app
         pos: 6
-        - name: iTerm
+      - name: iTerm
         path: /Applications/iTerm.app
         pos: 7
       - name: Preview
