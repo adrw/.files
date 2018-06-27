@@ -12,3 +12,5 @@ alias sqc="~/Development/topsoil/compost"
 alias cidea="cd ~/Development/java; pants idea banklin:: franklin:: --idea-project-name=cash"
 alias cfast="cd ~/Development/java; pants fast-idea --compile franklin:: banklin/banklin-shared:: --fast-idea-project-name=cash"
 
+# Git
+alias gpsm="git pull square master"
