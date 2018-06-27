@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# SOURCE Andrew Paradi | https://github.com/andrewparadi/.files
+# SOURCE Andrew Paradi | https://github.com/adrw/.files
 
 alias gpg2="gpg"
 

@@ -1,4 +1,4 @@
-# By Andrew Paradi | Source at https://github.com/andrewparadi/.files
+# By Andrew Paradi | Source at https://github.com/adrw/.files
 #!/usr/bin/env bash
 
 # set up bash to handle errors more aggressively - a "strict mode" of sorts
@@ -50,7 +50,7 @@ function show_help {
   echo "Options |   Description                       |   Default (or alternate) Values"
   echo "${div}"
   echo "-h      |   Show help menu                    |                         "
-  err "Learn more at https://github.com/andrewparadi/.files"
+  err "Learn more at https://github.com/adrw/.files"
   exit 0
 }
 
@@ -79,7 +79,7 @@ function linux_bootstrap {
 }
 
 status t "Welcome to .files bootstrap!"
-status s "Andrew Paradi. https://github.com/andrewparadi/.files"
+status s "Andrew Paradi. https://github.com/adrw/.files"
 
 MAIN_DIR="$HOME/.files"             # -d
 SCRIPTS="$MAIN_DIR/scripts"

@@ -1,4 +1,4 @@
-# By Andrew Paradi | Source at https://github.com/andrewparadi/.files
+# By Andrew Paradi | Source at https://github.com/adrw/.files
 #!/usr/bin/env bash
 
 # set up bash to handle errors more aggressively - a "strict mode" of sorts
@@ -86,7 +86,7 @@ function show_help {
   echo "-s      |   Set hostname, turn on Firewall    |                         "
   echo "-t      |   Test env, don't detach Git head   |                         "
   echo "-u      |   User name                         |   me                    "
-  status e "Learn more at https://github.com/andrewparadi/.files"
+  status e "Learn more at https://github.com/adrw/.files"
   exit 0
 }
 
@@ -182,7 +182,7 @@ function mac_bootstrap {
   status a "git/.files -> ${MAIN_DIR}"
   if [[ ! -d ${MAIN_DIR} ]]; then
     status a "Clone .files"
-    git clone https://github.com/andrewparadi/.files.git ${MAIN_DIR}
+    git clone https://github.com/adrw/.files.git ${MAIN_DIR}
     status b "Clone .files"
   elif [[ "${TEST}" == false ]]; then
     status a "Decapitate .files (headless mode)"
@@ -217,7 +217,7 @@ function mac_bootstrap {
   status a "${MAIN_DIR} git remote https:->git:"
   cd ${MAIN_DIR}
   git remote remove origin
-  git remote add origin git@github.com:andrewparadi/.files.git
+  git remote add origin git@github.com:adrw/.files.git
   status b "${MAIN_DIR} git remote https:->git:"
 
   sudo -k # remove sudo permissions
@@ -228,36 +228,36 @@ function mac_bootstrap {
 function linux_bootstrap {
   status a "Install Linux Base Shell"
   # AP Bash Powerline Theme
-  safe_download ~/.ap-bash-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/bash/files/.ap-bash-powerline.sh
+  safe_download ~/.ap-bash-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/bash/files/.ap-bash-powerline.sh
   safe_source ~/.ap-bash-powerline.sh ~/.bashrc
 
   # AP ZSH Powerline Theme
-  safe_download ~/.ap-zsh-powerline.sh https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/zsh/files/.ap-zsh-powerline.sh
+  safe_download ~/.ap-zsh-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/zsh/files/.ap-zsh-powerline.sh
   safe_source ~/.ap-zsh-powerline.sh ~/.zshrc
 
   # AP Aliases
-  safe_download ~/.ap-aliases https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/aliases/files/.ap-aliases
+  safe_download ~/.ap-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/aliases/files/.ap-aliases
   safe_source ~/.ap-aliases ~/.bashrc
   safe_source ~/.ap-aliases ~/.zshrc
 
   # AP Functions
-  safe_download ~/.ap-functions https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/functions/files/.ap-functions
+  safe_download ~/.ap-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.ap-functions
   safe_source ~/.ap-functions ~/.bashrc
   safe_source ~/.ap-functions ~/.zshrc
 
   # AP .vimrc
-  safe_download ~/.vimrc https://raw.githubusercontent.com/andrewparadi/.files/master/ansible/roles/vim/files/.vimrc
+  safe_download ~/.vimrc https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/vim/files/.vimrc
   
-  echo "curl -s https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh | bash -s" > .ap-update.sh
+  echo "curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s" > .ap-update.sh
   chmod +x .ap-update.sh
 
   status a "🍺  Fin. Bootstrap Script"
   exit 0
 }
 
-bash -c 'figlet -f slant "Andrew Paradi" 2> /dev/null; echo -n ""'
+bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
 status t "Welcome to .files bootstrap!"
-status s "Andrew Paradi. https://github.com/andrewparadi/.files"
+status s "Andrew Paradi. https://github.com/adrw/.files"
 
 ONLY_ANSIBLE=false                  # -a
 MAIN_DIR="${HOME}/.files"             # -d

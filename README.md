@@ -6,7 +6,7 @@ Linux
 ===
 1. Installs .ap-aliases, .ap-functions, bash & zsh powerline themes
 ```Bash
-$ curl -s https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh | bash -s
+$ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
 ```
 2. fin.
 
@@ -17,7 +17,7 @@ Mac
 3. Enable Filevault and restart
 4. Provision with command below in Terminal (add any other option flags before running)
 ```Bash
-$ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/andrewparadi/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh -s; rm ${HOME}/bootstrap.sh
+$ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh -s; rm ${HOME}/bootstrap.sh
 ```
 5. Reboot (sometimes required) and fin.
 
@@ -39,7 +39,7 @@ Included Playbooks
 Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
 - `mac_core` my full setup on my personal Mac
 - `mac_dev` entire dev environment suitable for work machine (doesn't include any media or photo software)
-- `mac_jekyll` minimum requirements to [get-started-with-jekyll](https://github.com/andrewparadi/get-started-with-jekyll)
+- `mac_jekyll` minimum requirements to [get-started-with-jekyll](https://github.com/adrw/get-started-with-jekyll)
 - `mac_etchost_no_animate` only install /etc/hosts domain blocking and disable Mac animations
 
 
