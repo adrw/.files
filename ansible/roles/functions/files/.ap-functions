@@ -126,6 +126,15 @@ function decap() {
   fi
 }
 
+# git checkout
+function gco {
+  if [[ $# == 0 ]]; then
+    git checkout master
+  else
+    git checkout "$@"
+  fi
+}
+
 # update etchosts. has bias towards maintaining the default (locked down) state
 function etc() {
   name="${prefix}${0}"
