@@ -107,7 +107,7 @@
       # - intellij-idea-ce
       # - ipartition
       - iterm2
-      - karabiner-elements
+      - karabiner-elements  # requires password
       # - keybase
       # - kdiff3
       - ngrok
