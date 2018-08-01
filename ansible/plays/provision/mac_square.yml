@@ -93,7 +93,8 @@
       - docker
       - dropbox
       # - eloston-chromium
-      - firefox
+      # - firefox
+      - firefox-developer-edition
       # - firefox-esr
       # - gmvault
       - google-chrome
