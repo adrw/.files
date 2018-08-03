@@ -211,8 +211,8 @@
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
         pos: 2
-      - name: Firefox
-        path: "/Applications/Firefox.app"
+      - name: Firefox Developer Edition
+        path: "/Applications/Firefox Developer Edition.app"
         pos: 3
       - name: MacDown
         path: /Applications/MacDown.app
@@ -234,3 +234,6 @@
         pos: 9
 
     dockitems_to_remove:
+
+
+imprint-gig-emir

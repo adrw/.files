@@ -208,8 +208,8 @@
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
         pos: 4
-      - name: Firefox
-        path: "/Applications/Firefox.app"
+      - name: Firefox Developer Edition
+        path: "/Applications/Firefox Developer Edition.app"
         pos: 5
       - name: Safari
         path: "/Applications/Safari.app"
