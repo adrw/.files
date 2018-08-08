@@ -1,0 +1,16 @@
+@eaDir/
+@eaDir/*
+@eaDir/**/*
+#recycle/
+#recycle/*
+#recycle/**/*
+#snapshot/
+#snapshot/*
+#snapshot/**/*
+Icon?
+.sync/
+.sync/*
+.sync/**/*
+**/*@SynoResource
+.DS_Store
+.stversions/**/*
