@@ -22,6 +22,7 @@ alias jn="jupyter notebook"
 # alias npm="yarn"
 alias st="syncthing"
 alias c="code ."
+alias ys="yarn start"
 
 # Gatsby
 alias gd="gatsby develop"
