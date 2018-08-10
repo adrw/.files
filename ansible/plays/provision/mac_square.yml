@@ -102,7 +102,7 @@
       # - gpgtools-beta
       # - handbrake
       # - handbrakebatch
-      # - imagealpha
+      - imagealpha
       # - insomnia
       - intellij-idea
       # - intellij-idea-ce
@@ -234,6 +234,3 @@
         pos: 9
 
     dockitems_to_remove:
-
-
-imprint-gig-emir
