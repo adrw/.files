@@ -97,13 +97,13 @@
       - firefox-developer-edition
       # - firefox-esr
       # - gmvault
-      # - google-chrome
+      - google-chrome
       # - google-chrome-canary
       # - gpgtools-beta
       # - handbrake
       # - handbrakebatch
       - imagealpha
-      - insomnia
+      # - insomnia
       # - ipartition
       - iterm2
       - karabiner-elements  # requires password
@@ -117,16 +117,18 @@
       - musicbrainz-picard
       - onedrive      # requires password
       - protonmail-bridge
+      - protonvpn
       - quitter
       - signal
       # - skype
       - slack
       - spectacle
-      - spotify
+      # - spotify
       # - sqlpro-for-sqlite
       - standard-notes
       # - sublime-text # separate role
       # - synology-assistant
+      # - teamviewer
       - the-unarchiver
       - torbrowser
       - transmission
