@@ -57,11 +57,12 @@
       - antibody
       - cheat
       # - dockutil  # separate role
+      - exiftool  # photo manipulation script
       # - fasd    # separate role
       - figlet
       # - gnupg2  # requires java...
       - htop
-      # - kotlin-compiler
+      - jhead     # photo manipulation script
       # - mas
       - node
       - openssl
@@ -132,6 +133,7 @@
       - the-unarchiver
       - torbrowser
       # - transmission
+      - utc-menu-clock
       # - virtualbox    # requires password
       # - viscosity
       - visual-studio-code
