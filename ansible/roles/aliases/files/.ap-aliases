@@ -48,6 +48,10 @@ alias dvp="docker volume prune"
 alias zmv="zmv -n"        # test mode
 alias zm4b="zmv '*.m4a' '\$(basename \$f .m4a).m4b'"   # test mode all *.m4a -> *.m4b audiobooks. Real: \zm4b
 
+# Disk utility
+alias shrink_sparseimage="hdiutil compact"
+alias resize_sparseimage="hdiutil resize -size"
+
 # fasd
 alias fa='fasd -a'        # any
 alias s='fasd -si'        # show / search / select
