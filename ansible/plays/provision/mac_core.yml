@@ -132,6 +132,7 @@
       - the-unarchiver
       - torbrowser
       - transmission
+      - utc-menu-clock
       # - virtualbox    # requires password
       - viscosity
       - visual-studio-code

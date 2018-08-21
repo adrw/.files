@@ -57,11 +57,12 @@
       - antibody
       - cheat
       # - dockutil  # separate role
+      - exiftool  # photo manipulation script
       # - fasd    # separate role
       - figlet
       # - gnupg2  # requires java...
       - htop
-      # - kotlin-compiler
+      - jhead     # photo manipulation script
       # - mas
       - node
       - openssl
@@ -102,7 +103,7 @@
       # - gpgtools-beta
       # - handbrake
       # - handbrakebatch
-      # - imagealpha
+      - imagealpha
       # - insomnia
       - intellij-idea
       # - intellij-idea-ce
@@ -132,6 +133,7 @@
       - the-unarchiver
       - torbrowser
       # - transmission
+      - utc-menu-clock
       # - virtualbox    # requires password
       # - viscosity
       - visual-studio-code
@@ -234,6 +236,3 @@
         pos: 9
 
     dockitems_to_remove:
-
-
-imprint-gig-emir
