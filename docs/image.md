@@ -23,17 +23,6 @@ Setup
 
 1. Manually seed entropy with random letters then `crtl-d` using `cat > /dev/random`
 1. Enable FileVault through GUI or `sudo fdesetup enable`
-1. If physical security a potential threat, consider enforcing eviction of FileVault keys when hibernating or sleeping with the following (I haven't done this)
-
-  ```
-  $ sudo pmset -a destroyfvkeyonstandby 1
-  $ sudo pmset -a hibernatemode 25
-
-  $ sudo pmset -a powernap 0
-  $ sudo pmset -a standby 0
-  $ sudo pmset -a standbydelay 0
-  $ sudo pmset -a autopoweroff 0
-  ```
 
 Firewall
 ---

@@ -22,22 +22,3 @@
     that: filevault_status.stdout.find('true') != -1
     msg: "Filevault is not on"
 
-- name: clear filevault key when hibernate/sleep
-  shell: pmset -a destroyfvkeyonstandby 1
-  when: filevault_auto_evict
-  become: true
-- shell: pmset -a hibernatemode 25
-  when: filevault_auto_evict
-  become: true
-- shell: pmset -a powernap 0
-  when: filevault_auto_evict
-  become: true
-- shell: pmset -a standby 0
-  when: filevault_auto_evict
-  become: true
-- shell: pmset -a standbydelay 0
-  when: filevault_auto_evict
-  become: true
-- shell: pmset -a autopoweroff 0
-  when: filevault_auto_evict
-  become: true
