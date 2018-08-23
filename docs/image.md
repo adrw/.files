@@ -1,17 +1,18 @@
 Image macOS
 ---
-
 See [`drduh macOS Security and Privacy Guide`](https://github.com/drduh/macOS-Security-and-Privacy-Guide) for more details.
 
 1. Set firmware password. `sudo firmwarepasswd -setpasswd -setmode command`.
-1. Build current [AutoDMG](https://github.com/MagerValp/AutoDMG) image including downloaded MacOS installer,  [user](https://magervalp.github.io/CreateUserPkg/), and [custom packages](./autodmg-custom.sparsebundle).
-1. Make bootable USB. Erase a USB, *restore* .dmg image to *unmounted* USB partition.
-1. On Mac, hold `option` down on restart, then choose the USB Recovery partition.
-1. Use Disk Utility to restore USB Macintosh HD back to Mac hard drive Macintosh HD.
-1. Restart into Mac, create temp account, don't agree to location, siri, or diagnostics
-1. Once through Mac setup flow and on desktop, logout of temp account, login to pre-made admin account, and delete temp account. Continue setup and install with admin account, use other for every day use.
+1. [AutoDMG](https://github.com/MagerValp/AutoDMG) imaging no longer works. Instead install clean macOS using a USB bootable installer. [User](https://magervalp.github.io/CreateUserPkg/), and [custom packages](./autodmg-custom.sparsebundle) now have to be configured after install.
+1. [Make bootable USB](https://support.apple.com/en-us/HT201372). Download latest macOS from App Store, erase and format a USB to HFS+ and use [the latest script](../scripts/createBootableUSB.sh) to create the bootable installer.
+1. On Mac, hold `option` down on restart, then choose the Install macOS boot disk.
+1. Use Disk Utility to erase Macintosh HD and reformat to APFS.
+1. Exit Disk Utility and reinstall macOS back to Macintosh HD.
+1. Restart into Mac, create temp account, don't agree to location, siri, or diagnostics.
+1. Once through Mac setup flow and on desktop, use [custom packages](./autodmg-custom.sparsebundle) to create standard users, login to standard user account, and delete temp account. 
+1. Continue setup using [`bootstrap.sh`](../bootstrap.sh) (or Manual Setup below) and install with standard account. After initial setup, use command `chmod_admin` in [`.ap-functions`](../ansible/roles/functions/files/.ap-functions) to reduce privileges back to Standard.
 
-Setup
+Manual Setup
 ---
 1. Change system `ComputerName` and `LocalHostName` to remove personal information
 
