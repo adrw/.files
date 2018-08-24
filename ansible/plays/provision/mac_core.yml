@@ -19,7 +19,7 @@
     - vim
     # - atom
     # - sublime-text
-    # - macdown
+    - macdown
     - ssh #id_rsa key generation
     - privoxy
     - syncthing
