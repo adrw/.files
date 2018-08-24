@@ -6,6 +6,7 @@ default_dockitems_to_remove:
   - Contacts
   - Calendar
   - Mail
+  - Safari
   - Notes
   - Reminders
   - Maps
