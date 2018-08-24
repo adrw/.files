@@ -13,9 +13,10 @@ $ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | ba
 Mac
 ===
 1. Reboot with `option` into Recovery parition on a USB
-2. Erase `Macintosh HD` and restore AutoDMG generated image to it
-3. Enable Filevault and restart
-4. Provision with command below in Terminal (add any other option flags before running)
+1. Erase `Macintosh HD` and install latest macOS from bootable USB
+1. Reboot and setup primary user account
+1. Login and enable Filevault full disk encryption
+1. Provision with command below in Terminal (add any other option flags before running)
 ```Bash
 $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh -s; rm ${HOME}/bootstrap.sh
 ```
