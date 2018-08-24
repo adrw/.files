@@ -17,14 +17,14 @@
     - git
     - tmux
     - vim
-    - atom
-    - sublime-text
-    - macdown
+    # - atom
+    # - sublime-text
+    # - macdown
     - ssh #id_rsa key generation
     - privoxy
     - syncthing
     - automator-workflows
-    - anaconda
+    # - anaconda
     # - dnscrypt
     # - gpg
     # - mas
@@ -81,16 +81,16 @@
       # - anaconda  # python ML libraries
       - appcleaner
       # - atom      # separate role
-      - autodmg
+      # - autodmg
       - backblaze
       # - backblaze-downloader
       - bartender
       - calibre
       - caffeine
-      - createuserpkg
+      # - createuserpkg
       # - coda
       # - dash
-      - docker
+      # - docker
       - dropbox
       # - eloston-chromium
       # - firefox
@@ -107,16 +107,16 @@
       # - ipartition
       - iterm2
       - karabiner-elements  # requires password
-      - keybase
+      # - keybase
       # - kdiff3
       - ngrok
       # - macdown     # separate role
-      - mediahuman-audio-converter
-      - mediahuman-youtube-downloader
+      # - mediahuman-audio-converter
+      # - mediahuman-youtube-downloader
       - microsoft-office  # requires password
       - musicbrainz-picard
-      - onedrive      # requires password
-      - protonmail-bridge
+      # - onedrive      # requires password
+      # - protonmail-bridge
       - protonvpn
       - quitter
       - signal
@@ -125,7 +125,7 @@
       - spectacle
       # - spotify
       # - sqlpro-for-sqlite
-      - standard-notes
+      # - standard-notes
       # - sublime-text # separate role
       # - synology-assistant
       # - teamviewer
