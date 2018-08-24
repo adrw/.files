@@ -5,6 +5,7 @@ default_dockitems_to_remove:
   - Launchpad
   - Contacts
   - Calendar
+  - Mail
   - Notes
   - Reminders
   - Maps
