@@ -1,4 +1,14 @@
-Synology Setup Notes
+Synology
+===
+
+Syncthing
+===
+- In Control Panel -> Group -> sc-syncthing, add R/W permissions for all folders that will be synced
+- In Control Panel -> Shared Folder -> each folder that will be synced, go to Permissions -> System Internal User -> sc-syncthing and add R/W permissions
+- In File Station -> each folder that will be synced, in sidebar right click on folder root -> Permissions and check the box "Apply to all enclosed folders and files".
+
+
+Setup Notes
 ===
 
 Commands

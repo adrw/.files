@@ -49,8 +49,9 @@
     homebrew_taps:
       - homebrew/core
       - homebrew/cask
-      - homebrew/cask-versions
       - homebrew/cask-fonts
+      - homebrew/cask-drivers
+      - homebrew/cask-versions
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
@@ -89,7 +90,7 @@
       - caffeine
       # - createuserpkg
       # - coda
-      # - dash
+      - dash
       # - docker
       - dropbox
       # - eloston-chromium
@@ -127,7 +128,8 @@
       # - sqlpro-for-sqlite
       # - standard-notes
       # - sublime-text # separate role
-      # - synology-assistant
+      - synology-assistant
+      - synology-drive
       # - teamviewer
       - the-unarchiver
       - torbrowser
