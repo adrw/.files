@@ -82,13 +82,13 @@
       # - anaconda  # python ML libraries
       - appcleaner
       # - atom      # separate role
-      - autodmg
+      # - autodmg
       # - backblaze
       # - backblaze-downloader
       - bartender
       # - calibre
       - caffeine
-      - createuserpkg
+      # - createuserpkg
       # - coda
       - dash
       - docker
