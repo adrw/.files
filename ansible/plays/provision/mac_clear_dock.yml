@@ -1,0 +1,9 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - dockutil
+
+  become: yes
+  become_method: sudo
