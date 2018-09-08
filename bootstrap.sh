@@ -206,6 +206,7 @@ function mac_bootstrap {
     mac_scripts
   fi
 
+  # TODO make this an option, not default since if it fails at any point or doesn't have ssh keys then pulling won't work anymore
   status a "${MAIN_DIR} git remote https:->git:"
   cd ${MAIN_DIR}
   git remote remove origin

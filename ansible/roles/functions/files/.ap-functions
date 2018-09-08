@@ -16,31 +16,81 @@ function status() {
   else
     scriptname="${1}"
   fi
+
+  echo "${Red}`status` is deprecated.${Reset} Uses adrwl instead."
   
   case "${1}" in
-    a)        shift; status -a ${*};;
-    b)        shift; status -b ${*};;
-    s|status) shift; status -s ${*};;
-    t|title)  shift; status -t ${*};;
-    e|err)    shift; status -e ${*};;
-    w|warn)   shift; status -w ${*};;
+    a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
+    b)        echo "${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
+    s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
+    t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ]" ;;
+    e|err)    echo "${Red}fatal: [ ${2} ]" ;;
+    w|warn)   echo "${Yellow}warn: [ ${2} ]" ;;
+    *)        echo "${Blue}<| ${Reset}${*}"
   esac
+}
 
-  result=""
-  category=""
+function adrwl() {
+  Reset="$(tput sgr0)"       # Text Reset
+  Red="$(tput setaf 1)"          # Red
+  Green="$(tput setaf 2)"        # Green
+  Yellow="$(tput setaf 3)"          # Yellow
+  Blue="$(tput setaf 4)"         # Blue
+  dateFormat="+%Y-%m-%d %T"
 
-  while getopts "abstew" opt; do
+  function show_help() {
+    cat << EOF
+adrwl logging library for bash
+
+Format
+  <| { timestamp } { prefix } [ status ] { content }
+
+Options
+
+  -p prefix
+  -s status text
+
+Levels
+  -d debug
+  -e error
+  -f fatal
+  -i info
+  -t trace
+  -w warn
+
+Usage
+
+  adrwl -p ansible -s start -i Ansible is starting
+  
+  $ <| 20180101-29384 ansible [ start ] Ansible is starting
+EOF
+  }
+
+  _prefix=""
+  _status=""
+  _timestamp=$(date $dateFormat)
+  _color=$Reset
+  _start="$Blue<|$Reset"
+  _end="$Blue|>$Reset"
+
+  while getopts "h?defitws:p:" opt; do
     case "$opt" in
-      a)        result+="\n${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
-      b)        result+="${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
-      s|status) result+="${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
-      t|title)  result+="${Blue}<|${scriptname}${Reset} [ ${2} ]" ;;
-      e|err)    result+="${Red}fatal: [ ${2} ]" ;;
-      w|warn)   result+="${Yellow}warn: [ ${2} ]" ;;
-      *)        result+="${Blue}<| ${Reset}${*}"
+      h|\?)      show_help ;;
+      s)        _status="$OPTARG";;
+      p)        _prefix=$OPTARG;;
+      d)        _color=$Blue;;
+      e)        _color=$Red;;
+      f)        _color=$Red;;
+      i)        _color=$Green;;
+      t)        _color=$Blue;;
+      w)        _color=$Yellow;;
     esac
   done
-  echo "${result}"
+  shift $((OPTIND-1));
+  _content="$*"
+
+  [[ ! -z $_status ]] && _status="[ ${_color}${_status}${Reset} ] "
+  echo "${_start}${_timestamp} ${_status}${_end}${_content}"
 }
 
 # lihorne
