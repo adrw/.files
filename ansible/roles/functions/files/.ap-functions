@@ -11,20 +11,36 @@ function status() {
   Green="$(tput setaf 2)"        # Green
   Yellow="$(tput setaf 3)"          # Yellow
   Blue="$(tput setaf 4)"         # Blue
-  div="********************************************************************************"
   if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "ap" if $0 is status, $0 otherwise
-    [ $(basename "${0}") = "status" ] && scriptname="ap" || scriptname=$(basename "${0}")
+    [ $(basename "${0}") = "status" ] && scriptname="adrw" || scriptname=$(basename "${0}")
   else
-    scriptname="${3}"
+    scriptname="${1}"
   fi
+  
   case "${1}" in
-    a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
-    b)        echo "${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
-    s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ] ${div:$((${#2}+9))}" ;;
-    t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ] ${div:$((${#2}+8+${#scriptname}))}" ;;
-    e|err)    echo "${Red}fatal: [ ${2} ] ${div:$((${#2}+12))}${Reset}" ;;
-    w|warn)   echo "${Yellow}warn: [ ${2} ] ${div:$((${#2}+11))}${Reset}" ;;
+    a)        shift; status -a ${*};;
+    b)        shift; status -b ${*};;
+    s|status) shift; status -s ${*};;
+    t|title)  shift; status -t ${*};;
+    e|err)    shift; status -e ${*};;
+    w|warn)   shift; status -w ${*};;
   esac
+
+  result=""
+  category=""
+
+  while getopts "abstew" opt; do
+    case "$opt" in
+      a)        result+="\n${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
+      b)        result+="${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
+      s|status) result+="${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
+      t|title)  result+="${Blue}<|${scriptname}${Reset} [ ${2} ]" ;;
+      e|err)    result+="${Red}fatal: [ ${2} ]" ;;
+      w|warn)   result+="${Yellow}warn: [ ${2} ]" ;;
+      *)        result+="${Blue}<| ${Reset}${*}"
+    esac
+  done
+  echo "${result}"
 }
 
 # lihorne
@@ -64,7 +80,6 @@ success () {
 fail () {
     printf "\r\033[2K[\033[0;31mFAIL\033[0m] $1\n"
     echo
-    exit
 }
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh

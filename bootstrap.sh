@@ -54,38 +54,29 @@ function run_script {
   status b "${name}"
 }
 
-
-# rewrite help with cat
-
-# cat<<'EOF'
-# Different characters can be represented and supported
-# in the print command, for example:
-# x-y, X+Y, –, +, <, >, %, $, #, &.
-# EOF
-
-
-
 function show_help {
   status a "❓  Usage :: .files/bootstrap.sh <opts>"
-  echo "Options |   Description                       |   Default (or alternate) Values"
-  echo "${div}"
-  echo "-h      |   Show help menu                    |                         "
-  echo "-a      |   Only run Ansible Playbook         |   Def: runs .macos      "
-  echo "-d      |   .files/ directory                 |   ${HOME}/.files        "
-  echo "-b      |   Homebrew install directory        |   ${HOME}/.homebrew     "
-  echo "        |       Homebrew default              |   /usr/local            "
-  echo "-i      |   Ansible Inventory                 |   macbox/hosts          "
-  echo "-p      |   Ansible Playbook                  |                         "
-  echo "        |     - Default: Main Mac environment |   mac_core              "
-  echo "        |     - Dev environment (no media)    |   mac_dev               "
-  echo "        |     - Homebrew, Atom, Docker...     |   mac_jekyll            "
-  echo "        |     - etchost domain blocking       |   mac_etchost_no_animate"
-  # echo "        |     - Linux environment             |   linux_core"
-  echo "-m      |   Mac App Store email               |   \"\"                  "
-  echo "-n      |   Mac App Store password            |   \"\"                  "
-  echo "-s      |   Set hostname, turn on Firewall    |                         "
-  echo "-t      |   Test env, don't detach Git head   |                         "
-  echo "-u      |   User name                         |   me                    "
+  cat << EOF
+  Options |   Description                       |   Default (or alternate) Values
+  ${div}
+  -h      |   Show help menu                    |                         
+  -a      |   Only run Ansible Playbook         |   Def: runs .macos      
+  -d      |   .files/ directory                 |   ${HOME}/.files        
+  -b      |   Homebrew install directory        |   ${HOME}/.homebrew     
+          |       Homebrew default              |   /usr/local            
+  -i      |   Ansible Inventory                 |   macbox/hosts          
+  -p      |   Ansible Playbook                  |                         
+          |     - Default: Main Mac environment |   mac_core                        
+          |     - Dev environment (no media)    |   mac_dev               
+          |     - Homebrew, Atom, Docker...     |   mac_jekyll            
+          |     - etchost domain blocking       |   mac_etchost_no_animate
+          |     - Linux environment             |   linux_core
+  -m      |   Mac App Store email               |   \"\"                  
+  -n      |   Mac App Store password            |   \"\"                  
+  -s      |   Set hostname, turn on Firewall    |                         
+  -t      |   Test env, don't detach Git head   |                         
+  -u      |   User name                         |   me                    
+EOF
   status e "Learn more at https://github.com/adrw/.files"
   exit 0
 }
@@ -158,7 +149,7 @@ function mac_install_dependencies {
 function mac_scripts {
   status a "scripts | ${PLAY} @ ${INVENTORY}"
   case "${PLAY}" in
-  "mac_core"|"mac_square"|"mac_dev")
+  "mac_core"|"mac_square"|"mac_dev"|"mac_clean")
     run_script ${SCRIPTS}/custom.macos
     run_script ${SCRIPTS}/.macos
     if [[ $(csrutil status) != *enabled* ]]; then
