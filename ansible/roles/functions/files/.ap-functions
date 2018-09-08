@@ -43,7 +43,7 @@ function adrwl() {
 adrwl logging library for bash
 
 Format
-  <| { timestamp } { prefix } [ status ] { content }
+  { timestamp }<| { prefix } [ status ] |>{ content }
 
 Options
 
@@ -62,7 +62,7 @@ Usage
 
   adrwl -p ansible -s start -i Ansible is starting
   
-  $ <| 20180101-29384 ansible [ start ] Ansible is starting
+  $ 2018-09-08 14:22:12<|ansible [ start ] |>Ansible is starting
 EOF
   }
 
@@ -90,7 +90,7 @@ EOF
   _content="$*"
 
   [[ ! -z $_status ]] && _status="[ ${_color}${_status}${Reset} ] "
-  echo "${_start}${_timestamp} ${_status}${_end}${_content}"
+  echo "${_timestamp}${_start}${_prefix} ${_status}${_end}${_content}"
 }
 
 # lihorne
