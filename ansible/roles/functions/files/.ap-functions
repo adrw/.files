@@ -93,45 +93,6 @@ EOF
   echo "${_timestamp}${_start}${_prefix} ${_status}${_end}${_content}"
 }
 
-# lihorne
-
-# info () {
-#   printf "  [ \033[00;34m..\033[0m ] $1"
-# }
-
-# user () {
-#   printf "\r  [ \033[0;33m?\033[0m ] $1 "
-# }
-
-# success () {
-#   printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-# }
-
-# fail () {
-#   printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-#   echo ''
-#   exit
-# }
-
-
-# other
-info () {
-    printf "\r[ \033[00;34m..\033[0m ] $1\n"
-}
-
-user () {
-    printf "\r[ \033[0;33m?\033[0m ] $1 "
-}
-
-success () {
-    printf "\r\033[2K[ \033[00;32mOK\033[0m ] $1\n"
-}
-
-fail () {
-    printf "\r\033[2K[\033[0;31mFAIL\033[0m] $1\n"
-    echo
-}
-
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
 function safe_download() {
   timestamp="`date '+%Y%m%d-%H%M%S'`"
