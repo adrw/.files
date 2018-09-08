@@ -1,3 +1,5 @@
+# Use from main repo: ./bootstrap.sh -u {username} -p mac_clean
+
 ---
 
 - hosts: macbox
@@ -5,7 +7,6 @@
   roles:
     - spoof-mac
     - etchosts
-    # - oh-my-zsh
     - homebrew
     - bash
     - zsh
@@ -14,16 +15,10 @@
     - fasd
     - aliases
     - functions
-    # - git
     - tmux
     - vim
-    # - ssh #id_rsa key generation
     - privoxy
-    # - syncthing
     - automator-workflows
-    # - anaconda
-    # - dnscrypt
-    # - gpg
     - dockutil
     - macos
     - iterm2
@@ -32,13 +27,9 @@
   become_method: sudo
 
   vars:
-    # user_name: me # require it as input
     user_group: staff
     home: "~"
     roles_dir: "{{ home }}/.files/ansible/roles"
-    id_rsa: "{{ home }}/.ssh/id_rsa"
-
-    filevault_auto_evict: true
 
     homebrew_cask_require_sha: false
     homebrew_cask_appdir: /Applications
@@ -54,9 +45,7 @@
       - cheat
       # - dockutil  # separate role
       - exiftool  # photo manipulation script
-      # - fasd    # separate role
       - figlet
-      # - gnupg2  # requires java...
       - htop
       - jhead     # photo manipulation script
       - node
@@ -64,13 +53,36 @@
       # - privoxy # separate role
       - python
       - python3
-      # - syncthing
       - tldr
       - tmux
       - tree
       - wget
       - yarn
     homebrew_cask_apps:
+      - 1password
+      - alfred
+      - appcleaner
+      - bartender
+      - caffeine
+      - dropbox
+      - firefox-developer-edition
+      - google-chrome
+      - ipartition
+      - iterm2
+      - karabiner-elements  # requires password
+      - ngrok
+      # - macdown     # separate role
+      - microsoft-office  # requires password
+      - signal
+      - spectacle
+      - spotify
+      - teamviewer
+      - the-unarchiver
+      - torbrowser
+      - transmission
+      - visual-studio-code
+      - vlc
+      - whatsapp
     # fonts
       - font-fira-code
       - font-fira-mono-for-powerline
