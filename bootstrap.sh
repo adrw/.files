@@ -176,6 +176,7 @@ function mac_bootstrap {
     git clone https://github.com/adrw/.files.git ${MAIN_DIR}
     status b "Clone .files"
   elif [[ "${TEST}" == false ]]; then
+    # TODO Delete headless mode
     status a "Decapitate .files (headless mode)"
     cd ${MAIN_DIR}
     git fetch --all
@@ -187,7 +188,7 @@ function mac_bootstrap {
 
   status a "ansible-playbook | ${PLAY} @ ${INVENTORY}"
   case "${PLAY}" in
-  "mac_core"|"mac_square"|"mac_dev")
+  "mac_core"|"mac_square"|"mac_dev"|"mac_clean")
     cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   "mac_etchost_no_animate")
