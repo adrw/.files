@@ -17,7 +17,7 @@ function status() {
     scriptname="${1}"
   fi
 
-  echo "${Red}`status` is deprecated.${Reset} Uses adrwl instead."
+  echo "${Red}status is deprecated.${Reset} Uses adrwl instead."
   
   case "${1}" in
     a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
