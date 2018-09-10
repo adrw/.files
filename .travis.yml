@@ -1,5 +1,5 @@
 sudo: enabled
 os: osx
 before_install:
-  - brew update && brew bundle
+  - brew update
 script: ./bootstrap.sh -p mac_test
