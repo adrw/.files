@@ -30,7 +30,7 @@
   become: false
   ignore_errors: true
 
-- name: AP-Square-Aliases
+- name: ADRW-Square-Aliases
   file:
     src: "{{ roles_dir }}/square/files/{{ square_aliases_filename }}"
     dest: "{{ home }}/{{ square_aliases_filename }}"
@@ -53,7 +53,7 @@
     line: "{{ square_aliases_source }}"
   become: false
 
-- name: AP-Square-Functions
+- name: ADRW-Square-Functions
   file:
     src: "{{ roles_dir }}/square/files/{{ square_functions_filename }}"
     dest: "{{ home }}/{{ square_functions_filename }}"

@@ -23,8 +23,8 @@
   become: false
 
 - file:
-    src: "{{ roles_dir }}/zsh/files/{{ zsh_powerline_ap_file }}"
-    dest: "{{ home }}/{{ zsh_powerline_ap_file }}"
+    src: "{{ roles_dir }}/zsh/files/{{ zsh_powerline_adrw_file }}"
+    dest: "{{ home }}/{{ zsh_powerline_adrw_file }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

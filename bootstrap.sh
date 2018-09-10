@@ -217,25 +217,25 @@ function mac_bootstrap {
 
 function linux_bootstrap {
   status a "Install Linux Base Shell"
-  # AP Bash Powerline Theme
-  safe_download ~/.ap-bash-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/bash/files/.ap-bash-powerline.sh
-  safe_source ~/.ap-bash-powerline.sh ~/.bashrc
+  # ADRW Bash Powerline Theme
+  safe_download ~/.adrw-bash-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/bash/files/.adrw-bash-powerline.sh
+  safe_source ~/.adrw-bash-powerline.sh ~/.bashrc
 
-  # AP ZSH Powerline Theme
-  safe_download ~/.ap-zsh-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/zsh/files/.ap-zsh-powerline.sh
-  safe_source ~/.ap-zsh-powerline.sh ~/.zshrc
+  # ADRW ZSH Powerline Theme
+  safe_download ~/.adrw-zsh-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/zsh/files/.adrw-zsh-powerline.sh
+  safe_source ~/.adrw-zsh-powerline.sh ~/.zshrc
 
-  # AP Aliases
-  safe_download ~/.ap-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/aliases/files/.ap-aliases
-  safe_source ~/.ap-aliases ~/.bashrc
-  safe_source ~/.ap-aliases ~/.zshrc
+  # ADRW Aliases
+  safe_download ~/.adrw-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/aliases/files/.adrw-aliases
+  safe_source ~/.adrw-aliases ~/.bashrc
+  safe_source ~/.adrw-aliases ~/.zshrc
 
-  # AP Functions
-  safe_download ~/.ap-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.ap-functions
-  safe_source ~/.ap-functions ~/.bashrc
-  safe_source ~/.ap-functions ~/.zshrc
+  # ADRW Functions
+  safe_download ~/.adrw-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions
+  safe_source ~/.adrw-functions ~/.bashrc
+  safe_source ~/.adrw-functions ~/.zshrc
 
-  # AP .vimrc
+  # ADRW .vimrc
   safe_download ~/.vimrc https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/vim/files/.vimrc
   
   echo "curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s" > .ap-update.sh

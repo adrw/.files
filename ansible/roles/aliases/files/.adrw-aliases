@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# SOURCE Andrew Paradi | https://github.com/adrw/.files
+# SOURCE https://github.com/adrw/.files
 
 # https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 
@@ -13,7 +13,7 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 #Functions
-# alias l="ls -la" || "k -a" => ap-functions::l()
+# alias l="ls -la" || "k -a" => adrw-functions::l()
 alias l="safe_k"
 alias ka="killall"
 

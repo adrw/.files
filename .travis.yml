@@ -1,5 +1,10 @@
-sudo: enabled
-os: osx
-before_install:
-  - brew update
-script: ./bootstrap.sh -p mac_test
+matrix:
+  include:
+  - os: osx
+    sudo: enabled
+    before_install:
+      - brew update
+    script: ./bootstrap.sh -p mac_test
+
+  - os: linux
+    script: ./bootstrap.sh

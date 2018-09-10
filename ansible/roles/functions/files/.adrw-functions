@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+# SOURCE  https://github.com/adrw/.files
 
-# SOURCE Andrew Paradi | https://github.com/adrw/.files
-
-# AP Bootstrap Standard Methods
-prefix="ap::"
+# ADRW Bootstrap Standard Methods
+prefix="adrw::"
 # status opt_code "Main update text" "optional script name override"
 function status() {
   Reset="$(tput sgr0)"       # Text Reset
@@ -11,7 +10,7 @@ function status() {
   Green="$(tput setaf 2)"        # Green
   Yellow="$(tput setaf 3)"          # Yellow
   Blue="$(tput setaf 4)"         # Blue
-  if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "ap" if $0 is status, $0 otherwise
+  if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "adrw" if $0 is status, $0 otherwise
     [ $(basename "${0}") = "status" ] && scriptname="adrw" || scriptname=$(basename "${0}")
   else
     scriptname="${1}"

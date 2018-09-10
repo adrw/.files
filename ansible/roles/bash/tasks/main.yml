@@ -17,8 +17,8 @@
   become: false
 
 - file:
-    src: "{{ roles_dir }}/bash/files/{{ bash_powerline_ap_file }}"
-    dest: "{{ home }}/{{ bash_powerline_ap_file }}"
+    src: "{{ roles_dir }}/bash/files/{{ bash_powerline_adrw_file }}"
+    dest: "{{ home }}/{{ bash_powerline_adrw_file }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"

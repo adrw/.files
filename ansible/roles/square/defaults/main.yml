@@ -1,9 +1,9 @@
 ---
 
-square_init_div: "### Square Andrew Paradi"
+square_init_div: "### Square adrw"
 
-square_aliases_filename: .ap-square-aliases
-square_aliases_source: 'source {{ home }}/.ap-square-aliases'
+square_aliases_filename: .adrw-square-aliases
+square_aliases_source: 'source {{ home }}/.adrw-square-aliases'
 
-square_functions_filename: .ap-square-functions
-square_functions_source: 'source {{ home }}/.ap-square-functions'
+square_functions_filename: .adrw-square-functions
+square_functions_source: 'source {{ home }}/.adrw-square-functions'
