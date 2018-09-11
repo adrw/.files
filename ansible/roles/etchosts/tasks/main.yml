@@ -54,7 +54,5 @@
     src: "{{ roles_dir }}/etchosts/files/{{ raw_ads_hosts_file }}"
     dest: /etc/hosts
     force: yes
-  when: 
-    - become_skip is defined
-    - not become_skip
+  when: become_skip is not defined or not become_skip
   become: true
