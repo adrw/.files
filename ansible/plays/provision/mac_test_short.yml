@@ -37,7 +37,6 @@
 
   vars:
     become_skip: true
-    home: "~"
     roles_dir: "{{ home }}/.files/ansible/roles"
     id_rsa: "{{ home }}/.ssh/id_rsa"
 

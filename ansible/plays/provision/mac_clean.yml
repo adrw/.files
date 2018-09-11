@@ -27,8 +27,6 @@
   become_method: sudo
 
   vars:
-    user_group: staff
-    home: "~"
     roles_dir: "{{ home }}/.files/ansible/roles"
 
     homebrew_cask_require_sha: false

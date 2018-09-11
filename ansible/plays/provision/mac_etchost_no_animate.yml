@@ -8,7 +8,6 @@
   become_method: sudo
 
   vars:
-    home: "~"
     roles_dir: "{{ home }}/.files/ansible/roles"
     id_rsa: "{{ home }}/.ssh/id_rsa"
 
