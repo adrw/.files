@@ -187,15 +187,16 @@ function mac_bootstrap {
   status b "git/.files -> ${MAIN_DIR}"
 
   status a "ansible-playbook | ${PLAY} @ ${INVENTORY}"
+  USER_ROLE=$(id -Gn $USER_NAME | cut -d " " -f1)
   case "${PLAY}" in
   "mac_core"|"mac_square")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_role=${USER_ROLE} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_role=${USER_ROLE} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   "mac_test_full"|"mac_test_short")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_role=${USER_ROLE} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   *)
     status e "no matching play for ${PLAY}"
@@ -263,7 +264,7 @@ PLAY=mac_core                       # -p
 MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 TEST=false                          # -t
-USER_NAME=me                        # -u
+USER_NAME=$(whoami)                 # -u
 SECURE=false                        # -s
 
 status a "📈  Registered Configuration"
