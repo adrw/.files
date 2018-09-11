@@ -22,7 +22,9 @@
 #     owner: root
 #     group: wheel
 #     mode: 0644
+#   when: become_run_commands
 #   become: true
 #
 # - command: "launchctl load {{ home }}/Library/LaunchAgents/syncthing.plist"
+#   when: become_run_commands
 #   become: true

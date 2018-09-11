@@ -6,4 +6,4 @@
 #   become: false
 # - name: start dnscrypt-proxy as service
 #   command: brew services start dnscrypt-proxy
-#   become: true
+#   become: false

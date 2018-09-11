@@ -57,5 +57,7 @@
 
 - name: Set zsh as default shell
   shell: chsh -s /bin/zsh
-  when: current_shell.stdout != "/bin/zsh"
+  when: 
+    - become_run_commands
+    - current_shell.stdout != "/bin/zsh"
   become: true

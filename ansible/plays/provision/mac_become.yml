@@ -1,0 +1,20 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - spoof-mac
+    - etchosts
+    - privoxy
+    - zsh-antibody
+
+  become: true
+  become_method: sudo
+
+  vars:
+    become_run_commands: true
+    user_name: me
+    user_group: staff
+    home: "~"
+    roles_dir: "{{ home }}/.files/ansible/roles"
+    id_rsa: "{{ home }}/.ssh/id_rsa"

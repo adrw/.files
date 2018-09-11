@@ -36,6 +36,7 @@
   become_method: sudo
 
   vars:
+    become_run_commands: false
     user_name: me
     user_group: staff
     home: "~"
