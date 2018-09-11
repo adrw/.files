@@ -1,5 +1,4 @@
 ---
-- include: provision/mac_test.yml
 - include: provision/mac_core.yml
 - include: provision/mac_clean.yml
 - include: provision/mac_clear_dock.yml
@@ -8,3 +7,5 @@
 - include: provision/mac_dev.yml
 - include: provision/mac_etchost_no_animate.yml
 - include: provision/mac_jekyll.yml
+- include: provision/mac_test_full.yml
+- include: provision/mac_test_short.yml

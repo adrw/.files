@@ -149,7 +149,7 @@ function mac_install_dependencies {
 function mac_scripts {
   status a "scripts | ${PLAY} @ ${INVENTORY}"
   case "${PLAY}" in
-  "mac_core"|"mac_square"|"mac_dev"|"mac_clean"|"mac_test")
+  "mac_core"|"mac_square"|"mac_dev"|"mac_clean"|"mac_test_full"|"mac_test_short")
     run_script ${SCRIPTS}/custom.macos
     run_script ${SCRIPTS}/.macos
     if [[ $(csrutil status) != *enabled* ]]; then
@@ -194,7 +194,7 @@ function mac_bootstrap {
   "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
     cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
-  "mac_test")
+  "mac_test_full"|"mac_test_short")
     cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   *)

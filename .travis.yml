@@ -4,7 +4,13 @@ matrix:
     sudo: enabled
     before_install:
       - brew update
-    script: ./bootstrap.sh -p mac_test
+    script: travis_wait 60 ./bootstrap.sh -p mac_test_short
+
+  - os: osx
+    sudo: enabled
+    before_install:
+      - brew update
+    script: travis_wait 60 ./bootstrap.sh -p mac_test_full
 
   - os: linux
     script: ./bootstrap.sh

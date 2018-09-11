@@ -3,11 +3,10 @@
 - hosts: macbox
   connection: local
   roles:
-    - square
-    # - spoof-mac
-    # - etchosts
+    - spoof-mac
+    - etchosts
     # - oh-my-zsh
-    - homebrew
+    # - homebrew
     - bash
     - zsh
     - zsh-antibody
@@ -21,11 +20,11 @@
     - atom
     - sublime-text
     - macdown
-    - ssh #id_rsa key generation
-    # - privoxy
-    # - syncthing
+    # - ssh #id_rsa key generation
+    - privoxy
+    - syncthing
     - automator-workflows
-    # - anaconda
+    - anaconda
     # - dnscrypt
     # - gpg
     # - mas
@@ -37,21 +36,23 @@
   become_method: sudo
 
   vars:
-    user_name: aparadi
+    become_skip: true
+    user_name: me
     user_group: staff
     home: "~"
     roles_dir: "{{ home }}/.files/ansible/roles"
     id_rsa: "{{ home }}/.ssh/id_rsa"
 
-    filevault_auto_evict: false
+    filevault_auto_evict: true
 
     homebrew_cask_require_sha: false
     homebrew_cask_appdir: /Applications
     homebrew_taps:
       - homebrew/core
       - homebrew/cask
-      - homebrew/cask-versions
       - homebrew/cask-fonts
+      - homebrew/cask-drivers
+      - homebrew/cask-versions
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
@@ -69,7 +70,7 @@
       # - privoxy # separate role
       - python
       - python3
-      # - syncthing
+      - syncthing
       - tldr
       - tmux
       - tree
@@ -83,15 +84,15 @@
       - appcleaner
       # - atom      # separate role
       # - autodmg
-      # - backblaze
+      - backblaze
       # - backblaze-downloader
       - bartender
-      # - calibre
+      - calibre
       - caffeine
       # - createuserpkg
       # - coda
       - dash
-      - docker
+      # - docker
       - dropbox
       # - eloston-chromium
       # - firefox
@@ -105,8 +106,6 @@
       # - handbrakebatch
       - imagealpha
       # - insomnia
-      - intellij-idea
-      # - intellij-idea-ce
       # - ipartition
       - iterm2
       - karabiner-elements  # requires password
@@ -116,31 +115,34 @@
       # - macdown     # separate role
       # - mediahuman-audio-converter
       # - mediahuman-youtube-downloader
-      # - microsoft-office  # requires password
-      # - musicbrainz-picard
+      - microsoft-office  # requires password
+      - musicbrainz-picard
       # - onedrive      # requires password
       # - protonmail-bridge
+      - protonvpn
       - quitter
-      # - signal
+      - signal
       # - skype
       - slack
       - spectacle
-      - spotify
+      # - spotify
       # - sqlpro-for-sqlite
       # - standard-notes
       # - sublime-text # separate role
-      # - synology-assistant
+      - synology-assistant
+      - synology-drive
+      # - teamviewer
       - the-unarchiver
       - torbrowser
-      # - transmission
+      - transmission
       - utc-menu-clock
       # - virtualbox    # requires password
-      # - viscosity
+      - viscosity
       - visual-studio-code
-      # - vlc
-      # - whatsapp
+      - vlc
+      - whatsapp
     # fonts
-      - font-arvo     # for OAKWEAR & CO.
+      # - font-arvo     # for OAKWEAR & CO.
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
@@ -167,10 +169,6 @@
       - dest: "Ansible"
         repo: "https://github.com/clifford-github/sublime-ansible.git"
         version: "master"
-      - dest: "Kotlin"
-        repo: "https://github.com/vkostyukov/kotlin-sublime-package.git"
-        version: "master"
-
     sublime_text_color_scheme: "Packages/Solarized/Solarized (dark).tmTheme"
     # sublime_text_theme: "Soda Dark 3.sublime-theme"
 
@@ -207,32 +205,38 @@
     mas_signin_dialog: yes
 
     dockitems_to_persist:
-      - name: Slack
-        path: "/Applications/Slack.app"
-        pos: 1
+      - name: Messages
+        path: "/Applications/Messages.app"
+        pos: 2
+      - name: Signal
+        path: "/Applications/Signal.app"
+        pos: 3
       - name: Google Chrome
         path: "/Applications/Google Chrome.app"
-        pos: 2
+        pos: 4
       - name: Firefox Developer Edition
         path: "/Applications/Firefox Developer Edition.app"
-        pos: 3
+        pos: 5
+      - name: Safari
+        path: "/Applications/Safari.app"
+        pos: 6
       - name: MacDown
         path: /Applications/MacDown.app
-        pos: 4
+        pos: 7
       - name: Visual Studio Code
         path: /Applications/Visual Studio Code.app
-        pos: 5
-      - name: IntelliJ IDEA
-        path: /Applications/IntelliJ IDEA.app
-        pos: 6
+        pos: 8
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 7
+        pos: 9
       - name: Preview
         path: /Applications/Preview.app
-        pos: 8
+        pos: 10
+      - name: iTunes
+        path: /Applications/iTunes.app
+        pos: 11
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 9
+        pos: 12
 
     dockitems_to_remove:
