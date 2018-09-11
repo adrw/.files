@@ -12,7 +12,7 @@
   become_method: sudo
 
   vars:
-    become_run_commands: true
+    become_skip: false
     user_name: me
     user_group: staff
     home: "~"

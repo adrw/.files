@@ -22,9 +22,13 @@
 #     owner: root
 #     group: wheel
 #     mode: 0644
-#   when: become_run_commands
+#   when: 
+#   - become_skip is defined
+#   - not become_skip
 #   become: true
 #
 # - command: "launchctl load {{ home }}/Library/LaunchAgents/syncthing.plist"
-#   when: become_run_commands
+#   when: 
+#   - become_skip is defined
+#   - not become_skip
 #   become: true
