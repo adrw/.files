@@ -1,5 +1,17 @@
 ---
 
+- stat: ensure .bashrc exists
+    path: "{{ home }}/.bashrc"
+  register: b
+
+- name: create .bashrc if not exists
+  file:
+    path: "{{ home }}/.bashrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    state: '{{ "file" if b.stat.exists else "touch" }}'
+
 - lineinfile:
       dest: "{{ home }}/.bashrc"
       state: present

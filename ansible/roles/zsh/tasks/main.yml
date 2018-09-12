@@ -1,9 +1,21 @@
 ---
 
+- stat: ensure .zshrc exists
+    path: "{{ home }}/.zshrc"
+  register: z
+
+- name: create .zshrc if not exists
+  file:
+    path: "{{ home }}/.zshrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    state: '{{ "file" if z.stat.exists else "touch" }}'
+
 - lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ zsh_init_div }}"
+    dest: "{{ home }}/.zshrc"
+    state: present
+    line: "{{ zsh_init_div }}"
   become: false
 
 - name: Install zsh Powerline Theme
@@ -17,9 +29,9 @@
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ zsh_powerline_div }}"
+    dest: "{{ home }}/.zshrc"
+    state: present
+    line: "{{ zsh_powerline_div }}"
   become: false
 
 - file:
@@ -41,7 +53,7 @@
   become: false
 
 - lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ zsh_powerline_source }}"
+    dest: "{{ home }}/.zshrc"
+    state: present
+    line: "{{ zsh_powerline_source }}"
   become: false
