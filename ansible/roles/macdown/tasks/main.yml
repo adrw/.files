@@ -10,6 +10,16 @@
   become: false
   ignore_errors: true
 
+- name: Ensure custom CSS directory present
+  file:
+    path: "{{ home }}/{{ macdown_styles_dest }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    recurse: yes
+  become: false
+
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/GitHubAP.css"
