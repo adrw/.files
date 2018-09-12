@@ -18,7 +18,8 @@
     group: "{{ user_group }}"
     mode: 0644
     recurse: yes
-  become: false
+  when: become_skip is not defined or not become_skip
+  become: true
 
 - name: Link over custom CSS
   file:
@@ -28,8 +29,8 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-    force: yes
   become: false
+  ignore_errors: true
 
 - name: Link over custom CSS
   file:
@@ -39,8 +40,8 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-    force: yes
   become: false
+  ignore_errors: true
 
 - name: Link over custom CSS
   file:
@@ -50,5 +51,5 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-    force: yes
   become: false
+  ignore_errors: true
