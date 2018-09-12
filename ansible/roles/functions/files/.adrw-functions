@@ -39,16 +39,17 @@ Format
 
 Options
 
-  -p prefix
-  -s status text
+  -l label[s]
+  -s status text (default: FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
+  -c clean mode (no timestamp)
 
   Levels
-  -d debug
-  -e error
   -f fatal
-  -i info
-  -t trace
+  -e error
   -w warn
+  -i info
+  -d debug
+  -t trace
 
 Usage
 
@@ -57,12 +58,12 @@ Usage
 
   or alias functions:
 
-  DEBUG() => adrwl -d $*
-  ERROR() => adrwl -e $*
   FATAL() => adrwl -f $*
-  INFO()  => adrwl -i $*
-  TRACE() => adrwl -t $*
+  ERROR() => adrwl -e $*
   WARN()  => adrwl -w $*
+  INFO()  => adrwl -i $*
+  DEBUG() => adrwl -d $*
+  TRACE() => adrwl -t $*
 EOF
   }
 
@@ -71,41 +72,41 @@ EOF
   Green="$(tput setaf 2)"        # Green
   Yellow="$(tput setaf 3)"          # Yellow
   Blue="$(tput setaf 4)"         # Blue
-  dateFormat="+%Y-%m-%d %T"
 
-  _prefix=""
+  _labels=""
   _status=""
-  _timestamp="[$(date $dateFormat)]"
+  _timestamp="[$(date +'%Y-%m-%d %T')]"
   _color=$Reset
   _start="$Blue<|$Reset"
   _end="$Blue|>$Reset"
 
-  while getopts "h?defitws:p:" opt; do
+  while getopts "h?cdefitws:l:" opt; do
     case "$opt" in
       h|\?)      usage  ;;
+      c)        _timestamp="" ;;      # clean mode (no timestamp)
+      l)        _labels+="[$OPTARG]" ;;
       s)        _status="$OPTARG" ;;
-      p)        _prefix="[$OPTARG]" ;;
-      d)        _status="DEBUG"; _color=$Blue  ;;
-      e)        _status="ERROR"; _color=$Red ;;
       f)        _status="FATAL"; _color=$Red ;;
-      i)        _status="INFO"; _color=$Green ;;
-      t)        _status="TRACE"; _color=$Blue  ;;
+      e)        _status="ERROR"; _color=$Red ;;
       w)        _status="WARN"; _color=$Yellow  ;;
+      i)        _status="INFO"; _color=$Green ;;
+      d)        _status="DEBUG"; _color=$Blue  ;;
+      t)        _status="TRACE"; _color=$Blue  ;;
     esac
   done
   shift $((OPTIND-1));
   _content="$*"
 
   [[ ! -z $_status ]] && _status="[${_color}${_status}${Reset}]"
-  echo "${_start}${_timestamp}${_status}${_prefix} ${_content}"
+  echo "${_start}${_timestamp}${_status}${_labels} ${_content}"
 }
 
-function DEBUG() { adrwl -d $* }
-function ERROR() { adrwl -e $* }
-function FATAL() { adrwl -f $* }
-function INFO() { adrwl -i $* }
-function TRACE() { adrwl -t $* }
-function WARN() { adrwl -w $* }
+alias FATAL="adrwl -f $*"
+alias ERROR="adrwl -e $*"
+alias WARN="adrwl -w $*"
+alias INFO="adrwl -i $*"
+alias DEBUG="adrwl -d $*"
+alias TRACE="adrwl -t $*"
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
 function safe_download() {

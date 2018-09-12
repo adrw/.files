@@ -26,6 +26,48 @@ function status() {
   esac
 }
 
+function adrwl() {
+  Reset="$(tput sgr0)"       # Text Reset
+  Red="$(tput setaf 1)"          # Red
+  Green="$(tput setaf 2)"        # Green
+  Yellow="$(tput setaf 3)"          # Yellow
+  Blue="$(tput setaf 4)"         # Blue
+
+  _labels=""
+  _status=""
+  _timestamp="[$(date +'%Y-%m-%d %T')]"
+  _color=$Reset
+  _start="$Blue<|$Reset"
+  _end="$Blue|>$Reset"
+
+  while getopts "h?cdefitws:l:" opt; do
+    case "$opt" in
+      h|\?)      usage  ;;
+      c)        _timestamp="" ;;      # clean mode (no timestamp)
+      l)        _labels+="[$OPTARG]" ;;
+      s)        _status="$OPTARG" ;;
+      f)        _status="FATAL"; _color=$Red ;;
+      e)        _status="ERROR"; _color=$Red ;;
+      w)        _status="WARN"; _color=$Yellow  ;;
+      i)        _status="INFO"; _color=$Green ;;
+      d)        _status="DEBUG"; _color=$Blue  ;;
+      t)        _status="TRACE"; _color=$Blue  ;;
+    esac
+  done
+  shift $((OPTIND-1));
+  _content="$*"
+
+  [[ ! -z $_status ]] && _status="[${_color}${_status}${Reset}]"
+  echo "${_start}${_timestamp}${_status}${_labels} ${_content}"
+}
+
+alias FATAL="adrwl -f $*"
+alias ERROR="adrwl -e $*"
+alias WARN="adrwl -w $*"
+alias INFO="adrwl -i $*"
+alias DEBUG="adrwl -d $*"
+alias TRACE="adrwl -t $*"
+
 function safe_download {
   timestamp="`date '+%Y%m%d-%H%M%S'`"
   if [ ! -f "$1" ]; then
@@ -54,9 +96,10 @@ function run_script {
   status b "${name}"
 }
 
-function show_help {
-  status a "❓  Usage :: .files/bootstrap.sh <opts>"
+function usage {
   cat << EOF
+  Usage :: .files/bootstrap.sh <opts>
+
   Options |   Description                       |   Default (or alternate) Values
   ${div}
   -h      |   Show help menu                    |                         
@@ -77,7 +120,7 @@ function show_help {
   -t      |   Test env, don't detach Git head   |                         
   -u      |   User name                         |   me                    
 EOF
-  status e "Learn more at https://github.com/adrw/.files"
+  WARN -c "Learn more at https://github.com/adrw/.files"
   exit 0
 }
 
@@ -117,6 +160,7 @@ function secure_hostname_network {
 function mac_install_dependencies {
   status a "xcode-select, git, homebrew, ansible"
 
+  # todo? replace with https://github.com/elliotweiser/ansible-osx-command-line-tools
   if ! xcode-select -p 2> /dev/null; then
     status a "Install xcode-select (Command Line Tools)"
     xcode-select --install
@@ -271,7 +315,7 @@ status a "📈  Registered Configuration"
 while getopts "h?ad:b:i:p:m:n:sltu:" opt; do
     case "$opt" in
     h|\?)
-        show_help
+        usage
         exit 0
         ;;
     a)  echo "  - ONLY_ANSIBLE=true"
