@@ -1,6 +1,7 @@
 ---
 
-- stat: ensure .bashrc exists
+- name: ensure .bashrc exists
+  stat:
     path: "{{ home }}/.bashrc"
   register: b
 

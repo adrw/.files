@@ -1,6 +1,7 @@
 ---
 
-- stat: ensure .zshrc exists
+- name: ensure .zshrc exists
+  stat:
     path: "{{ home }}/.zshrc"
   register: z
 
