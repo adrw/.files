@@ -45,7 +45,7 @@ function adrwl() {
       h|\?)      usage  ;;
       c)        _timestamp="" ;;      # clean mode (no timestamp)
       l)        _labels+="[$OPTARG]" ;;
-      s)        _status="$OPTARG" ;;
+      s)        _status+="$OPTARG" ;;
       f)        _status="FATAL"; _color=$Red ;;
       e)        _status="ERROR"; _color=$Red ;;
       w)        _status="WARN"; _color=$Yellow  ;;
@@ -61,12 +61,12 @@ function adrwl() {
   echo "${_start}${_timestamp}${_status}${_labels} ${_content}"
 }
 
-alias FATAL="adrwl -f $*"
-alias ERROR="adrwl -e $*"
-alias WARN="adrwl -w $*"
-alias INFO="adrwl -i $*"
-alias DEBUG="adrwl -d $*"
-alias TRACE="adrwl -t $*"
+alias FATAL="adrwl -f"
+alias ERROR="adrwl -e"
+alias WARN="adrwl -w"
+alias INFO="adrwl -i"
+alias DEBUG="adrwl -d"
+alias TRACE="adrwl -t"
 
 function safe_download {
   timestamp="`date '+%Y%m%d-%H%M%S'`"
@@ -119,13 +119,14 @@ function usage {
   -s      |   Set hostname, turn on Firewall    |                         
   -t      |   Test env, don't detach Git head   |                         
   -u      |   User name                         |   me                    
+
+  Learn more at https://github.com/adrw/.files
 EOF
-  WARN -c "Learn more at https://github.com/adrw/.files"
   exit 0
 }
 
 function secure_hostname_network {
-  status a "🔐  Secure network and custom host name"
+  INFO "🔐  Secure network and custom host name"
   read -p "Enter name for your Mac: " MAC_NAME
   echo "  - MAC_NAME ${MAC_NAME}"
   # randomize MAC address
@@ -154,7 +155,7 @@ function secure_hostname_network {
   networksetup -setairportpower en0 on
 
   sleep 5
-  status b "🔐  Host Name: ${MAC_NAME}. Firewall: On."
+  DEBUG "🔐  Host Name: ${MAC_NAME}. Firewall: On."
 }
 
 function mac_install_dependencies {

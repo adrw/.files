@@ -1,5 +1,13 @@
 ---
 
+- name: Install MacDown
+  homebrew_cask:
+    name: iterm2
+    state: present
+    install_options: "appdir={{ homebrew_cask_appdir }}"
+  become: false
+  ignore_errors: true
+
 - osx_defaults:
     domain: com.googlecode.iterm2
     key: PromptOnQuit

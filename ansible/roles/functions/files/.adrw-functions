@@ -67,11 +67,11 @@ Usage
 EOF
   }
 
-  Reset="$(tput sgr0)"       # Text Reset
-  Red="$(tput setaf 1)"          # Red
-  Green="$(tput setaf 2)"        # Green
-  Yellow="$(tput setaf 3)"          # Yellow
-  Blue="$(tput setaf 4)"         # Blue
+  Reset="$(tput sgr0)"            # Text Reset
+  Red="$(tput setaf 1)"           # Red
+  Green="$(tput setaf 2)"         # Green
+  Yellow="$(tput setaf 3)"        # Yellow
+  Blue="$(tput setaf 4)"          # Blue
 
   _labels=""
   _status=""
@@ -101,12 +101,12 @@ EOF
   echo "${_start}${_timestamp}${_status}${_labels} ${_content}"
 }
 
-alias FATAL="adrwl -f $*"
-alias ERROR="adrwl -e $*"
-alias WARN="adrwl -w $*"
-alias INFO="adrwl -i $*"
-alias DEBUG="adrwl -d $*"
-alias TRACE="adrwl -t $*"
+function FATAL() { adrwl -f $* }
+function ERROR() { adrwl -e $* }
+function WARN() { adrwl -w $* }
+function INFO() { adrwl -i $* }
+function DEBUG() { adrwl -d $* }
+function TRACE() { adrwl -t $* }
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
 function safe_download() {

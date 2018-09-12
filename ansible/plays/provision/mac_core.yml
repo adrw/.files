@@ -103,7 +103,7 @@
       - imagealpha
       # - insomnia
       # - ipartition
-      - iterm2
+      # - iterm2    # separate role
       - karabiner-elements  # requires password
       # - keybase
       # - kdiff3

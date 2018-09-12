@@ -4,7 +4,6 @@
 - include: provision/mac_clear_dock.yml
 - include: provision/mac_second_account.yml
 - include: provision/mac_square.yml
-- include: provision/mac_dev.yml
 - include: provision/mac_etchost_no_animate.yml
 - include: provision/mac_jekyll.yml
 - include: provision/mac_test_full.yml
