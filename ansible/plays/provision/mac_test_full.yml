@@ -64,6 +64,7 @@
       # - mas
       - node
       - openssl
+      - pngquant
       # - privoxy # separate role
       - python
       - python3

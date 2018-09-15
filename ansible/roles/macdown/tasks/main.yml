@@ -10,6 +10,11 @@
   become: false
   ignore_errors: true
 
+- name: ensure MacDown Styles exists
+  stat:
+    path: "{{ home }}/{{ macdown_styles_dest }}"
+  register: mds
+
 - name: Ensure custom CSS directory present
   file:
     path: "{{ home }}/{{ macdown_styles_dest }}"
@@ -18,7 +23,9 @@
     group: "{{ user_group }}"
     mode: 0644
     recurse: yes
-  when: become_skip is not defined or not become_skip
+  when: 
+    - not mds.stat.exists 
+    - become_skip is not defined or not become_skip
   become: true
 
 - name: Link over custom CSS
