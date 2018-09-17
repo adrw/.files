@@ -185,6 +185,17 @@ function gcob {
   fi
 }
 
+# merge git commits
+function gri {
+  if [[ $# == 0 ]]; then
+    WARN "No arguments for git rebase -i"
+  fi
+  case $@ in
+    ''|*[!0-9]*) git rebase -i $@ ;;
+    *) git rebase -i HEAD~$@ ;;
+  esac
+}
+
 # update etchosts. has bias towards maintaining the default (locked down) state
 function etc() {
   name="${package}::${0}"

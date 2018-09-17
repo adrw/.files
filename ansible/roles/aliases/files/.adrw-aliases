@@ -37,7 +37,6 @@ alias gram="git remote add me"
 alias grsu="git remote set-url"
 alias gcam="git commit --amend"
 alias gl="git log --oneline"
-alias gri="git rebase -i"
 alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 
 # Docker
