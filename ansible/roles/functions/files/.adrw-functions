@@ -2,7 +2,7 @@
 # SOURCE  https://github.com/adrw/.files
 
 # ADRW Bootstrap Standard Methods
-prefix="adrw::"
+package="adrw"
 # status opt_code "Main update text" "optional script name override"
 function status() {
   Reset="$(tput sgr0)"       # Text Reset
@@ -35,7 +35,7 @@ function adrwl() {
 adrwl logging library for bash
 
 Format
-  <|${_timestamp}${_status}${_prefix} ${_content}
+  <|${_timestamp}${_status}${_label} ${_content}
 
 Options
 
@@ -53,8 +53,8 @@ Options
 
 Usage
 
-  adrwl -p ansible -s start -i Ansible is starting
-  $ 2018-09-08 14:22:12<|ansible [ start ] |>Ansible is starting
+  adrwl -l ansible -s start -i Ansible is starting
+  $ <|[2018-09-17 10:33:12][INFO][ansible] Ansible is starting
 
   or alias functions:
 
@@ -176,9 +176,18 @@ function gco {
   fi
 }
 
+# git new branch
+function gcob {
+  if [[ $# == 0 ]]; then
+    git checkout -b $(date +"adrw/%Y%m%d.WB%H%M%S")
+  else
+    git checkout -b $(date +"adrw/%Y%m%d.$@")
+  fi
+}
+
 # update etchosts. has bias towards maintaining the default (locked down) state
 function etc() {
-  name="${prefix}${0}"
+  name="${package}::${0}"
   hosts="/etc/hosts"
   default_hosts=".no-social.hosts"
   default_hosts_dir="/Users/me/.files/ansible/roles/etchosts/files/"
@@ -241,7 +250,7 @@ function etc() {
 # in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
 # in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
 function rename_first_line() {
-  name="${prefix}${0}"
+  name="${package}::${0}"
   if [ $# -ne 2 ]; then
     status e "Usage: rename_first_line <in_dir> <out_dir>"
   else
@@ -274,7 +283,7 @@ function rename_first_line() {
 # Remove from admin with 
 #   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
 function chmod_admin() {
-  name="${prefix}${0}"
+  name="${package}::${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: chmod_admin <username>"
   elif [[ "$(uname)" != "Darwin"  ]]; then
@@ -312,7 +321,7 @@ function chmod_admin() {
 #   $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
 #   $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
 function mv_user() {
-  name="${prefix}${0}"
+  name="${package}::${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: hide_user <username>"
   elif [[ "$(uname)" != "Darwin"  ]]; then
