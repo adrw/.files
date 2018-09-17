@@ -167,15 +167,6 @@ function decap() {
   fi
 }
 
-# git checkout
-function gco {
-  if [[ $# == 0 ]]; then
-    git checkout master
-  else
-    git checkout "$@"
-  fi
-}
-
 # git new branch
 function gcob {
   if [[ $# == 0 ]]; then
