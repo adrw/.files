@@ -101,12 +101,30 @@ EOF
   echo "${_start}${_timestamp}${_status}${_labels} ${_content}"
 }
 
-function FATAL() { adrwl -f $* }
-function ERROR() { adrwl -e $* }
-function WARN() { adrwl -w $* }
-function INFO() { adrwl -i $* }
-function DEBUG() { adrwl -d $* }
-function TRACE() { adrwl -t $* }
+function FATAL() {
+  adrwl -f $* 
+}
+
+function ERROR() {
+  adrwl -e $* 
+}
+
+function WARN() {
+  adrwl -w $* 
+}
+
+function INFO() {
+  adrwl -i $* 
+}
+
+function DEBUG() {
+  adrwl -d $* 
+}
+
+function TRACE() {
+  adrwl -t $* 
+}
+
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
 function safe_download() {

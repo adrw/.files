@@ -1,5 +1,12 @@
 ---
 
+- name: Install Syncthing
+  homebrew:
+    name: syncthing
+    state: present
+  become: false
+  ignore_errors: true
+
 - name: start syncthing as service
   command: brew services start syncthing
   register: syncthing_service_status

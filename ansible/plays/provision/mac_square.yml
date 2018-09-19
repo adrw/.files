@@ -67,6 +67,7 @@
       # - privoxy # separate role
       - python
       - python3
+      - shellcheck
       # - syncthing
       - tldr
       - tmux

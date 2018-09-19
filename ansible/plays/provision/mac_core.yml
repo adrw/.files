@@ -22,7 +22,7 @@
     - macdown
     - ssh #id_rsa key generation
     - privoxy
-    - syncthing
+    # - syncthing
     - automator-workflows
     # - anaconda
     # - dnscrypt
@@ -67,7 +67,8 @@
       # - privoxy # separate role
       - python
       - python3
-      - syncthing
+      - shellcheck
+      # - syncthing # separate role
       - tldr
       - tmux
       - tree
