@@ -4,7 +4,7 @@
 # ADRW Bootstrap Standard Methods
 package="adrw"
 # status opt_code "Main update text" "optional script name override"
-function status() {
+status() {
   Reset="$(tput sgr0)"       # Text Reset
   Red="$(tput setaf 1)"          # Red
   Green="$(tput setaf 2)"        # Green
@@ -29,13 +29,13 @@ function status() {
   esac
 }
 
-function adrwl() {
-  function usage() {
+adrwl() {
+  usage() {
     cat << EOF
 adrwl logging library for bash
 
 Format
-  <|${_timestamp}${_status}${_label} ${_content}
+  <|{_timestamp}{_status}{_label} {_content}
 
 Options
 
@@ -58,12 +58,12 @@ Usage
 
   or alias functions:
 
-  FATAL() => adrwl -f $*
-  ERROR() => adrwl -e $*
-  WARN()  => adrwl -w $*
-  INFO()  => adrwl -i $*
-  DEBUG() => adrwl -d $*
-  TRACE() => adrwl -t $*
+  FATAL() => adrwl -f *
+  ERROR() => adrwl -e *
+  WARN()  => adrwl -w *
+  INFO()  => adrwl -i *
+  DEBUG() => adrwl -d *
+  TRACE() => adrwl -t *
 EOF
   }
 
@@ -98,67 +98,67 @@ EOF
   _content="$*"
 
   [[ ! -z $_status ]] && _status="[${_color}${_status}${Reset}]"
-  echo "${_start}${_timestamp}${_status}${_labels} ${_content}"
+  echo "${_start}${_timestamp}${_status}${_labels}${_end} ${_content}"
 }
 
-function FATAL() {
-  adrwl -f $* 
+FATAL() {
+  adrwl -f "$@"
 }
 
-function ERROR() {
-  adrwl -e $* 
+ERROR() {
+  adrwl -e "$@"
 }
 
-function WARN() {
-  adrwl -w $* 
+WARN() {
+  adrwl -w "$@"
 }
 
-function INFO() {
-  adrwl -i $* 
+INFO() {
+  adrwl -i "$@"
 }
 
-function DEBUG() {
-  adrwl -d $* 
+DEBUG() {
+  adrwl -d "$@"
 }
 
-function TRACE() {
-  adrwl -t $* 
+TRACE() {
+  adrwl -t "$@"
 }
 
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
-function safe_download() {
-  timestamp="`date '+%Y%m%d-%H%M%S'`"
+safe_download() {
+  timestamp="$(date '+%Y%m%d-%H%M%S')"
   if [ ! -f "$1" ]; then
     status a "Download ${1}"
-    curl -s -o $1 $2
+    curl -s -o "$1" "$2"
     status b "Download ${1}"
   else
     status a "Update ${1}"
-    mv $1 $1.$timestamp
-    curl -s -o $1 $2
-    if diff -q "$1" "$1.$timestamp" > /dev/null; then rm $1.$timestamp; fi
+    mv "$1" "$1.$timestamp"
+    curl -s -o "$1" "$2"
+    if diff -q "$1" "$1.$timestamp" > /dev/null; then rm "$1.$timestamp"; fi
     status b "Update ${1}"
   fi
 }
 
 # safe_source ./path/file.sh ~/.bashrc
-function safe_source() {
-  if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
+safe_source() {
+  if ! grep -q "$1" "$2"; then echo "source $1" >> "$2"; fi
 }
 
 # runs script with bumper status output
-function run_script() {
-  exec=$*
-  script=$1
-  name=$(basename ${script})
+run_script() {
+  exec="$*"
+  script="$1"
+  name=$(basename "${script}")
   status a "${name}"
   ${exec}
   status b "${name}"
 }
 
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
-function safe_k() {
+safe_k() {
   if type k &> /dev/null; then
     k -a "$@"
   else
@@ -167,26 +167,26 @@ function safe_k() {
 }
 
 # Killall Process from search
-function killall() {
+killall() {
   if [ $# -eq 0 ]; then
     status e "Usage: killall <grep process search team>"
   else
-		for pid in `ps -ef | grep "${1}" | awk '{print $2}'` ; do kill $pid ; done
+		for pid in $(pgrep "${1}" | awk '{print $2}') ; do kill "$pid" ; done
 	fi;
 }
 
 # Decapitate git repo – headless – (disregard all local changes, reset back to master)
-function decap() {
+decap() {
   git fetch --all
   if [ $# -eq 0 ]; then
     git reset --hard origin/master
   else
-    git reset --hard $1
+    git reset --hard "$1"
   fi
 }
 
 # git new branch
-function gcob {
+gcob() {
   if [[ $# == 0 ]]; then
     git checkout -b "$(date +"adrw/%Y%m%d.WB%H%M%S")"
   else
@@ -195,7 +195,7 @@ function gcob {
 }
 
 # merge git commits
-function gri {
+gri() {
   if [[ $# == 0 ]]; then
     WARN "No arguments for git rebase -i"
   fi
@@ -206,7 +206,7 @@ function gri {
 }
 
 # update etchosts. has bias towards maintaining the default (locked down) state
-function etc() {
+etc() {
   name="${package}::${0}"
   hosts="/etc/hosts"
   default_hosts=".no-social.hosts"
@@ -231,8 +231,8 @@ function etc() {
   fi
 
   # determine if default hosts is currently installed at /etc/hosts
-  etc_default_diff=`diff ${hosts} ${default_hosts_dir}${default_hosts} | wc | awk '{print $1}'`
-  etc_new_diff=`diff ${hosts} ${hosts_dir}${new_hosts} | wc | awk '{print $1}'`
+  etc_default_diff=$(diff ${hosts} "${default_hosts_dir}${default_hosts}" | wc | awk '{print $1}')
+  etc_new_diff=$(diff ${hosts} "${hosts_dir}${new_hosts}" | wc | awk '{print $1}')
 
   if [[ $etc_new_diff -eq 0 && $etc_default_diff -ne 0 ]]; then
     status b "🍺  ${hosts} already = ${new_hosts}"
@@ -240,7 +240,7 @@ function etc() {
     return
   elif [[ $etc_new_diff -eq 0 && $etc_default_diff -eq 0 ]]; then
     updated_hosts="${alt_hosts}"
-    etc_new_diff=`diff ${hosts} ${hosts_dir}${alt_hosts} | wc | awk '{print $1}'`
+    etc_new_diff=$(diff ${hosts} "${hosts_dir}${alt_hosts}" | wc | awk '{print $1}')
     status w "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
     sleep ${wait}
   elif [[ $etc_new_diff -ne 0 && $etc_default_diff -eq 0 ]]; then
@@ -252,13 +252,13 @@ function etc() {
   fi
 
   status t "Update ${hosts} => ${updated_hosts}" "${name}"
-  sudo cp ${hosts_dir}${updated_hosts} /etc/hosts
+  sudo cp "${hosts_dir}${updated_hosts}" /etc/hosts
 
-  etc_new_diff=`diff ${hosts} ${hosts_dir}${updated_hosts} | wc | awk '{print $1}'`
+  etc_new_diff=$(diff ${hosts} "${hosts_dir}${updated_hosts}" | wc | awk '{print $1}')
 
-  if [ $etc_new_diff -eq 0 ]; then
+  if [ "$etc_new_diff" -eq 0 ]; then
     sudo dscacheutil -flushcache  # flush dns cache
-    sudo killall -HUP mDNSResponder
+    sudo bash -c "killall -HUP mDNSResponder"
     status b "🍺  Fin. ${hosts} = ${updated_hosts}"
   else    
     status e "${hosts} update failed."
@@ -269,18 +269,18 @@ function etc() {
 # Rename all files to their first line
 # in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
 # in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
-function rename_first_line() {
+rename_first_line() {
   name="${package}::${0}"
   if [ $# -ne 2 ]; then
     status e "Usage: rename_first_line <in_dir> <out_dir>"
   else
     in_dir=$1
     out_dir=$2
-    mkdir -p $out_dir
+    mkdir -p "$out_dir"
 
     status t "$in_dir/filename.ext => $out_dir/first_line.ext" "${name}"
 
-    for file in $in_dir/*; do
+    for file in "$in_dir"/*; do
       first_line=$(head -n 1 $file | cut -c-40 | awk '$1=$1')
       extension="${file##*.}"
       cp_err=$(cp "$file" "${out_dir}/${first_line}.${extension}" 2>&1)
@@ -302,7 +302,7 @@ function rename_first_line() {
 #   $ dscl . -read /Users/<username> GeneratedUID
 # Remove from admin with 
 #   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
-function chmod_admin() {
+chmod_admin() {
   name="${package}::${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: chmod_admin <username>"
@@ -340,7 +340,7 @@ function chmod_admin() {
 #   $ sudo mv /Users/hiddenuser /var/hiddenuser
 #   $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
 #   $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
-function mv_user() {
+mv_user() {
   name="${package}::${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: hide_user <username>"
@@ -393,18 +393,18 @@ function mv_user() {
 }
 
 # Docker
-function dka() {
-  docker kill $(docker ps -q)
+dka() {
+  docker kill "$(docker ps -q)"
 }
-function drmc() {
-  docker rm $(docker ps -a -q)
+drmc() {
+  docker rm "$(docker ps -a -q)"
 }
-function drmi() {
-  docker rmi -f $(docker images -q)
+drmi() {
+  docker rmi -f "$(docker images -q)"
 }
 
 # zmv
-function zm4b() {
+zm4b() {
   \zmv '*.m4a' '$(basename $f .m4a).m4b'   # all *.m4a -> *.m4b bookmarkable audiobooks
 }
 
@@ -414,16 +414,16 @@ function zm4b() {
 # https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
 
 # Reload Antibody
-function antiup() {
-	rm -rf `antibody home`
+antiup() {
+	rm -rf "$(antibody home)"
 	bash -c "antibody bundle < ~/.zshplugins > ~/.zsh_plugins.sh"
 	cat ~/.zsh_plugins.sh
 	reload
 }
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
-function targz() {
-	local tmpFile="${@%/}.tar";
+targz() {
+	local tmpFile="${*%/}.tar";
 	tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
 
 	size=$(
@@ -456,7 +456,7 @@ function targz() {
 }
 
 # Start an HTTP server from a directory, optionally specifying the port
-function server() {
+server() {
 	local port="${1:-8000}";
 	sleep 1 && open "http://localhost:${port}/" &
 	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
@@ -467,7 +467,7 @@ function server() {
 
 # Syntax-highlight JSON strings or files
 # Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
-function json() {
+json() {
 	if [ -t 0 ]; then # argument
 		python -mjson.tool <<< "$*" | pygmentize -l javascript;
 	else # pipe
@@ -478,7 +478,7 @@ function json() {
 
 # `s` with no arguments opens the current directory in Sublime Text, otherwise
 # opens the given location
-function s() {
+s() {
 	if [ $# -eq 0 ]; then
 		subl .;
 	else
@@ -488,7 +488,7 @@ function s() {
 
 # `a` with no arguments opens the current directory in Atom Editor, otherwise
 # opens the given location
-function a() {
+a() {
 	if [ $# -eq 0 ]; then
 		atom .;
 	else
@@ -498,7 +498,7 @@ function a() {
 
 # `c` with no arguments opens the current directory, otherwise opens the given
 # location
-function c() {
+c() {
   if [ $# -eq 0 ]; then
     code .;
   else
@@ -509,7 +509,7 @@ function c() {
 
 # `v` with no arguments opens the current directory in Vim, otherwise opens the
 # given location
-function v() {
+v() {
 	if [ $# -eq 0 ]; then
 		vim .;
 	else
@@ -519,7 +519,7 @@ function v() {
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
-function o() {
+o() {
 	if [ $# -eq 0 ]; then
 		open .;
 	else
@@ -531,7 +531,7 @@ function o() {
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
-function tre() {
+tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
@@ -539,7 +539,7 @@ function tre() {
 # Description: extracts archived files / mounts disk images
 # Note: .dmg/hdiutil is Mac OS X-specific.
 # credit: http://nparikh.org/notes/zshrc.txt
-function extract() {
+extract() {
   if [ -f "$1" ]; then
     case "$1" in
       *.tar.bz2)  tar -jxvf "$1"                        ;;
