@@ -17,6 +17,7 @@
     - vim
     - privoxy
     - automator-workflows
+    - dockutil
     - macos
     - iterm2
 
@@ -60,3 +61,40 @@
       - font-fira-code
       - font-fira-mono-for-powerline
       - font-fontawesome
+
+    dockitems_to_persist:
+      - name: Messages
+        path: "/Applications/Messages.app"
+        pos: 2
+      - name: Signal
+        path: "/Applications/Signal.app"
+        pos: 3
+      - name: Google Chrome
+        path: "/Applications/Google Chrome.app"
+        pos: 4
+      - name: Firefox Developer Edition
+        path: "/Applications/Firefox Developer Edition.app"
+        pos: 5
+      - name: Safari
+        path: "/Applications/Safari.app"
+        pos: 6
+      - name: Calendar
+        path: /Applications/Calendar.app
+        pos: 7
+      - name: Notes
+        path: /Applications/Notes.app
+        pos: 8
+      - name: Reminders
+        path: /Applications/Reminders.app
+        pos: 9
+      - name: Preview
+        path: /Applications/Preview.app
+        pos: 10
+      - name: iTunes
+        path: /Applications/iTunes.app
+        pos: 11
+      - name: System Preferences
+        path: /Applications/System Preferences.app
+        pos: 12
+
+    dockitems_to_remove:
