@@ -4,7 +4,7 @@
 # ADRW Bootstrap Standard Methods
 package="adrw"
 # status opt_code "Main update text" "optional script name override"
-status() {
+function status {
   Reset="$(tput sgr0)"       # Text Reset
   Red="$(tput setaf 1)"          # Red
   Green="$(tput setaf 2)"        # Green
@@ -29,8 +29,8 @@ status() {
   esac
 }
 
-adrwl() {
-  usage() {
+function adrwl {
+  function usage {
     cat << EOF
 adrwl logging library for bash
 
@@ -101,33 +101,33 @@ EOF
   echo "${_start}${_timestamp}${_status}${_labels}${_end} ${_content}"
 }
 
-FATAL() {
+function FATAL {
   adrwl -f "$@"
 }
 
-ERROR() {
+function ERROR {
   adrwl -e "$@"
 }
 
-WARN() {
+function WARN {
   adrwl -w "$@"
 }
 
-INFO() {
+function INFO {
   adrwl -i "$@"
 }
 
-DEBUG() {
+function DEBUG {
   adrwl -d "$@"
 }
 
-TRACE() {
+function TRACE {
   adrwl -t "$@"
 }
 
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
-safe_download() {
+function safe_download {
   timestamp="$(date '+%Y%m%d-%H%M%S')"
   if [ ! -f "$1" ]; then
     status a "Download ${1}"
@@ -143,12 +143,12 @@ safe_download() {
 }
 
 # safe_source ./path/file.sh ~/.bashrc
-safe_source() {
+function safe_source {
   if ! grep -q "$1" "$2"; then echo "source $1" >> "$2"; fi
 }
 
 # runs script with bumper status output
-run_script() {
+function run_script {
   exec="$*"
   script="$1"
   name=$(basename "${script}")
@@ -158,7 +158,7 @@ run_script() {
 }
 
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
-safe_k() {
+function safe_k {
   if type k &> /dev/null; then
     k -a "$@"
   else
@@ -167,7 +167,7 @@ safe_k() {
 }
 
 # Killall Process from search
-killall() {
+function killall {
   if [ $# -eq 0 ]; then
     status e "Usage: killall <grep process search team>"
   else
@@ -176,7 +176,7 @@ killall() {
 }
 
 # Decapitate git repo – headless – (disregard all local changes, reset back to master)
-decap() {
+function decap {
   git fetch --all
   if [ $# -eq 0 ]; then
     git reset --hard origin/master
@@ -186,7 +186,7 @@ decap() {
 }
 
 # git new branch
-gcob() {
+function gcob {
   if [[ $# == 0 ]]; then
     git checkout -b "$(date +"adrw/%Y%m%d.WB%H%M%S")"
   else
@@ -195,7 +195,7 @@ gcob() {
 }
 
 # merge git commits
-gri() {
+function gri {
   if [[ $# == 0 ]]; then
     WARN "No arguments for git rebase -i"
   fi
@@ -206,7 +206,7 @@ gri() {
 }
 
 # update etchosts. has bias towards maintaining the default (locked down) state
-etc() {
+function etc {
   name="${package}::${0}"
   hosts="/etc/hosts"
   default_hosts=".no-social.hosts"
@@ -269,7 +269,7 @@ etc() {
 # Rename all files to their first line
 # in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
 # in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
-rename_first_line() {
+function rename_first_line {
   name="${package}::${0}"
   if [ $# -ne 2 ]; then
     status e "Usage: rename_first_line <in_dir> <out_dir>"
@@ -302,7 +302,7 @@ rename_first_line() {
 #   $ dscl . -read /Users/<username> GeneratedUID
 # Remove from admin with 
 #   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
-chmod_admin() {
+function chmod_admin {
   name="${package}::${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: chmod_admin <username>"
@@ -340,7 +340,7 @@ chmod_admin() {
 #   $ sudo mv /Users/hiddenuser /var/hiddenuser
 #   $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
 #   $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
-mv_user() {
+function mv_user {
   name="${package}::${0}"
   if [ $# -ne 1 ]; then
     status e "Usage: hide_user <username>"
@@ -393,18 +393,18 @@ mv_user() {
 }
 
 # Docker
-dka() {
+function dka {
   docker kill "$(docker ps -q)"
 }
-drmc() {
+function drmc {
   docker rm "$(docker ps -a -q)"
 }
-drmi() {
+function drmi {
   docker rmi -f "$(docker images -q)"
 }
 
 # zmv
-zm4b() {
+function zm4b {
   \zmv '*.m4a' '$(basename $f .m4a).m4b'   # all *.m4a -> *.m4b bookmarkable audiobooks
 }
 
@@ -414,7 +414,7 @@ zm4b() {
 # https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
 
 # Reload Antibody
-antiup() {
+function antiup {
 	rm -rf "$(antibody home)"
 	bash -c "antibody bundle < ~/.zshplugins > ~/.zsh_plugins.sh"
 	cat ~/.zsh_plugins.sh
@@ -422,7 +422,7 @@ antiup() {
 }
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
-targz() {
+function targz {
 	local tmpFile="${*%/}.tar";
 	tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
 
@@ -456,7 +456,7 @@ targz() {
 }
 
 # Start an HTTP server from a directory, optionally specifying the port
-server() {
+function server {
 	local port="${1:-8000}";
 	sleep 1 && open "http://localhost:${port}/" &
 	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
@@ -467,7 +467,7 @@ server() {
 
 # Syntax-highlight JSON strings or files
 # Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
-json() {
+function json {
 	if [ -t 0 ]; then # argument
 		python -mjson.tool <<< "$*" | pygmentize -l javascript;
 	else # pipe
@@ -478,7 +478,7 @@ json() {
 
 # `s` with no arguments opens the current directory in Sublime Text, otherwise
 # opens the given location
-s() {
+function s {
 	if [ $# -eq 0 ]; then
 		subl .;
 	else
@@ -488,7 +488,7 @@ s() {
 
 # `a` with no arguments opens the current directory in Atom Editor, otherwise
 # opens the given location
-a() {
+function a {
 	if [ $# -eq 0 ]; then
 		atom .;
 	else
@@ -498,7 +498,7 @@ a() {
 
 # `c` with no arguments opens the current directory, otherwise opens the given
 # location
-c() {
+function c {
   if [ $# -eq 0 ]; then
     code .;
   else
@@ -509,7 +509,7 @@ c() {
 
 # `v` with no arguments opens the current directory in Vim, otherwise opens the
 # given location
-v() {
+function v {
 	if [ $# -eq 0 ]; then
 		vim .;
 	else
@@ -519,7 +519,7 @@ v() {
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
-o() {
+function o {
 	if [ $# -eq 0 ]; then
 		open .;
 	else
@@ -531,7 +531,7 @@ o() {
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
-tre() {
+function tre {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
@@ -539,7 +539,7 @@ tre() {
 # Description: extracts archived files / mounts disk images
 # Note: .dmg/hdiutil is Mac OS X-specific.
 # credit: http://nparikh.org/notes/zshrc.txt
-extract() {
+function extract {
   if [ -f "$1" ]; then
     case "$1" in
       *.tar.bz2)  tar -jxvf "$1"                        ;;
