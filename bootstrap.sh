@@ -201,7 +201,7 @@ function mac_scripts {
       run_script ${SCRIPTS}/homecall.sh fixmacos
     fi
     ;;
-  "mac_etchost_no_animate")
+  "mac_etchost_no_animate"|"mac_second_account")
     run_script ${SCRIPTS}/no_animate.macos
     ;;
   *)
@@ -240,7 +240,7 @@ function mac_bootstrap {
   "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
     cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
-  "mac_test_full"|"mac_test_short")
+  "mac_test_full"|"mac_test_short"|"mac_second_account")
     cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   *)
