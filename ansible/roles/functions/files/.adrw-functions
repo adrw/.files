@@ -11,7 +11,7 @@ function status() {
   Yellow="$(tput setaf 3)"          # Yellow
   Blue="$(tput setaf 4)"         # Blue
   if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "adrw" if $0 is status, $0 otherwise
-    [ $(basename "${0}") = "status" ] && scriptname="adrw" || scriptname=$(basename "${0}")
+    [ "$(basename "${0}")" = "status" ] && scriptname="adrw" || scriptname=$(basename "${0}")
   else
     scriptname="${1}"
   fi
@@ -20,7 +20,7 @@ function status() {
   
   case "${1}" in
     a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
-    b)        echo "${Green}ok: [ ${2} ] ${div:$((${#2}+9))}${Reset}" ;;
+    b)        echo "${Green}ok: [ ${2} ] ${Reset}" ;;
     s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
     t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ]" ;;
     e|err)    echo "${Red}fatal: [ ${2} ]" ;;
@@ -160,9 +160,9 @@ function run_script() {
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
 function safe_k() {
   if type k &> /dev/null; then
-    k -a $@
+    k -a "$@"
   else
-    ls -la $@
+    ls -la "$@"
   fi
 }
 
@@ -188,9 +188,9 @@ function decap() {
 # git new branch
 function gcob {
   if [[ $# == 0 ]]; then
-    git checkout -b $(date +"adrw/%Y%m%d.WB%H%M%S")
+    git checkout -b "$(date +"adrw/%Y%m%d.WB%H%M%S")"
   else
-    git checkout -b $(date +"adrw/%Y%m%d.$@")
+    git checkout -b "$(date +"adrw/%Y%m%d.$*")"
   fi
 }
 
@@ -200,8 +200,8 @@ function gri {
     WARN "No arguments for git rebase -i"
   fi
   case $@ in
-    ''|*[!0-9]*) git rebase -i $@ ;;
-    *) git rebase -i HEAD~$@ ;;
+    ''|*[!0-9]*) git rebase -i "$@" ;;
+    *) git rebase -i HEAD~"$*" ;;
   esac
 }
 

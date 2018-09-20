@@ -37,6 +37,7 @@ alias gra="git remote add"
 alias gram="git remote add me"
 alias grsu="git remote set-url"
 alias gcam="git commit --amend"
+alias gpm="git push me"
 alias gpmf="git push me -f"
 alias gl="git log --oneline"
 alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
@@ -65,18 +66,6 @@ alias zz='fasd_cd -d -i'  # cd with interactive selection
 alias jj='fasd_cd -i'
 alias j='fasd_cd -i -1'
 
-# UW Directories
-case "$(uname)" in
-    Darwin)   uwsrc="${HOME}/src/uw";   uwpost="-work"  ;;
-    Linux)    uwsrc="${HOME}";          uwpost=""       ;;
-    *)                                                  ;;
-esac
-alias uw="cd ~/docs/UW/4b"
-alias 349="cd ${uwsrc}/cs349${uwpost}"
-alias 451="cd ${uwsrc}/cs451${uwpost}"
-alias 454="cd ${uwsrc}/cs454${uwpost}"
-alias 487="cd ${uwsrc}/co487${uwpost}"
-
 #Web Download files off of a webpage
 # - Every file: wd ""  {url}
 # - Only with extension: wd pdf {url}
@@ -101,11 +90,10 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 # Clear Homebrew cache
 # Determine platform
 case "$(uname)" in
-    Darwin)   et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'; rm -rf `brew --cache`" ;;
-    Linux)    et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash"  ;;
-    *)        et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash"  ;;
+    Darwin)   et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'; rm -rf $(brew --cache)" ;;
+    Linux|*)  et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash"  ;;
 esac
-alias emptytrash="$et"
+alias emptytrash='$et'
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -128,7 +116,7 @@ alias spoton="sudo mdutil -a -i on"
 alias badge="tput bel"
 
 # Reload the shell (i.e. invoke as a login shell)
-alias reload="exec $SHELL -l"
+alias reload='exec $SHELL -l'
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
