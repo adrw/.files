@@ -5,18 +5,26 @@ matrix:
     before_install:
       - brew update
     script: ./bootstrap.sh -a -p mac_test_short
+    notifications:
+      slack: adrwxyz:6UUG0fk3sS5WnvnHUoHvT59E
 
   - os: osx
     sudo: enabled
     before_install:
       - brew update
     script: travis_wait 60 ./bootstrap.sh -a -p mac_test_full
+    notifications:
+      slack: adrwxyz:6UUG0fk3sS5WnvnHUoHvT59E
 
   - os: osx
     sudo: enabled
     before_install:
       - brew update
     script: ./bootstrap.sh -a -p mac_second_account
+    notifications:
+      slack: adrwxyz:6UUG0fk3sS5WnvnHUoHvT59E
 
   - os: linux
     script: ./bootstrap.sh
+    notifications:
+      slack: adrwxyz:6UUG0fk3sS5WnvnHUoHvT59E
