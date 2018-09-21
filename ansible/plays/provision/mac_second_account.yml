@@ -47,7 +47,7 @@
       - figlet
       - htop
       - jhead     # photo manipulation script
-      - node
+      # - node
       # - openssl
       # - python
       # - python3
@@ -55,7 +55,7 @@
       - tmux
       - tree
       - wget
-      - yarn
+      # - yarn
     homebrew_cask_apps:
     # fonts
       - font-fira-code
