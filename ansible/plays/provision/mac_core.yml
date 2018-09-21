@@ -71,6 +71,7 @@
       # - syncthing # separate role
       - tldr
       - tmux
+      - travis
       - tree
       - wget
       - yarn
