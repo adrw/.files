@@ -55,7 +55,7 @@
       - tmux
       - tree
       - wget
-      # - yarn
+      - yarn
     homebrew_cask_apps:
     # fonts
       - font-fira-code

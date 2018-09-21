@@ -4,7 +4,7 @@ matrix:
     sudo: enabled
     before_install:
     - brew update
-    script: "./bootstrap.sh -a -p mac_test_short"
+    script: ./bootstrap.sh -a -p mac_test_short
   - os: osx
     sudo: enabled
     before_install:
@@ -14,9 +14,9 @@ matrix:
     sudo: enabled
     before_install:
     - brew update
-    script: "./bootstrap.sh -a -p mac_second_account"
+    script: ./bootstrap.sh -a -p mac_second_account
   - os: linux
-    script: "./bootstrap.sh"
+    script: ./bootstrap.sh
 notifications:
   slack:
     secure: WY2yfp191UtWbrdDvNE+kmDKvf1zywaC3uMl6t3YxKWSmXquvIXA+lQfg+cCL+Xbq/yesMT9ekO8ywlcVJwACJR2fH8Bvq0HojKMbktYWqk9joDnFMBpVTiBmWmISlSdnOSaOT3ntMgOr9X4HnHxAcBdfTJl/t61WQxHCZxlfyChxowTUDig2yC+FdvOSkCjIsCKeycRJiDL3uwwVAu1o8KwUENpsX6jsc9qcMtiZixZKpE2S4GjGgmpcpy97Egh+MBapJfD2hl//zY2tkzEOGTCkeV0+0ioiBqX0egQrcGLbCVngFiuZyQvzXskRBf2iIVPRe69VjOAOR1ZOMnNfK5BqKbLRB73+iCGmqafhbOELx4EUAAz192JysKdtUUVvqm/e/2UAzJ/HMJbHmNSSZvZgbw5DqxCldphZ9ddRV6PRR1Et2qJnG++vIn2DyJLu5QY5AoWO1fe5/LysHA2E7XN+f+7Uj4A14rqThyXUB5vqnPAN+vpTZLaizGwJXnh7wwyRZDdJY89rJ66af0CB91fgWAm7EnKXtugMpivdqoDNGsQLoDNmT6tTi+4AVgdFdhN9QJIZSwgr021ZXlK7sdHT0FwRMo6gwEPS5atpfXjyWJuyIT6y962ITDOJVIDMnJeJGVvIvcI8ogyoEri9g5P1SR8OrX84aMDX3UHeuM=
