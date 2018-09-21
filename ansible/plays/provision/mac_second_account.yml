@@ -45,7 +45,7 @@
       - cheat
       - exiftool  # photo manipulation script
       - figlet
-      - htop
+      # - htop
       - jhead     # photo manipulation script
       # - node
       # - openssl
