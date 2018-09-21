@@ -42,20 +42,9 @@
       - getantibody/homebrew-antibody
     homebrew_installed_packages:
       - antibody
-      - cheat
-      - exiftool  # photo manipulation script
       - figlet
       - htop
-      - jhead     # photo manipulation script
-      - node
-      - openssl
-      - python
-      - python3
-      - tldr
       - tmux
-      - tree
-      - wget
-      - yarn
     homebrew_cask_apps:
     # fonts
       - font-fira-code
