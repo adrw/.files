@@ -24,7 +24,7 @@ function ADRWL {
   if [ -z "$*" ]; then
     ADRWL_PREFIX=""
   fi
-  ADRWL_CONTENT="${@: -1}"
+  ADRWL_CONTENT="${@: -1}"        # Content is the last argument string
 }
 
 function FATAL {

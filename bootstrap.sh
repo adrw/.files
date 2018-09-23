@@ -35,7 +35,7 @@ EOF
   exit 0
 }
 
-function secure_hostname_network {
+function run_secure_hostname_network {
   DEBUG "[🔐 Network]" "Secure network and change computer name: $(hostname) => ${COMPUTER_NAME}"
   # randomize MAC address
   sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
@@ -105,7 +105,7 @@ function mac_scripts {
   "mac_core"|"mac_square"|"mac_dev"|"mac_clean"|"mac_test_full"|"mac_test_short")
     run_script ${SCRIPTS}/custom.macos
     run_script ${SCRIPTS}/.macos
-    if [[ $(csrutil LOG) != *enabled* ]]; then
+    if [[ $(csrutil status) != *enabled* ]]; then
       run_script ${SCRIPTS}/homecall.sh fixmacos
     fi
     ;;
@@ -221,8 +221,13 @@ MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 TEST=false                          # -t
 USER_NAME=$(whoami)                 # -u
-SECURE=false                        # -s
 COMPUTER_NAME=$(hostname)
+SUDO=0
+SECURE_NETWORK=0
+ANSIBLE=""
+FULL_MACOS_CUSTOM=0
+NO_ANIMATE_MACOS_CUSTOM=0
+MACOS_HOMECALL=0
 
 function getUserGroup { 
   id -Gn "$USER_NAME" | cut -d " " -f1 
@@ -260,7 +265,7 @@ function processArguments {
         MAS_PASSWORD=${OPTARG}
         ;;
     s)  DEBUG "  - Secure network and custom host name"
-        SECURE=true
+        SECURE_NETWORK=1
         ;;
     t)  DEBUG "  - Test Environment (Git Head still attached)"
         TEST=true
@@ -278,27 +283,91 @@ function processArguments {
 
 function interactiveArguments {
   # read -p "Next test? [y/n/enter] " -n 1 -r && echo ""
-  DEBUG "Answer the 14 questions below to build your custom install"
 
-  # Secure Network
-  DEBUG "# Secure your Computer Name and Network Settings?"
-  DEBUG "Change your computer name from ${COMPUTER_NAME}, turn on firewall, randomize MAC address"
-  read -p "[Enter] to skip. Type to run with new computer name: " -r Q_COMPUTER_NAME
-  if [[ $Q_COMPUTER_NAME != "" ]]; then
-    COMPUTER_NAME=$Q_COMPUTER_NAME
-    secure_hostname_network
-  else
-    DEBUG "Skipping..."
-  fi
+  function qSudo {
+    DEBUG "# Run tasks requiring Sudo permissions?"
+    DEBUG "Affected tasks: Secure Network, macOS Customizations, some Ansible roles"
+    read -p "[Enter] to skip. Type any character to run related sudo tasks: " -r Q_SUDO
+    if [[ $Q_SUDO != "" ]]; then
+      SUDO=1
+    fi
+  }
+  
+  function qSecureNetwork {
+    DEBUG "# Secure your Computer Name and Network Settings?"
+    DEBUG "Change your computer name from ${COMPUTER_NAME}, turn on firewall, randomize MAC address"
+    read -p "[Enter] to skip. Type to run with new computer name: " -r Q_COMPUTER_NAME
+    if [[ $Q_COMPUTER_NAME != "" ]]; then
+      COMPUTER_NAME=$Q_COMPUTER_NAME
+      SECURE_NETWORK=1
+    fi
+  }
 
-  # User
-  DEBUG "# Run as User: ${USER_NAME}?"
-  read -p "[Enter] to skip. Type to overwrite: " -r Q_USER_NAME
-  if [[ $Q_USER_NAME != "" ]]; then
-    USER_NAME=$Q_USER_NAME
-    WARN "Updated User: ${USER_NAME}"
-  fi
+  function qUser {
+    DEBUG "# Run as User: ${USER_NAME}?"
+    read -p "[Enter] to skip. Type to overwrite: " -r Q_USER_NAME
+    if [[ $Q_USER_NAME != "" ]]; then
+      USER_NAME=$Q_USER_NAME
+      WARN "Updated User: ${USER_NAME}"
+    fi
+  }
 
+  function qAnsible {
+    DEBUG "# Run an Ansible playbook?"
+    DEBUG "Choose from one of the playbooks below to run a set of provisioning tasks"
+    read -p "[Enter] to skip. Type to overwrite: " -r Q_ANSIBLE
+    if [[ $Q_ANSIBLE != "" ]]; then
+      ANSIBLE=$Q_ANSIBLE
+      WARN "Updated User: ${ANSIBLE}"
+    fi
+  }
+
+  function qMacosCustomizations {
+    DEBUG "# Run full set of macOS customizations?"
+    DEBUG "Customizations including reducing animation, increasing keyboard click speed...etc"
+    read -p "[Enter] to skip. Type any character to run customizations: " -r Q_FULL_MACOS_CUSTOM
+    if [[ $Q_FULL_MACOS_CUSTOM != "" ]]; then
+      FULL_MACOS_CUSTOM=1
+    else
+      DEBUG "# Run smaller set of macOS customizations? Exclusively removes animations"
+      read -p "[Enter] to skip. Type any character to run customizations: " -r Q_NO_ANIMATE_MACOS_CUSTOM
+      if [[ $Q_NO_ANIMATE_MACOS_CUSTOM != "" ]]; then
+        NO_ANIMATE_MACOS_CUSTOM=1
+      fi
+    fi
+    
+    DEBUG "# Turn off macOS homecall processes?"
+    if [[ $(csrutil status) != *enabled* ]]; then
+      DEBUG "Many macOS processes 'phone home' periodically, this script attempts to stop this."
+      read -p "[Enter] to skip. Type any character to stop macOS homecall: " -r Q_MACOS_HOMECALL
+      if [[ $Q_MACOS_HOMECALL != "" ]]; then
+        MACOS_HOMECALL=1
+      fi
+    else
+      DEBUG "Your macOS has System Integrity Protection status enabled so the homecall script can't be run."
+      DEBUG "To disable and run the script, reboot into Recovery OS and run 'csrutil disable'."
+    fi
+  }
+
+  DEBUG "Answer the questions below to build your custom install"
+  qSudo
+  ((SUDO)) && qSecureNetwork
+  qUser
+  qAnsible
+  ((SUDO)) && qMacosCustomizations
+  INFO "Questions Finished!"
+  
+  # Run Custom Runbook
+  ((SUDO)) && ((FULL_MACOS_CUSTOM)) && run_script "${SCRIPTS}/custom.macos" && run_script "${SCRIPTS}/.macos"
+  ((SUDO)) && ((NO_ANIMATE_MACOS_CUSTOM)) && run_script "${SCRIPTS}/no_animate.macos"
+  ((SUDO)) && ((MACOS_HOMECALL)) && run_script "${SCRIPTS}/homecall.sh fixmacos"
+  ((SUDO)) && ((SECURE_NETWORK)) && secure_hostname_network
+
+
+
+
+
+  
   cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
   
 }
@@ -307,10 +376,7 @@ if [ $# -eq 0 ]; then
   interactiveArguments
 else
   processArguments "$@"
-
-  if [[ ${SECURE} == true ]]; then
-    secure_hostname_network
-  fi
+  ((SECURE_NETWORK)) && run_secure_hostname_network
 fi
 
 # Determine platform
