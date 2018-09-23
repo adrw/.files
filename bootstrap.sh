@@ -6,85 +6,6 @@ set -e # give an error if any command finishes with a non-zero exit code
 set -u # give an error if we reference unset variables
 set -o pipefail # for a pipeline, if any of the commands fail with a non-zero exit code, fail the entire pipeline with that exit code
 
-# ADRW Logging
-Reset="$(tput sgr0)"            # Text Reset
-Red="$(tput setaf 1)"           # Red
-Green="$(tput setaf 2)"         # Green
-Yellow="$(tput setaf 3)"        # Yellow
-Blue="$(tput setaf 4)"          # Blue
-_start="$Blue<|$Reset"
-_end="$Blue|>$Reset"
-ADRWL_PREFIX=""
-ADRWL_TIMESTAMP=""
-ADRWL_CONTENT=""
-
-function ADRWL {
-  ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]"
-  if [ $# -gt 1 ]; then
-    ADRWL_PREFIX=$1
-  fi
-  if [ -z "$*" ]; then
-    ADRWL_PREFIX=""
-  fi
-  ADRWL_CONTENT="${@: -1}"
-}
-
-function FATAL {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}FATAL${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function ERROR {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}ERROR${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function WARN {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Yellow}WARN${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function INFO {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Green}INFO${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function DEBUG {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}DEBUG${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function TRACE {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}Trace${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function LOG {
-  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}status${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
-}
-
-function safe_download {
-  timestamp="`date '+%Y%m%d-%H%M%S'`"
-  if [ ! -f "$1" ]; then
-    DEBUG "Download ${1}"
-    curl -s -o $1 $2
-    INFO "Download ${1}"
-  else
-    DEBUG "Update ${1}"
-    mv $1 $1.$timestamp
-    curl -s -o $1 $2
-    if diff -q "$1" "$1.$timestamp" > /dev/null; then rm $1.$timestamp; fi
-    INFO "Update ${1}"
-  fi
-}
-
-function safe_source {
-  if [[ -z $(grep "$1" "$2") ]]; then echo "source $1" >> $2; fi
-}
-
-function run_script {
-  exec=$*
-  script=$1
-  name=$(basename ${script})
-  DEBUG "${name}"
-  ${exec}
-  INFO "${name}"
-}
-
 function usage {
   cat << EOF
   Usage :: .files/bootstrap.sh <opts>
@@ -280,6 +201,10 @@ function linux_bootstrap {
   exit 0
 }
 
+if [ ! -f "~/.adrw-functions" ]; then
+  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
+fi
+source ~/.adrw-functions
 
 bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
 DEBUG "Welcome to ADRW .files"
