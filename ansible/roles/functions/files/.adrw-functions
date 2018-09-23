@@ -3,142 +3,71 @@
 
 # ADRW Bootstrap Standard Methods
 package="adrw"
-# status opt_code "Main update text" "optional script name override"
-function status {
-  Reset="$(tput sgr0)"       # Text Reset
-  Red="$(tput setaf 1)"          # Red
-  Green="$(tput setaf 2)"        # Green
-  Yellow="$(tput setaf 3)"          # Yellow
-  Blue="$(tput setaf 4)"         # Blue
-  if [ "$#" -lt 3 ]; then   # if no name override passed in, take name "adrw" if $0 is status, $0 otherwise
-    [ "$(basename "${0}")" = "status" ] && scriptname="adrw" || scriptname=$(basename "${0}")
-  else
-    scriptname="${1}"
+
+# ADRW Logging
+Reset="$(tput sgr0)"            # Text Reset
+Red="$(tput setaf 1)"           # Red
+Green="$(tput setaf 2)"         # Green
+Yellow="$(tput setaf 3)"        # Yellow
+Blue="$(tput setaf 4)"          # Blue
+_start="$Blue<|$Reset"
+_end="$Blue|>$Reset"
+ADRWL_PREFIX=""
+ADRWL_TIMESTAMP=""
+ADRWL_CONTENT=""
+
+function ADRWL {
+  ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]"
+  if [ $# -gt 1 ]; then
+    ADRWL_PREFIX=$1
   fi
-
-  echo "${Red}status is deprecated.${Reset} Uses adrwl instead."
-  
-  case "${1}" in
-    a)        echo ""; echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
-    b)        echo "${Green}ok: [ ${2} ] ${Reset}" ;;
-    s|status) echo "${Blue}<|${scriptname:0:1}${Reset} [ ${2} ]" ;;
-    t|title)  echo "${Blue}<|${scriptname}${Reset} [ ${2} ]" ;;
-    e|err)    echo "${Red}fatal: [ ${2} ]" ;;
-    w|warn)   echo "${Yellow}warn: [ ${2} ]" ;;
-    *)        echo "${Blue}<| ${Reset}${*}"
-  esac
-}
-
-function adrwl {
-  function usage {
-    cat << EOF
-adrwl logging library for bash
-
-Format
-  <|{_timestamp}{_status}{_label} {_content}
-
-Options
-
-  -l label[s]
-  -s status text (default: FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
-  -c clean mode (no timestamp)
-
-  Levels
-  -f fatal
-  -e error
-  -w warn
-  -i info
-  -d debug
-  -t trace
-
-Usage
-
-  adrwl -l ansible -s start -i Ansible is starting
-  $ <|[2018-09-17 10:33:12][INFO][ansible] Ansible is starting
-
-  or alias functions:
-
-  FATAL() => adrwl -f *
-  ERROR() => adrwl -e *
-  WARN()  => adrwl -w *
-  INFO()  => adrwl -i *
-  DEBUG() => adrwl -d *
-  TRACE() => adrwl -t *
-EOF
-  }
-
-  Reset="$(tput sgr0)"            # Text Reset
-  Red="$(tput setaf 1)"           # Red
-  Green="$(tput setaf 2)"         # Green
-  Yellow="$(tput setaf 3)"        # Yellow
-  Blue="$(tput setaf 4)"          # Blue
-
-  _labels=""
-  _status=""
-  _timestamp="[$(date +'%Y-%m-%d %T')]"
-  _color=$Reset
-  _start="$Blue<|$Reset"
-  _end="$Blue|>$Reset"
-
-  while getopts "h?cdefitws:l:" opt; do
-    case "$opt" in
-      h|\?)      usage  ;;
-      c)        _timestamp="" ;;      # clean mode (no timestamp)
-      l)        _labels+="[$OPTARG]" ;;
-      s)        _status="$OPTARG" ;;
-      f)        _status="FATAL"; _color=$Red ;;
-      e)        _status="ERROR"; _color=$Red ;;
-      w)        _status="WARN"; _color=$Yellow  ;;
-      i)        _status="INFO"; _color=$Green ;;
-      d)        _status="DEBUG"; _color=$Blue  ;;
-      t)        _status="TRACE"; _color=$Blue  ;;
-    esac
-  done
-  shift $((OPTIND-1));
-  _content="$*"
-
-  [[ ! -z $_status ]] && _status="[${_color}${_status}${Reset}]"
-  echo "${_start}${_timestamp}${_status}${_labels}${_end} ${_content}"
+  if [ -z "$*" ]; then
+    ADRWL_PREFIX=""
+  fi
+  ADRWL_CONTENT="${@: -1}"
 }
 
 function FATAL {
-  adrwl -f "$@"
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}FATAL${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
 }
 
 function ERROR {
-  adrwl -e "$@"
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}ERROR${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
 }
 
 function WARN {
-  adrwl -w "$@"
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Yellow}WARN${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
 }
 
 function INFO {
-  adrwl -i "$@"
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Green}INFO${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
 }
 
 function DEBUG {
-  adrwl -d "$@"
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}DEBUG${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
 }
 
 function TRACE {
-  adrwl -t "$@"
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}Trace${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
 }
 
+function LOG {
+  ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}status${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"
+}
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
 function safe_download {
   timestamp="$(date '+%Y%m%d-%H%M%S')"
   if [ ! -f "$1" ]; then
-    status a "Download ${1}"
+    DEBUG "Download ${1}"
     curl -s -o "$1" "$2"
-    status b "Download ${1}"
+    INFO "Download ${1}"
   else
-    status a "Update ${1}"
+    DEBUG "Update ${1}"
     mv "$1" "$1.$timestamp"
     curl -s -o "$1" "$2"
     if diff -q "$1" "$1.$timestamp" > /dev/null; then rm "$1.$timestamp"; fi
-    status b "Update ${1}"
+    INFO "Update ${1}"
   fi
 }
 
@@ -147,14 +76,14 @@ function safe_source {
   if ! grep -q "$1" "$2"; then echo "source $1" >> "$2"; fi
 }
 
-# runs script with bumper status output
+# runs script with bumper ADRW Logging output
 function run_script {
   exec="$*"
   script="$1"
   name=$(basename "${script}")
-  status a "${name}"
+  DEBUG "${name}"
   ${exec}
-  status b "${name}"
+  INFO "${name}"
 }
 
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
@@ -169,10 +98,10 @@ function safe_k {
 # Killall Process from search
 function killall {
   if [ $# -eq 0 ]; then
-    status e "Usage: killall <grep process search team>"
+    FATAL "Usage: killall <grep process search team>"
   else
 		for pid in $(pgrep "${1}" | awk '{print $2}') ; do kill "$pid" ; done
-	fi;
+	fi
 }
 
 # Decapitate git repo – headless – (disregard all local changes, reset back to master)
@@ -207,7 +136,7 @@ function gri {
 
 # update etchosts. has bias towards maintaining the default (locked down) state
 function etc {
-  name="${package}::${0}"
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
   hosts="/etc/hosts"
   default_hosts=".no-social.hosts"
   default_hosts_dir="/Users/me/.files/ansible/roles/etchosts/files/"
@@ -221,12 +150,14 @@ function etc {
   elif [ $# -eq 2 ]; then
     hosts_dir="$1"; new_hosts="$2"
   else
-    status e "Invalid operation."
-    status t "Usage: default dir dhr = ${default_hosts_dir}"
-    status t " etc              toggles dhr/${default_hosts} <-> dhr/${alt_hosts}"
-    status t " etc {new}        installs dhr/{new}"
-    status t " etc {dir} {new}  installs {dir}{new}"
-    status t " etc {dir} \"\"     installs {new}"
+    ERROR "Invalid operation."
+    cat << EOF
+    Usage: default dir dhr = ${default_hosts_dir}
+     etc              toggles dhr/${default_hosts} <-> dhr/${alt_hosts}
+     etc {new}        installs dhr/{new}
+     etc {dir} {new}  installs {dir}{new}
+     etc {dir} \"\"     installs {new}
+EOF
     return
   fi
 
@@ -235,23 +166,23 @@ function etc {
   etc_new_diff=$(diff ${hosts} "${hosts_dir}${new_hosts}" | wc | awk '{print $1}')
 
   if [[ $etc_new_diff -eq 0 && $etc_default_diff -ne 0 ]]; then
-    status b "🍺  ${hosts} already = ${new_hosts}"
+    INFO "🍺  ${hosts} already = ${new_hosts}"
     sudo -k
     return
   elif [[ $etc_new_diff -eq 0 && $etc_default_diff -eq 0 ]]; then
     updated_hosts="${alt_hosts}"
     etc_new_diff=$(diff ${hosts} "${hosts_dir}${alt_hosts}" | wc | awk '{print $1}')
-    status w "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
+    WARN "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
     sleep ${wait}
   elif [[ $etc_new_diff -ne 0 && $etc_default_diff -eq 0 ]]; then
     updated_hosts="${new_hosts}"
-    status w "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
+    WARN "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
     sleep ${wait}
   else
     updated_hosts="${new_hosts}"    
   fi
 
-  status t "Update ${hosts} => ${updated_hosts}" "${name}"
+  DEBUG "Update ${hosts} => ${updated_hosts}"
   sudo cp "${hosts_dir}${updated_hosts}" /etc/hosts
 
   etc_new_diff=$(diff ${hosts} "${hosts_dir}${updated_hosts}" | wc | awk '{print $1}')
@@ -259,9 +190,9 @@ function etc {
   if [ "$etc_new_diff" -eq 0 ]; then
     sudo dscacheutil -flushcache  # flush dns cache
     sudo bash -c "killall -HUP mDNSResponder"
-    status b "🍺  Fin. ${hosts} = ${updated_hosts}"
+    INFO "🍺  Fin. ${hosts} = ${updated_hosts}"
   else    
-    status e "${hosts} update failed."
+    ERROR "${hosts} update failed."
   fi
   sudo -k # remove sudo permissions
 }
@@ -270,30 +201,29 @@ function etc {
 # in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
 # in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
 function rename_first_line {
-  name="${package}::${0}"
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
   if [ $# -ne 2 ]; then
-    status e "Usage: rename_first_line <in_dir> <out_dir>"
+    FATAL "Usage: rename_first_line <in_dir> <out_dir>"
   else
     in_dir=$1
     out_dir=$2
     mkdir -p "$out_dir"
 
-    status t "$in_dir/filename.ext => $out_dir/first_line.ext" "${name}"
+    DEBUG "$in_dir/filename.ext => $out_dir/first_line.ext"
 
     for file in "$in_dir"/*; do
       first_line=$(head -n 1 $file | cut -c-40 | awk '$1=$1')
       extension="${file##*.}"
       cp_err=$(cp "$file" "${out_dir}/${first_line}.${extension}" 2>&1)
       if [[ $cp_err != "" || $(diff -q $file ${out_dir}/${first_line}.${extension}) ]]; then
-        status e "$file : $cp_err"
+        ERROR "$file : $cp_err"
       # else
-        # status b "$file => ${out_dir}/${first_line}.${extension}"
+        # INFO "$file => ${out_dir}/${first_line}.${extension}"
       fi
     done
-
-    status b "${in_dir}/filename.ext => ${out_dir}/first_line.ext"
+    INFO "${in_dir}/filename.ext => ${out_dir}/first_line.ext"
   fi
-  status b "🍺  Fin. ${in_dir} => ${out_dir}"
+  INFO "🍺  Fin. ${in_dir} => ${out_dir}"
 }
 
 # Removes admin privileges
@@ -303,32 +233,33 @@ function rename_first_line {
 # Remove from admin with 
 #   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
 function chmod_admin {
-  name="${package}::${0}"
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
   if [ $# -ne 1 ]; then
-    status e "Usage: chmod_admin <username>"
+    ERROR "Usage: chmod_admin <username>"
   elif [[ "$(uname)" != "Darwin"  ]]; then
-    status e "Usage: only run this command on macOS"
+    ERROR "Usage: only run this command on macOS"
   else
     user=${1}
-    status t "Remove '${user}' admin privileges" "${name}"
+    DEBUG "Remove '${user}' admin privileges"
     # Check user is valid
     if ! dscl . list /users | grep -q "${user}"; then
-      status e "'${user}' is not a user"
+      ERROR "'${user}' is not a user"
     elif [[ "${user}" == "admin" ]]; then
-      status e "'${user}' should keep admin privileges"
+      ERROR "'${user}' should keep admin privileges"
     else
-      status w "Removing '${user}' admin privileges in 3 seconds..."
+      WARN "Removing '${user}' admin privileges in 3 seconds..."
       sleep 3
-      status a "Remove '${user}' from admin"
+      DEBUG "Remove '${user}' from admin"
       sudo dscl . -delete /Groups/admin GroupMembership ${user}
-      status b "Delete '${user}' membership in /Groups/admin"
+      INFO "Delete '${user}' membership in /Groups/admin"
       user_UID=$(dscl . -read /Users/${user} GeneratedUID | cut -d ' ' -f 2)
       sudo dscl . -delete /Groups/admin GroupMembers ${user_UID}
-      status b "Delete '${user_UID}' member in /Groups/admin"
+      INFO "Delete '${user_UID}' member in /Groups/admin"
       sudo -k
-      status b "🍺  Fin. '${user}' = standard"
+      INFO "🍺  Fin. '${user}' = standard"
     fi
   fi
+  ADRWL
 }
 
 # Hide / unhide use profile from login screens and moves home directory to /var/
@@ -341,53 +272,53 @@ function chmod_admin {
 #   $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
 #   $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
 function mv_user {
-  name="${package}::${0}"
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
   if [ $# -ne 1 ]; then
-    status e "Usage: hide_user <username>"
+    ERROR "Usage: hide_user <username>"
   elif [[ "$(uname)" != "Darwin"  ]]; then
-    status e "Usage: only run this command on macOS"
+    ERROR "Usage: only run this command on macOS"
   else
     user=${1}
-    status t "Hide/Restore '${user}' from login & Finder" "${name}"
+    DEBUG "Hide/Restore '${user}' from login & Finder"
 
     # Check user is valid
     if ! dscl . list /users | grep -q "${user}"; then
-      status e "'${user}' is not a user"
+      ERROR "'${user}' is not a user"
     elif [[ "${user}" == "$(whoami)" ]]; then
-      status e "'${user}' should not hide oneself"
+      ERROR "'${user}' should not hide oneself"
     else
       userStatus=$(dscl . read /Users/${user} IsHidden | cut -f 2 -d " ")
       visible="0"
       if [ "${userStatus}" = "${visible}" ]; then
-        status w "Hiding '${user}' from login & Finder in 3 seconds..."
+        WARN "Hiding '${user}' from login & Finder in 3 seconds..."
         sleep 3
-        status a "Hide '${user}' from login & Finder"
+        DEBUG "Hide '${user}' from login & Finder"
         sudo dscl . create /Users/${user} IsHidden 1
-        status b "Hide '${user}' from login"
+        INFO "Hide '${user}' from login"
         sudo mv /Users/${user} /var/${user}
-        status b "Move home directory to /var/${user}"
+        INFO "Move home directory to /var/${user}"
         sudo dscl . -create /Users/${user} NFSHomeDirectory /var/${user}
-        status b "Update ${user} record with home directory /var/${user}"
+        INFO "Update ${user} record with home directory /var/${user}"
         sudo dscl . -delete "/SharePoints/${user}'s Public Folder"
-        status b "Remove ${user} Public Folder"
+        INFO "Remove ${user} Public Folder"
         result="hidden"
       else
-        status w "Restoring '${user}' to login & Finder in 3 seconds..."
+        WARN "Restoring '${user}' to login & Finder in 3 seconds..."
         sleep 3
-        status a "Restore '${user}' to login & Finder"
+        DEBUG "Restore '${user}' to login & Finder"
         sudo dscl . create /Users/${user} IsHidden 0
-        status b "Restore '${user}' to login"
+        INFO "Restore '${user}' to login"
         sudo mv /var/${user} /Users/${user}
-        status b "Move home directory to /Users/${user}"
+        INFO "Move home directory to /Users/${user}"
         sudo dscl . -create /Users/${user} NFSHomeDirectory /Users/${user}
-        status b "Update ${user} record with home directory /Users/${user}"
+        INFO "Update ${user} record with home directory /Users/${user}"
         sudo dscl . -create "/SharePoints/${user}'s Public Folder"
-        status b "Restore ${user} Public Folder"
+        INFO "Restore ${user} Public Folder"
         result="restored"
       fi      
 
       sudo -k
-      status b "🍺  Fin. '${user}' = ${result}"
+      INFO "🍺  Fin. '${user}' = ${result}"
     fi
   fi
 }
@@ -423,6 +354,7 @@ function antiup {
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz {
+  ADRWL "[${0}]" "Register Logging Prefix"
 	local tmpFile="${*%/}.tar";
 	tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
 
@@ -443,7 +375,7 @@ function targz {
 		fi;
 	fi;
 
-	echo "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
+	DEBUG "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
 	"${cmd}" -v "${tmpFile}" || return 1;
 	[ -f "${tmpFile}" ] && rm "${tmpFile}";
 
@@ -452,7 +384,7 @@ function targz {
 		stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
 	);
 
-	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
+	INFO "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
 
 # Start an HTTP server from a directory, optionally specifying the port
@@ -555,9 +487,9 @@ function extract {
       *.pax)      pax -r < "$1"                         ;;
       *.pax.Z)    uncompress "$1" --stdout | pax -r     ;;
       *.Z)        uncompress "$1"                       ;;
-      *)          echo "'$1' cannot be extracted/mounted via extract()" ;;
+      *)          FATAL "'$1' cannot be extracted/mounted via extract()" ;;
     esac
   else
-    echo "'$1' is not a valid file"
+    FATAL "'$1' is not a valid file"
 	fi
 }
