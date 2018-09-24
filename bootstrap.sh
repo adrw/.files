@@ -100,8 +100,8 @@ function mac_install_dependencies {
 }
 
 function mac_scripts {
-  DEBUG "scripts | ${PLAY} @ ${INVENTORY}"
-  case "${PLAY}" in
+  DEBUG "scripts | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
+  case "${ANSIBLE_PLAYBOOK}" in
   "mac_core"|"mac_square"|"mac_dev"|"mac_clean"|"mac_test_full"|"mac_test_short")
     run_script ${SCRIPTS}/custom.macos
     run_script ${SCRIPTS}/.macos
@@ -115,7 +115,7 @@ function mac_scripts {
   *)
     ERROR "no scripts"
   esac
-  INFO "scripts | ${PLAY} @ ${INVENTORY}"
+  INFO "scripts | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
 }
 
 function mac_bootstrap {
@@ -139,21 +139,21 @@ function mac_bootstrap {
   fi
   INFO "git/.files -> ${MAIN_DIR}"
 
-  DEBUG "ansible-playbook | ${PLAY} @ ${INVENTORY}"
-  case "${PLAY}" in
+  DEBUG "ansible-playbook | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
+  case "${ANSIBLE_PLAYBOOK}" in
   "mac_core"|"mac_square")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   "mac_test_full"|"mac_test_short"|"mac_second_account")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
     ;;
   *)
-    ERROR "no matching play for ${PLAY}"
+    ERROR "no matching play for ${ANSIBLE_PLAYBOOK}"
   esac
-  INFO "ansible-playbook | ${PLAY} @ ${INVENTORY}"
+  INFO "ansible-playbook | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
 
   if [ "${ONLY_ANSIBLE}" = false ]; then
     mac_scripts
@@ -201,22 +201,13 @@ function linux_bootstrap {
   exit 0
 }
 
-if [ ! -f "~/.adrw-functions" ]; then
-  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
-fi
-source ~/.adrw-functions
-
-bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
-DEBUG "Welcome to ADRW .files"
-DEBUG "https://github.com/adrw/.files"
-
 ONLY_ANSIBLE=false                  # -a
 MAIN_DIR="${HOME}/.files"             # -d
 SCRIPTS="${MAIN_DIR}/scripts"
 HOMEBREW_DIR="${HOME}/.homebrew"      # -b
 HOMEBREW_INSTALL_DIR="${HOMEBREW_DIR}"
-INVENTORY=macbox/hosts              # -i
-PLAY=mac_core                       # -p
+ANSIBLE_INVENTORY=macbox/hosts              # -i
+ANSIBLE_PLAYBOOK=mac_core                       # -p
 MAS_EMAIL=                          # -m
 MAS_PASSWORD=                       # -n
 TEST=false                          # -t
@@ -224,7 +215,6 @@ USER_NAME=$(whoami)                 # -u
 COMPUTER_NAME=$(hostname)
 SUDO=0
 SECURE_NETWORK=0
-ANSIBLE=""
 FULL_MACOS_CUSTOM=0
 NO_ANIMATE_MACOS_CUSTOM=0
 MACOS_HOMECALL=0
@@ -252,11 +242,11 @@ function processArguments {
         HOMEBREW_DIR=${OPTARG}
         HOMEBREW_INSTALL_DIR="${OPTARG}/Homebrew"
         ;;
-    i)  DEBUG "  - INVENTORY ${INVENTORY} => ${OPTARG}"
-        INVENTORY=${OPTARG}
+    i)  DEBUG "  - ANSIBLE_INVENTORY ${ANSIBLE_INVENTORY} => ${OPTARG}"
+        ANSIBLE_INVENTORY=${OPTARG}
         ;;
-    p)  DEBUG "  - PLAY ${PLAY} => ${OPTARG}"
-        PLAY=${OPTARG}
+    p)  DEBUG "  - ANSIBLE_PLAYBOOK ${ANSIBLE_PLAYBOOK} => ${OPTARG}"
+        ANSIBLE_PLAYBOOK=${OPTARG}
         ;;
     m)  DEBUG "  - MAS_EMAIL ${MAS_EMAIL} => ${OPTARG}"
         MAS_EMAIL=$OPTARG
@@ -285,15 +275,17 @@ function interactiveArguments {
   # read -p "Next test? [y/n/enter] " -n 1 -r && echo ""
 
   function qSudo {
+    ADRWL "[Q SUDO]" ""
     DEBUG "# Run tasks requiring Sudo permissions?"
     DEBUG "Affected tasks: Secure Network, macOS Customizations, some Ansible roles"
-    read -p "[Enter] to skip. Type any character to run related sudo tasks: " -r Q_SUDO
+    read -p "[Enter] to skip. Type any character to run related sudo tasks: " -n 1 -r Q_SUDO
     if [[ $Q_SUDO != "" ]]; then
       SUDO=1
     fi
   }
   
   function qSecureNetwork {
+    ADRWL "[Q SECURE]" ""
     DEBUG "# Secure your Computer Name and Network Settings?"
     DEBUG "Change your computer name from ${COMPUTER_NAME}, turn on firewall, randomize MAC address"
     read -p "[Enter] to skip. Type to run with new computer name: " -r Q_COMPUTER_NAME
@@ -304,6 +296,7 @@ function interactiveArguments {
   }
 
   function qUser {
+    ADRWL "[Q USER]" ""
     DEBUG "# Run as User: ${USER_NAME}?"
     read -p "[Enter] to skip. Type to overwrite: " -r Q_USER_NAME
     if [[ $Q_USER_NAME != "" ]]; then
@@ -313,24 +306,35 @@ function interactiveArguments {
   }
 
   function qAnsible {
+    ADRWL "[Q ANSIBLE]" ""
     DEBUG "# Run an Ansible playbook?"
     DEBUG "Choose from one of the playbooks below to run a set of provisioning tasks"
-    read -p "[Enter] to skip. Type to overwrite: " -r Q_ANSIBLE
-    if [[ $Q_ANSIBLE != "" ]]; then
-      ANSIBLE=$Q_ANSIBLE
-      WARN "Updated User: ${ANSIBLE}"
+    DEBUG "-  mac_becomes "
+    DEBUG "-  mac_clean "
+    DEBUG "-  mac_clear_dock "
+    DEBUG "-  mac_core "
+    DEBUG "-  mac_etchost_no_animate "
+    DEBUG "-  mac__jekyll "
+    DEBUG "-  mac_second_account "
+    DEBUG "-  mac_square "
+    DEBUG "-  mac_test_short "
+    DEBUG "-  mac_test_full "
+    read -p "[Enter] to skip. Type to overwrite: " -r Q_ANSIBLE_PLAYBOOK
+    if [[ $ANSIBLE_PLAYBOOK != "" ]]; then
+      ANSIBLE_PLAYBOOK=$Q_ANSIBLE_PLAYBOOK
     fi
   }
 
   function qMacosCustomizations {
+    ADRWL "[Q macOS]" ""
     DEBUG "# Run full set of macOS customizations?"
     DEBUG "Customizations including reducing animation, increasing keyboard click speed...etc"
-    read -p "[Enter] to skip. Type any character to run customizations: " -r Q_FULL_MACOS_CUSTOM
+    read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_FULL_MACOS_CUSTOM
     if [[ $Q_FULL_MACOS_CUSTOM != "" ]]; then
       FULL_MACOS_CUSTOM=1
     else
       DEBUG "# Run smaller set of macOS customizations? Exclusively removes animations"
-      read -p "[Enter] to skip. Type any character to run customizations: " -r Q_NO_ANIMATE_MACOS_CUSTOM
+      read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_NO_ANIMATE_MACOS_CUSTOM
       if [[ $Q_NO_ANIMATE_MACOS_CUSTOM != "" ]]; then
         NO_ANIMATE_MACOS_CUSTOM=1
       fi
@@ -339,7 +343,7 @@ function interactiveArguments {
     DEBUG "# Turn off macOS homecall processes?"
     if [[ $(csrutil status) != *enabled* ]]; then
       DEBUG "Many macOS processes 'phone home' periodically, this script attempts to stop this."
-      read -p "[Enter] to skip. Type any character to stop macOS homecall: " -r Q_MACOS_HOMECALL
+      read -p "[Enter] to skip. Type any character to run macOS homecall blocking script: " -n 1 -r Q_MACOS_HOMECALL
       if [[ $Q_MACOS_HOMECALL != "" ]]; then
         MACOS_HOMECALL=1
       fi
@@ -347,6 +351,7 @@ function interactiveArguments {
       DEBUG "Your macOS has System Integrity Protection status enabled so the homecall script can't be run."
       DEBUG "To disable and run the script, reboot into Recovery OS and run 'csrutil disable'."
     fi
+    ADRWL
   }
 
   DEBUG "Answer the questions below to build your custom install"
@@ -368,10 +373,20 @@ function interactiveArguments {
 
 
   
-  cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${INVENTORY} plays/provision/${PLAY}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+  # cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
   
 }
  
+
+if [ ! -f ~/.adrw-functions ]; then
+  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
+fi
+source ~/.adrw-functions
+
+bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
+DEBUG "Welcome to ADRW .files"
+DEBUG "" "" "https://github.com/adrw/.files"
+
 # Determine platform
 case "$(uname)" in
     Darwin)   PLATFORM=Darwin

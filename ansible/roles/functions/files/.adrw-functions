@@ -13,17 +13,16 @@ Blue="$(tput setaf 4)"          # Blue
 _start="$Blue<|$Reset"
 _end="$Blue|>$Reset"
 ADRWL_PREFIX=""
-ADRWL_TIMESTAMP=""
+ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]"
 ADRWL_CONTENT=""
 
 function ADRWL {
-  ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]"
-  if [ $# -gt 1 ]; then
-    ADRWL_PREFIX=$1
-  fi
-  if [ -z "$*" ]; then
-    ADRWL_PREFIX=""
-  fi
+  case "$#" in
+    3)    ADRWL_TIMESTAMP=$1 && ADRWL_PREFIX=$2 ;;
+    2)    ADRWL_PREFIX=$1    ;;
+    1)    ;;
+    0)    ADRWL_PREFIX="" && ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]" ;;
+  esac
   ADRWL_CONTENT="${@: -1}"        # Content is the last argument string
 }
 
