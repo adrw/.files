@@ -351,7 +351,6 @@ function interactiveArguments {
       DEBUG "Your macOS has System Integrity Protection status enabled so the homecall script can't be run."
       DEBUG "To disable and run the script, reboot into Recovery OS and run 'csrutil disable'."
     fi
-    ADRWL
   }
 
   DEBUG "Answer the questions below to build your custom install"
@@ -360,6 +359,7 @@ function interactiveArguments {
   qUser
   qAnsible
   ((SUDO)) && qMacosCustomizations
+  ADRWL "" "" ""
   INFO "Questions Finished!"
   
   # Run Custom Runbook
