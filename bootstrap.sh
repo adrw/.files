@@ -372,16 +372,15 @@ function interactiveArguments {
   
 }
  
-if [ $# -eq 0 ]; then
-  interactiveArguments
-else
-  processArguments "$@"
-  ((SECURE_NETWORK)) && run_secure_hostname_network
-fi
-
 # Determine platform
 case "$(uname)" in
     Darwin)   PLATFORM=Darwin
+              if [ $# -eq 0 ]; then
+                interactiveArguments
+              else
+                processArguments "$@"
+                ((SECURE_NETWORK)) && run_secure_hostname_network
+              fi
               mac_bootstrap
               ;;
     Linux)    PLATFORM=Linux
