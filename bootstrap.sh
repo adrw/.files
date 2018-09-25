@@ -365,6 +365,7 @@ if [ ! -f ~/.adrw-functions ]; then
 fi
 source ~/.adrw-functions
 ADRWL_LEVEL=$ADRWL_ALL
+stayalive &
 
 bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
 DEBUG "Welcome to ADRW .files"

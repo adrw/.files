@@ -59,11 +59,23 @@ function DEBUG {
 }
 
 function TRACE {
-  if [ $ADRWL_LEVEL -le $ADRWL_TRACE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}Trace${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_TRACE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}TRACE${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
 }
 
 function LOG {
   if [ $ADRWL_LEVEL -le $ADRWL_LOG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}status${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+}
+
+function stayalive {
+  if [[ $# == 0 ]]; then
+    time=540    # 9 minutes
+  else
+    time=$1
+  fi
+  while 'true'; do
+    sleep ${time}
+    TRACE "[STAY_ALIVE]" "" && ADRWL
+  done
 }
 
 # safe_download ./local/path/file.sh https://remote.com/path/file.sh
