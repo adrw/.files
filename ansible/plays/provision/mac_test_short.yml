@@ -99,8 +99,6 @@
       - multi-cursor
       - remote-sync
 
-    mas_email: ""
-    mas_password: ""
     mas_installed_apps:
       - { id: 824183456, name: "Affinity Photo" }
       - { id: 824171161, name: "Affinity Designer" }

@@ -92,7 +92,7 @@
 
 # Brew.
 - name: Ensure configured homebrew packages are installed.
-  homebrew: "name={{ item }} state=present"
+  command: "brew install {{ item }}"
   with_items: "{{ homebrew_installed_packages }}"
   become: false
 

@@ -24,8 +24,6 @@ function usage {
           |     - Homebrew, Atom, Docker...     |   mac_jekyll            
           |     - etchost domain blocking       |   mac_etchost_no_animate
           |     - Linux environment             |   linux_core
-  -m      |   Mac App Store email               |   \"\"                  
-  -n      |   Mac App Store password            |   \"\"                  
   -s      |   Set hostname, turn on Firewall    |                         
   -t      |   Test env, don't detach Git head   |                         
   -u      |   User name                         |   me                    
@@ -142,13 +140,13 @@ function mac_bootstrap {
   DEBUG "ansible-playbook | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
   case "${ANSIBLE_PLAYBOOK}" in
   "mac_core"|"mac_square")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR}"
     ;;
   "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR}"
     ;;
   "mac_test_full"|"mac_test_short"|"mac_second_account")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR}"
     ;;
   *)
     ERROR "no matching play for ${ANSIBLE_PLAYBOOK}"
@@ -208,8 +206,6 @@ HOMEBREW_DIR="${HOME}/.homebrew"      # -b
 HOMEBREW_INSTALL_DIR="${HOMEBREW_DIR}"
 ANSIBLE_INVENTORY=macbox/hosts              # -i
 ANSIBLE_PLAYBOOK=mac_core                       # -p
-MAS_EMAIL=                          # -m
-MAS_PASSWORD=                       # -n
 TEST=false                          # -t
 USER_NAME=$(whoami)                 # -u
 COMPUTER_NAME=$(hostname)
@@ -247,12 +243,6 @@ function processArguments {
         ;;
     p)  DEBUG "  - ANSIBLE_PLAYBOOK ${ANSIBLE_PLAYBOOK} => ${OPTARG}"
         ANSIBLE_PLAYBOOK=${OPTARG}
-        ;;
-    m)  DEBUG "  - MAS_EMAIL ${MAS_EMAIL} => ${OPTARG}"
-        MAS_EMAIL=$OPTARG
-        ;;
-    n)  DEBUG "  - MAS_PASSWORD ${MAS_PASSWORD} => ${OPTARG}"
-        MAS_PASSWORD=${OPTARG}
         ;;
     s)  DEBUG "  - Secure network and custom host name"
         SECURE_NETWORK=1
@@ -367,14 +357,6 @@ function interactiveArguments {
   ((SUDO)) && ((NO_ANIMATE_MACOS_CUSTOM)) && run_script "${SCRIPTS}/no_animate.macos"
   ((SUDO)) && ((MACOS_HOMECALL)) && run_script "${SCRIPTS}/homecall.sh fixmacos"
   ((SUDO)) && ((SECURE_NETWORK)) && secure_hostname_network
-
-
-
-
-
-  
-  # cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR} mas_email=${MAS_EMAIL} mas_password=${MAS_PASSWORD}"
-  
 }
  
 

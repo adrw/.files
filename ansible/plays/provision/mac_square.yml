@@ -65,10 +65,10 @@
       - openssl
       - pngquant
       # - privoxy # separate role
-      - python
-      - python3
+      # - python    # broken in Command Line Tools 10.14+ https://github.com/Homebrew/homebrew-core/issues/31679
+      # - python3   # broken in Command Line Tools 10.14+ https://github.com/Homebrew/homebrew-core/issues/31679
       - shellcheck
-      # - syncthing
+      # - syncthing # separate role
       - tldr
       - tmux
       - tree
@@ -191,8 +191,6 @@
       - multi-cursor
       - remote-sync
 
-    mas_email: ""
-    mas_password: ""
     mas_installed_apps:
       - { id: 824183456, name: "Affinity Photo" }
       - { id: 824171161, name: "Affinity Designer" }
