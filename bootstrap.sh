@@ -364,6 +364,7 @@ if [ ! -f ~/.adrw-functions ]; then
   curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
 fi
 source ~/.adrw-functions
+ADRWL_LEVEL=$ADRWL_ALL
 
 bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
 DEBUG "Welcome to ADRW .files"
