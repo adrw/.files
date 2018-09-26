@@ -10,22 +10,25 @@ Red="$(tput setaf 1)"           # Red
 Green="$(tput setaf 2)"         # Green
 Yellow="$(tput setaf 3)"        # Yellow
 Blue="$(tput setaf 4)"          # Blue
-_start="$Blue<|$Reset"
+LBlue="$(tput setaf 14)"        # Light Blue
+Purple="$(tput setaf 5)"        # Purple
+_start=""
 _end="$Blue|>$Reset"
 
 # Levels
-ADRWL_ALL=0
-ADRWL_FATAL=10
-ADRWL_ERROR=9
-ADRWL_WARN=7
-ADRWL_INFO=5
-ADRWL_DEBUG=3
-ADRWL_TRACE=1
-ADRWL_LOG=10
+readonly ADRWL_ALL=0
+readonly ADRWL_FATAL=10
+readonly ADRWL_ERROR=9
+readonly ADRWL_WARN=7
+readonly ADRWL_NOTICE=7
+readonly ADRWL_INFO=5
+readonly ADRWL_DEBUG=3
+readonly ADRWL_TRACE=1
+readonly ADRWL_LOG=10
 
 ADRWL_LEVEL=$ADRWL_ALL
 ADRWL_PREFIX=""
-ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]"
+ADRWL_TIMESTAMP="$(date +'%Y-%m-%d %T')"
 ADRWL_CONTENT=""
 
 function ADRWL {
@@ -39,31 +42,39 @@ function ADRWL {
 }
 
 function FATAL {
-  if [ $ADRWL_LEVEL -le $ADRWL_FATAL ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}FATAL${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_FATAL ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}FATAL ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
 }
 
 function ERROR {
-  if [ $ADRWL_LEVEL -le $ADRWL_ERROR ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}ERROR${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_ERROR ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}ERROR ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
 }
 
 function WARN {
-  if [ $ADRWL_LEVEL -le $ADRWL_WARN ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Yellow}WARN${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_WARN ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Yellow} WARN ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function NOTICE {
+  if [ $ADRWL_LEVEL -le $ADRWL_NOTICE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Purple}NOTICE${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
 }
 
 function INFO {
-  if [ $ADRWL_LEVEL -le $ADRWL_INFO ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Green}INFO${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_INFO ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Green} INFO ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
 }
 
 function DEBUG {
-  if [ $ADRWL_LEVEL -le $ADRWL_DEBUG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}DEBUG${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_DEBUG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}DEBUG ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
 }
 
 function TRACE {
-  if [ $ADRWL_LEVEL -le $ADRWL_TRACE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}TRACE${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_TRACE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${LBlue}TRACE ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
 }
 
 function LOG {
-  if [ $ADRWL_LEVEL -le $ADRWL_LOG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}status${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}"; fi
+  if [ $ADRWL_LEVEL -le $ADRWL_LOG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}status${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function PROGRESS {
+  ADRWL "$@" && printf "%s%s[${Red}status${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}" "$_start" "$ADRWL_TIMESTAMP"
 }
 
 function stayalive {
