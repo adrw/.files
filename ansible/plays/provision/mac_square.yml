@@ -42,14 +42,10 @@
 
     filevault_auto_evict: false
 
-    homebrew_cask_require_sha: false
-    homebrew_cask_appdir: /Applications
-    homebrew_taps:
-      - homebrew/core
-      - homebrew/cask
-      - homebrew/cask-versions
-      - homebrew/cask-fonts
-      - getantibody/homebrew-antibody
+    include_vars: ../../vars/homebrew.yml
+    
+    # homebrew_cask_require_sha: false
+    # homebrew_cask_appdir: /Applications
     homebrew_installed_packages:
       - antibody
       - cheat

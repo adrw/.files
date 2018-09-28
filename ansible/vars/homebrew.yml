@@ -1,0 +1,8 @@
+homebrew_cask_require_sha: false
+homebrew_cask_appdir: /Applications
+homebrew_taps:
+  - homebrew/core
+  - homebrew/cask
+  - homebrew/cask-versions
+  - homebrew/cask-fonts
+  - getantibody/homebrew-antibody

@@ -39,6 +39,7 @@ alias grsu="git remote set-url"
 alias gcam="git commit --amend"
 alias gpm="git push me"
 alias gpmf="git push me -f"
+alias gpom="git pull origin master"
 alias gl="git log --oneline"
 alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 
