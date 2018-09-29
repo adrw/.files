@@ -1,6 +1,6 @@
 ---
 
-- import_playbook: mac_development.yml
+- import_playbook: mac_dev.yml
 
 - hosts: macbox
   connection: local
