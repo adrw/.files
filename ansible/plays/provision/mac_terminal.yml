@@ -1,0 +1,26 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - homebrew
+    - bash
+    - zsh
+    - zsh-antibody
+    - zmv
+    - fasd
+    - aliases
+    - functions
+    - git
+    - tmux
+    - vim
+    - ssh
+    - iterm2
+    # - oh-my-zsh
+    # - mas
+
+  become_method: sudo
+
+  vars:
+    install_homebrew_packages: true
+    install_homebrew_fonts: true

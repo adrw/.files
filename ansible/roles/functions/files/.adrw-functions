@@ -120,6 +120,10 @@ function run_script {
   INFO "${name}"
 }
 
+function getUserGroup { 
+  id -Gn "$USER_NAME" | cut -d " " -f1 
+}
+
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
 function safe_k {
   if type k &> /dev/null; then

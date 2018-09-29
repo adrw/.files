@@ -1,1 +1,3 @@
 ---
+
+roles_dir: "{{ home }}/.files/ansible/roles"

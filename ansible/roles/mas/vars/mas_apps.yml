@@ -1,0 +1,9 @@
+mas_apps:
+  - { id: 824183456, name: "Affinity Photo" }
+  - { id: 824171161, name: "Affinity Designer" }
+  - { id: 979047768, name: "Browserism for Chrome" }
+  - { id: 420212497, name: "Byword (2.8)" }
+  - { id: 975937182, name: "Fantastical 2 - Calendar and Reminders" }
+  - { id: 424389933, name: "Final Cut Pro" }
+  - { id: 402989379, name: "iStudiez Pro - Homework, Schedule, Grades" }
+  - { id: 409201541, name: "Pages" }

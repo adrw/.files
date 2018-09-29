@@ -1,5 +1,13 @@
 ---
 
+- name: Include atom vars files
+  include_vars:
+    dir: ../vars/
+    extensions:
+      - yml
+  become: false
+  ignore_errors: true
+
 - name: Install Atom
   homebrew_cask:
     name: atom

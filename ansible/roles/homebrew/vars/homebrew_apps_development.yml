@@ -1,0 +1,16 @@
+homebrew_apps_development:
+  # - anaconda  # python ML libraries
+  # - coda
+  - dash
+  # - docker
+  # - insomnia
+  - ngrok
+  # - sqlpro-for-sqlite
+  - visual-studio-code
+
+# Packages included in other roles
+# - atom
+# - iterm2
+# - macdown
+# - sublime-text
+

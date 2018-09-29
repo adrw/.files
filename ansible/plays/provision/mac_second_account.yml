@@ -1,67 +1,14 @@
 ---
 
+- import_playbook: mac_terminal.yml
+- import_playbook: mac_secure.yml
+
 - hosts: macbox
   connection: local
   roles:
-    - spoof-mac
-    - etchosts
-    - homebrew
-    - bash
-    - zsh
-    - zsh-antibody
-    - zmv
-    - fasd
-    - aliases
-    - functions
-    - tmux
-    - vim
-    - privoxy
-    - automator-workflows
     - dockutil
-    - macos
-    - iterm2
-
-  become: yes
   become_method: sudo
-
   vars:
-    become_skip: true
-    roles_dir: "{{ home }}/.files/ansible/roles"
-    id_rsa: "{{ home }}/.ssh/id_rsa"
-
-    filevault_auto_evict: true
-
-    homebrew_cask_require_sha: false
-    homebrew_cask_appdir: /Applications
-    homebrew_taps:
-      - homebrew/core
-      - homebrew/cask
-      - homebrew/cask-fonts
-      - homebrew/cask-drivers
-      - homebrew/cask-versions
-      - getantibody/homebrew-antibody
-    homebrew_installed_packages:
-      - antibody
-      - cheat
-      - exiftool  # photo manipulation script
-      - figlet
-      - htop
-      - jhead     # photo manipulation script
-      - node
-      - openssl
-      # - python    # broken in Command Line Tools 10.14+ https://github.com/Homebrew/homebrew-core/issues/31679
-      # - python3   # broken in Command Line Tools 10.14+ https://github.com/Homebrew/homebrew-core/issues/31679
-      - tldr
-      - tmux
-      - tree
-      - wget
-      - yarn
-    homebrew_cask_apps:
-    # fonts
-      - font-fira-code
-      - font-fira-mono-for-powerline
-      - font-fontawesome
-
     dockitems_to_persist:
       - name: Messages
         path: "/Applications/Messages.app"

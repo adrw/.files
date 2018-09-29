@@ -1,0 +1,12 @@
+homebrew_apps_media:
+  # - adobe-digital-editions
+  - calibre
+  # - handbrake
+  # - handbrakebatch
+  - imagealpha
+  - mediahuman-audio-converter
+  # - mediahuman-youtube-downloader
+  - musicbrainz-picard
+  # - spotify
+  - transmission
+  - vlc

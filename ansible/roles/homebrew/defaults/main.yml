@@ -12,9 +12,7 @@ homebrew_install_path: "{{ homebrew_prefix }}"
 homebrew_brew_bin_path: "{{ homebrew_prefix }}/bin"
 
 homebrew_installed_packages: []
-
 homebrew_uninstalled_packages: []
-
 homebrew_upgrade_all_packages: no
 
 homebrew_taps:
@@ -24,6 +22,22 @@ homebrew_taps:
   - caskroom/versions
 
 homebrew_cask_apps: []
+homebrew_packages: []
+install_homebrew_packages: false
+homebrew_apps_backup: []
+install_homebrew_apps_backup: false
+homebrew_apps_development: []
+install_homebrew_apps_development: false
+homebrew_apps_media: []
+install_homebrew_apps_media: false
+homebrew_apps_password: []
+install_homebrew_apps_password: false
+homebrew_apps_productivity: []
+install_homebrew_apps_productivity: false
+homebrew_apps_tools: []
+install_homebrew_apps_tools: false
+homebrew_fonts: []
+install_homebrew_fonts: false
 
 homebrew_cask_appdir: /Applications
 

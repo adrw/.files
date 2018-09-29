@@ -1,6 +1,14 @@
 ---
 # https://github.com/geerlingguy/ansible-role-mas
 
+- name: Include mas vars files
+  include_vars:
+    dir: ../vars/
+    extensions:
+      - yml
+  become: false
+  ignore_errors: true
+
 - name: Ensure MAS is installed
   homebrew: name=mas state=present
   become: false
@@ -33,7 +41,7 @@
 
 - name: Ensure configured MAS apps are installed
   command: mas install "{{ item.id|default(item) }}"
-  with_items: "{{ mas_installed_apps + mas_installed_app_ids }}"
+  with_items: "{{ mas_apps + mas_app_ids }}"
   when: "'{{ item.id|default(item) }}' not in mas_list.stdout"
   become: false
 

@@ -1,0 +1,19 @@
+---
+
+- import_playbook: mac_terminal.yml
+
+- hosts: macbox
+  connection: local
+  roles:
+    - homebrew
+    # - atom
+    # - sublime-text
+    - macdown
+    - automator-workflows
+    # - anaconda
+  become_method: sudo
+  vars:
+    install_homebrew_apps_development: true
+    install_homebrew_apps_password: true
+    install_homebrew_apps_productivity: true
+    install_homebrew_apps_tools: true

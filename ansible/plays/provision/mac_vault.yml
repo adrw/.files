@@ -1,0 +1,9 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - { role: ssh-keys, when: "run_vault == true" }          #id_rsa key generation
+  become_method: sudo
+  vars:
+    

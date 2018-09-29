@@ -6,6 +6,13 @@ set -e # give an error if any command finishes with a non-zero exit code
 set -u # give an error if we reference unset variables
 set -o pipefail # for a pipeline, if any of the commands fail with a non-zero exit code, fail the entire pipeline with that exit code
 
+if [ ! -f ~/.adrw-functions ]; then
+  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
+fi
+source ~/.adrw-functions
+ADRWL_LEVEL=$ADRWL_ALL
+stayalive &
+
 function usage {
   cat << EOF
   Usage :: .files/bootstrap.sh <opts>
@@ -74,21 +81,21 @@ function mac_install_dependencies {
     INFO  "Install xcode-select (Command Line Tools)"
   fi
 
-  if [[ ! -x "${HOMEBREW_DIR}/bin/brew" ]]; then
+  if [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]]; then
     DEBUG "Install Homebrew"
-    mkdir -p ${HOMEBREW_DIR} && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_DIR
+    mkdir -p ${HOMEBREW_PREFIX} && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_PREFIX
     INFO "Install Homebrew"
   fi
 
-  export PATH=${HOMEBREW_DIR}/sbin:${HOMEBREW_DIR}/bin:${PATH}
+  export PATH=${HOMEBREW_PREFIX}/sbin:${HOMEBREW_PREFIX}/bin:${PATH}
 
-  if [[ ! -x ${HOMEBREW_DIR}/bin/git ]]; then
+  if [[ ! -x ${HOMEBREW_PREFIX}/bin/git ]]; then
     DEBUG "Install Git"
     brew install git
     INFO "Install Git"
   fi
 
-  if [[ ! -x ${HOMEBREW_DIR}/bin/ansible ]]; then
+  if [[ ! -x ${HOMEBREW_PREFIX}/bin/ansible ]]; then
     DEBUG "Install Ansible"
     brew install ansible
     INFO "Install Ansible"
@@ -140,13 +147,13 @@ function mac_bootstrap {
   DEBUG "ansible-playbook | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
   case "${ANSIBLE_PLAYBOOK}" in
   "mac_core"|"mac_square")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
     ;;
   "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
     ;;
   "mac_test_full"|"mac_test_short"|"mac_second_account")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_DIR} homebrew_install_path=${HOMEBREW_INSTALL_DIR}"
+    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
     ;;
   *)
     ERROR "no matching play for ${ANSIBLE_PLAYBOOK}"
@@ -202,26 +209,24 @@ function linux_bootstrap {
 ONLY_ANSIBLE=false                  # -a
 MAIN_DIR="${HOME}/.files"             # -d
 SCRIPTS="${MAIN_DIR}/scripts"
-HOMEBREW_DIR="${HOME}/.homebrew"      # -b
-HOMEBREW_INSTALL_DIR="${HOMEBREW_DIR}"
-ANSIBLE_INVENTORY=macbox/hosts              # -i
+HOMEBREW_PREFIX="${HOME}/.homebrew"      # -b
+HOMEBREW_INSTALL_PATH="${HOMEBREW_PREFIX}"
+ANSIBLE_INVENTORY="macbox/hosts"              # -i
 ANSIBLE_PLAYBOOK=mac_core                       # -p
+ANSIBLE_RUN_VAULT=0
 TEST=false                          # -t
 USER_NAME=$(whoami)                 # -u
+USER_GROUP=$(getUserGroup)
 COMPUTER_NAME=$(hostname)
 SUDO=0
 SECURE_NETWORK=0
-FULL_MACOS_CUSTOM=0
-NO_ANIMATE_MACOS_CUSTOM=0
-MACOS_HOMECALL=0
-
-function getUserGroup { 
-  id -Gn "$USER_NAME" | cut -d " " -f1 
-}
+SCRIPTS_FULL_MACOS_CUSTOM=0
+SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=0
+SCRIPTS_MACOS_HOMECALL=0
 
 function processArguments {
   DEBUG "📈  Registered Configuration"
-  while getopts "h?ad:b:i:p:m:n:stu:" opt; do
+  while getopts "h?ad:b:i:p:m:n:strvu:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -234,9 +239,9 @@ function processArguments {
         MAIN_DIR=${OPTARG}
         SCRIPTS="${MAIN_DIR}/scripts"
         ;;
-    b)  DEBUG "  - HOMEBREW_DIR ${HOMEBREW_DIR} => ${OPTARG}"
-        HOMEBREW_DIR=${OPTARG}
-        HOMEBREW_INSTALL_DIR="${OPTARG}/Homebrew"
+    b)  DEBUG "  - HOMEBREW_PREFIX ${HOMEBREW_PREFIX} => ${OPTARG}"
+        HOMEBREW_PREFIX=${OPTARG}
+        HOMEBREW_INSTALL_PATH="${OPTARG}/Homebrew"
         ;;
     i)  DEBUG "  - ANSIBLE_INVENTORY ${ANSIBLE_INVENTORY} => ${OPTARG}"
         ANSIBLE_INVENTORY=${OPTARG}
@@ -244,6 +249,9 @@ function processArguments {
     p)  DEBUG "  - ANSIBLE_PLAYBOOK ${ANSIBLE_PLAYBOOK} => ${OPTARG}"
         ANSIBLE_PLAYBOOK=${OPTARG}
         ;;
+    r)  DEBUG "   - SUDO=true"
+        SUDO=1
+        ;;    
     s)  DEBUG "  - Secure network and custom host name"
         SECURE_NETWORK=1
         ;;
@@ -253,6 +261,9 @@ function processArguments {
     u)  DEBUG "  - USER ${USER_NAME} => ${OPTARG}"
         USER_NAME=${OPTARG}
         HOME="/Users/${USER_NAME}"
+        ;;
+    v)  DEBUG "   - RUN_VAULT=true"
+        ANSIBLE_RUN_VAULT=1
         ;;
     esac
   done
@@ -268,9 +279,10 @@ function interactiveArguments {
     ADRWL "[Q SUDO]" ""
     DEBUG "# Run tasks requiring Sudo permissions?"
     DEBUG "Affected tasks: Secure Network, macOS Customizations, some Ansible roles"
-    read -p "[Enter] to skip. Type any character to run related sudo tasks: " -n 1 -r Q_SUDO
+    read -p "[Enter] to skip. Type any character to run related sudo tasks: " -n 1 -r Q_SUDO && echo ""
     if [[ $Q_SUDO != "" ]]; then
       SUDO=1
+      NOTICE "Will run Sudo tasks"
     fi
   }
   
@@ -282,6 +294,7 @@ function interactiveArguments {
     if [[ $Q_COMPUTER_NAME != "" ]]; then
       COMPUTER_NAME=$Q_COMPUTER_NAME
       SECURE_NETWORK=1
+      NOTICE "Will run secure network tasks and rename computer to ${COMPUTER_NAME}"
     fi
   }
 
@@ -291,7 +304,21 @@ function interactiveArguments {
     read -p "[Enter] to skip. Type to overwrite: " -r Q_USER_NAME
     if [[ $Q_USER_NAME != "" ]]; then
       USER_NAME=$Q_USER_NAME
-      WARN "Updated User: ${USER_NAME}"
+      USER_GROUP=$(getUserGroup)
+      NOTICE "Updated User: ${USER_NAME}"
+    fi
+  }
+
+  function qHomebrew {
+    ADRWL "[Q HOMEBREW]" ""
+    DEBUG "# Install homebrew packages in: ${HOMEBREW_PREFIX}?"
+    DEBUG "Homebrew by default installs in :/usr/local/bin"
+    DEBUG ".files instead by default installs in :/${HOME}/.homebrew"
+    DEBUG "This maintains separation of packages between users and better security permissions for: /usr/local/bin"
+    read -p "[Enter] to install in ${HOMEBREW_PREFIX}. Type to overwrite: " -r Q_HOMEBREW_PREFIX
+    if [[ $Q_HOMEBREW_PREFIX != "" ]]; then
+      HOMEBREW_PREFIX=$Q_HOMEBREW_PREFIX
+      NOTICE "Updated Homebrew Prefix: ${HOMEBREW_PREFIX}"
     fi
   }
 
@@ -313,29 +340,36 @@ function interactiveArguments {
     if [[ $ANSIBLE_PLAYBOOK != "" ]]; then
       ANSIBLE_PLAYBOOK=$Q_ANSIBLE_PLAYBOOK
     fi
+
+    DEBUG "# Run included roles that reference encrypted vault?"
+    DEBUG "These may include generating ssh/gpg keys and will require the Ansible-Vault password"
+    read -p "[Enter] to skip. Type any character to run vault: " -n 1 -r Q_ANSIBLE_RUN_VAULT && echo ""
+    if [[ $Q_ANSIBLE_RUN_VAULT != "" ]]; then
+      ANSIBLE_RUN_VAULT=1
+    fi
   }
 
   function qMacosCustomizations {
     ADRWL "[Q macOS]" ""
     DEBUG "# Run full set of macOS customizations?"
     DEBUG "Customizations including reducing animation, increasing keyboard click speed...etc"
-    read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_FULL_MACOS_CUSTOM
-    if [[ $Q_FULL_MACOS_CUSTOM != "" ]]; then
-      FULL_MACOS_CUSTOM=1
+    read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_SCRIPTS_FULL_MACOS_CUSTOM && echo ""
+    if [[ $Q_SCRIPTS_FULL_MACOS_CUSTOM != "" ]]; then
+      SCRIPTS_FULL_MACOS_CUSTOM=1
     else
       DEBUG "# Run smaller set of macOS customizations? Exclusively removes animations"
-      read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_NO_ANIMATE_MACOS_CUSTOM
-      if [[ $Q_NO_ANIMATE_MACOS_CUSTOM != "" ]]; then
-        NO_ANIMATE_MACOS_CUSTOM=1
+      read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_SCRIPTS_NO_ANIMATE_MACOS_CUSTOM && echo ""
+      if [[ $Q_SCRIPTS_NO_ANIMATE_MACOS_CUSTOM != "" ]]; then
+        SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=1
       fi
     fi
     
     DEBUG "# Turn off macOS homecall processes?"
     if [[ $(csrutil status) != *enabled* ]]; then
       DEBUG "Many macOS processes 'phone home' periodically, this script attempts to stop this."
-      read -p "[Enter] to skip. Type any character to run macOS homecall blocking script: " -n 1 -r Q_MACOS_HOMECALL
-      if [[ $Q_MACOS_HOMECALL != "" ]]; then
-        MACOS_HOMECALL=1
+      read -p "[Enter] to skip. Type any character to run macOS homecall blocking script: " -n 1 -r Q_SCRIPTS_MACOS_HOMECALL && echo ""
+      if [[ $Q_SCRIPTS_MACOS_HOMECALL != "" ]]; then
+        SCRIPTS_MACOS_HOMECALL=1
       fi
     else
       DEBUG "Your macOS has System Integrity Protection status enabled so the homecall script can't be run."
@@ -351,22 +385,37 @@ function interactiveArguments {
   ((SUDO)) && qMacosCustomizations
   ADRWL "" "" ""
   INFO "Questions Finished!"
+}
+
+function mac_runbook {
+  mac_install_dependencies  
+  INFO "Required dependencies installed"
+
+  if [[ ! -d ${MAIN_DIR} ]]; then
+    git clone https://github.com/adrw/.files.git "${MAIN_DIR}"
+    INFO "Clone .files"
+  fi
+
+  DEBUG "Starting your custom runbook..."
+  ((SUDO)) && ((SECURE_NETWORK)) && secure_hostname_network && INFO "Finished Secure Network"
   
-  # Run Custom Runbook
-  ((SUDO)) && ((FULL_MACOS_CUSTOM)) && run_script "${SCRIPTS}/custom.macos" && run_script "${SCRIPTS}/.macos"
-  ((SUDO)) && ((NO_ANIMATE_MACOS_CUSTOM)) && run_script "${SCRIPTS}/no_animate.macos"
-  ((SUDO)) && ((MACOS_HOMECALL)) && run_script "${SCRIPTS}/homecall.sh fixmacos"
-  ((SUDO)) && ((SECURE_NETWORK)) && secure_hostname_network
+  DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
+  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "1" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "2" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "3" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "4" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  INFO "Ansible Playbook"
+
+  ((SUDO)) && ((SCRIPTS_FULL_MACOS_CUSTOM)) && run_script "${SCRIPTS}/custom.macos" && run_script "${SCRIPTS}/.macos"
+  ((SUDO)) && ((SCRIPTS_NO_ANIMATE_MACOS_CUSTOM)) && run_script "${SCRIPTS}/no_animate.macos"
+  ((SUDO)) && ((SCRIPTS_MACOS_HOMECALL)) && run_script "${SCRIPTS}/homecall.sh fixmacos"
+  INFO "Finished macOS Custom Scripts"
+
+  sudo -k
+  DEBUG "🍺  Fin. Bootstrap Script"
+  exit 0
 }
  
-
-if [ ! -f ~/.adrw-functions ]; then
-  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
-fi
-source ~/.adrw-functions
-ADRWL_LEVEL=$ADRWL_ALL
-stayalive &
-
 bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
 DEBUG "Welcome to ADRW .files"
 DEBUG "" "" "https://github.com/adrw/.files"
@@ -380,7 +429,8 @@ case "$(uname)" in
                 processArguments "$@"
                 ((SECURE_NETWORK)) && run_secure_hostname_network
               fi
-              mac_bootstrap
+              mac_runbook
+              # mac_bootstrap
               ;;
     Linux)    PLATFORM=Linux
               LINUX=true

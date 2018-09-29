@@ -1,0 +1,18 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - spoof-mac
+    - etchosts
+    - privoxy
+    # - syncthing
+    # - dnscrypt
+    # - gpg
+    - macos
+
+  become_method: sudo
+
+  vars:
+    
+

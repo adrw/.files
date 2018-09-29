@@ -1,0 +1,16 @@
+homebrew_apps_productivity:
+  - dropbox
+  # - eloston-chromium
+  # - firefox
+  - firefox-developer-edition
+  # - firefox-esr
+  - google-chrome
+  # - google-chrome-canary
+  # - protonmail-bridge
+  - signal
+  # - skype
+  - slack
+  # - standard-notes
+  - torbrowser
+  # - whatsapp
+

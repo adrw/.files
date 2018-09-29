@@ -1,0 +1,17 @@
+homebrew_apps_tools:
+  - 1password
+  - alfred
+  - appcleaner
+  - bartender
+  - caffeine
+  # - gpgtools-beta
+  # - gmvault
+  # - ipartition
+  # - keybase
+  # - kdiff3
+  # - protonvpn
+  - quitter
+  - spectacle
+  - the-unarchiver
+  - utc-menu-clock
+  - viscosity

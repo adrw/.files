@@ -1,23 +1,11 @@
 ---
 
-- import_playbook: mac_development.yml
-
 - hosts: macbox
   connection: local
   roles:
-    - square
     - dockutil
-    - macos
-    - iterm2
-
   become_method: sudo
-
   vars:
-    
-
-    install_homebrew_apps_media: true
-    install_homebrew_apps_password: "{{ become }}"
-
     dockitems_to_persist:
       - name: Slack
         path: "/Applications/Slack.app"

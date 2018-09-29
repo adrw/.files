@@ -1,0 +1,17 @@
+atom_packages:
+  - busy-signal
+  - language-babel
+  - language-docker
+  - language-gdb
+  - language-javascript-jsx
+  - language-markdown
+  - language-scala
+  - linter
+  - linter-eslint
+  - linter-ui-default
+  - intentions
+  - markdown-preview-plus
+  - markdown-scroll-sync
+  - markdown-writer
+  - multi-cursor
+  - remote-sync

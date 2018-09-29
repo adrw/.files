@@ -1,0 +1,5 @@
+homebrew_fonts:
+  # - font-arvo     # for OAKWEAR & CO.
+  - font-fira-code
+  - font-fira-mono-for-powerline
+  - font-fontawesome

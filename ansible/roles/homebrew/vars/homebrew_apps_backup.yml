@@ -1,0 +1,7 @@
+homebrew_apps_backup:
+  # - autodmg
+  - backblaze
+  # - backblaze-downloader
+  # - createuserpkg
+  - synology-assistant
+  - synology-drive
