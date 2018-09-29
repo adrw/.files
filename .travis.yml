@@ -17,7 +17,7 @@ matrix:
   - os: osx
     before_install:
     - brew update
-    script: ./bootstrap.sh -p mac_etchost_noanimate
+    script: ./bootstrap.sh -p mac_etchost_no_animate
   - os: osx
     before_install:
     - brew update
