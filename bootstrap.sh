@@ -42,35 +42,29 @@ EOF
   exit 0
 }
 
-function run_secure_hostname_network {
-  DEBUG "[🔐 Network]" "Secure network and change hostname: $(hostname) => ${HOSTNAME}"
-  # randomize MAC address
-  sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
+function linux_bootstrap {
+  DEBUG "Install Linux Base Shell"
+  safe_download ~/.adrw-bash-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/bash/files/.adrw-bash-powerline.sh
+  safe_source ~/.adrw-bash-powerline.sh ~/.bashrc
 
-  # turn off network interfaces
-  networksetup -setairportpower en0 off
+  safe_download ~/.adrw-zsh-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/zsh/files/.adrw-zsh-powerline.sh
+  safe_source ~/.adrw-zsh-powerline.sh ~/.zshrc
 
-  # set hostname (as done via System Preferences → Sharing)
-  sudo scutil --set ComputerName "${HOSTNAME}"
-  sudo scutil --set HostName "${HOSTNAME}"
-  sudo scutil --set LocalHostName "${HOSTNAME}"
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$HOSTNAME"
+  safe_download ~/.adrw-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/aliases/files/.adrw-aliases
+  safe_source ~/.adrw-aliases ~/.bashrc
+  safe_source ~/.adrw-aliases ~/.zshrc
 
-  # enable firewall, logging, and stealth mode
-  sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
-  /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
-  /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
-  /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+  safe_download ~/.adrw-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions
+  safe_source ~/.adrw-functions ~/.bashrc
+  safe_source ~/.adrw-functions ~/.zshrc
 
-  # stop firewall auto-whitelist by all software
-  /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
-  /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
+  safe_download ~/.vimrc https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/vim/files/.vimrc
+  
+  echo "curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s" > .adrw-update.sh
+  chmod +x .adrw-update.sh
 
-  # reboot network interfaces
-  networksetup -setairportpower en0 on
-
-  sleep 5
-  INFO "Computer Name: ${HOSTNAME}. Firewall: On." && ADRWL
+  DEBUG "🍺  Fin. Bootstrap Script"
+  exit 0
 }
 
 function mac_install_dependencies {
@@ -106,106 +100,36 @@ function mac_install_dependencies {
   INFO "xcode-select, git, homebrew, ansible"
 }
 
-function mac_scripts {
-  DEBUG "scripts | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  case "${ANSIBLE_PLAYBOOK}" in
-  "mac_core"|"mac_square"|"mac_dev"|"mac_clean"|"mac_test_full"|"mac_test_short")
-    run_script ${SCRIPTS}/custom.macos
-    run_script ${SCRIPTS}/.macos
-    if [[ $(csrutil status) != *enabled* ]]; then
-      run_script ${SCRIPTS}/homecall.sh fixmacos
-    fi
-    ;;
-  "mac_etchost_no_animate"|"mac_second_account")
-    run_script ${SCRIPTS}/no_animate.macos
-    ;;
-  *)
-    ERROR "no scripts"
-  esac
-  INFO "scripts | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-}
 
-function mac_bootstrap {
-  DEBUG "Bootstrap Script"
+function run_secure_hostname_network {
+  DEBUG "[🔐 Network]" "Secure network and change hostname: $(hostname) => ${HOSTNAME}"
+  # randomize MAC address
+  sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
 
-  mac_install_dependencies
+  # turn off network interfaces
+  networksetup -setairportpower en0 off
 
-  DEBUG "git/.files -> ${MAIN_DIR}"
-  if [[ ! -d ${MAIN_DIR} ]]; then
-    DEBUG "Clone .files"
-    git clone https://github.com/adrw/.files.git ${MAIN_DIR}
-    INFO "Clone .files"
-  elif [[ "${TEST}" == false ]]; then
-    # TODO Delete headless mode
-    DEBUG "Decapitate .files (headless mode)"
-    # cd ${MAIN_DIR}
-    # git fetch --all
-    # git reset --hard origin/master
-    # git checkout origin/master
-    # INFO "Decapitate .files (headless mode)"
-  fi
-  INFO "git/.files -> ${MAIN_DIR}"
+  # set hostname (as done via System Preferences → Sharing)
+  sudo scutil --set ComputerName "${HOSTNAME}"
+  sudo scutil --set HostName "${HOSTNAME}"
+  sudo scutil --set LocalHostName "${HOSTNAME}"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$HOSTNAME"
 
-  DEBUG "ansible-playbook | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  case "${ANSIBLE_PLAYBOOK}" in
-  "mac_core"|"mac_square")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-    ;;
-  "mac_etchost_no_animate"|"mac_jekyll"|"mac_clean")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-    ;;
-  "mac_test_full"|"mac_test_short"|"mac_second_account")
-    cd "${MAIN_DIR}/ansible" && ansible-playbook -i inventories/${ANSIBLE_INVENTORY} plays/provision/${ANSIBLE_PLAYBOOK}.yml -e "home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup) homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-    ;;
-  *)
-    ERROR "no matching play for ${ANSIBLE_PLAYBOOK}"
-  esac
-  INFO "ansible-playbook | ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
+  # enable firewall, logging, and stealth mode
+  sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
 
-  if [ "${ONLY_ANSIBLE}" = false ]; then
-    mac_scripts
-  fi
+  # stop firewall auto-whitelist by all software
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
+  /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
 
-  # TODO make this an option, not default since if it fails at any point or doesn't have ssh keys then pulling won't work anymore
-  DEBUG "${MAIN_DIR} git remote https:->git:"
-  cd ${MAIN_DIR}
-  git remote remove origin
-  git remote add origin git@github.com:adrw/.files.git
-  INFO "${MAIN_DIR} git remote https:->git:"
+  # reboot network interfaces
+  networksetup -setairportpower en0 on
 
-  sudo -k # remove sudo permissions
-  DEBUG "🍺  Fin. Bootstrap Script"
-  exit 0
-}
-
-function linux_bootstrap {
-  DEBUG "Install Linux Base Shell"
-  # ADRW Bash Powerline Theme
-  safe_download ~/.adrw-bash-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/bash/files/.adrw-bash-powerline.sh
-  safe_source ~/.adrw-bash-powerline.sh ~/.bashrc
-
-  # ADRW ZSH Powerline Theme
-  safe_download ~/.adrw-zsh-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/zsh/files/.adrw-zsh-powerline.sh
-  safe_source ~/.adrw-zsh-powerline.sh ~/.zshrc
-
-  # ADRW Aliases
-  safe_download ~/.adrw-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/aliases/files/.adrw-aliases
-  safe_source ~/.adrw-aliases ~/.bashrc
-  safe_source ~/.adrw-aliases ~/.zshrc
-
-  # ADRW Functions
-  safe_download ~/.adrw-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions
-  safe_source ~/.adrw-functions ~/.bashrc
-  safe_source ~/.adrw-functions ~/.zshrc
-
-  # ADRW .vimrc
-  safe_download ~/.vimrc https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/vim/files/.vimrc
-  
-  echo "curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s" > .ap-update.sh
-  chmod +x .ap-update.sh
-
-  DEBUG "🍺  Fin. Bootstrap Script"
-  exit 0
+  sleep 5
+  INFO "Computer Name: ${HOSTNAME}. Firewall: On." && ADRWL
 }
 
 ONLY_ANSIBLE=false
@@ -457,7 +381,7 @@ function mac_runbook {
   INFO "Finished macOS Custom Scripts"
 
   sudo -k
-  # kill -9 $STAY_ALIVE_PID
+  kill -9 $STAY_ALIVE_PID
   DEBUG "🍺  Fin. Bootstrap Script"
   exit 0
 }
@@ -476,7 +400,6 @@ case "$(uname)" in
                 ((SECURE_NETWORK)) && run_secure_hostname_network
               fi
               mac_runbook
-              # mac_bootstrap
               ;;
     Linux)    PLATFORM=Linux
               LINUX=true

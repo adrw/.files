@@ -22,9 +22,6 @@ matrix:
     script: ./bootstrap.sh -f -p mac_terminal
   - os: osx
     script: ./bootstrap.sh -f -p mac_vault
-before_install:
-  - brew update
-  - ./bootstrap -a
   
 notifications:
   slack:
