@@ -12,6 +12,8 @@ fi
 source ~/.adrw-functions
 ADRWL_LEVEL=$ADRWL_ALL
 stayalive &
+STAY_ALIVE_PID=$!
+TRACE "Stay Alive PID: ${STAY_ALIVE_PID}"
 
 function usage {
   cat << EOF
@@ -41,18 +43,18 @@ EOF
 }
 
 function run_secure_hostname_network {
-  DEBUG "[🔐 Network]" "Secure network and change computer name: $(hostname) => ${COMPUTER_NAME}"
+  DEBUG "[🔐 Network]" "Secure network and change hostname: $(hostname) => ${HOSTNAME}"
   # randomize MAC address
   sudo ifconfig en0 ether $(openssl rand -hex 6 | sed 's%\(..\)%\1:%g; s%.$%%')
 
   # turn off network interfaces
   networksetup -setairportpower en0 off
 
-  # set computer name (as done via System Preferences → Sharing)
-  sudo scutil --set ComputerName "${COMPUTER_NAME}"
-  sudo scutil --set HostName "${COMPUTER_NAME}"
-  sudo scutil --set LocalHostName "${COMPUTER_NAME}"
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$COMPUTER_NAME"
+  # set hostname (as done via System Preferences → Sharing)
+  sudo scutil --set ComputerName "${HOSTNAME}"
+  sudo scutil --set HostName "${HOSTNAME}"
+  sudo scutil --set LocalHostName "${HOSTNAME}"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$HOSTNAME"
 
   # enable firewall, logging, and stealth mode
   sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
@@ -68,7 +70,7 @@ function run_secure_hostname_network {
   networksetup -setairportpower en0 on
 
   sleep 5
-  INFO "Computer Name: ${COMPUTER_NAME}. Firewall: On." && ADRWL
+  INFO "Computer Name: ${HOSTNAME}. Firewall: On." && ADRWL
 }
 
 function mac_install_dependencies {
@@ -206,18 +208,19 @@ function linux_bootstrap {
   exit 0
 }
 
-ONLY_ANSIBLE=false                  # -a
-MAIN_DIR="${HOME}/.files"             # -d
+ONLY_ANSIBLE=false
+FAST_ASSUME_DEPENDENCIES_INSTALLED=0
+GIT_DETACH=0
+MAIN_DIR="${HOME}/.files"
 SCRIPTS="${MAIN_DIR}/scripts"
-HOMEBREW_PREFIX="${HOME}/.homebrew"      # -b
+HOMEBREW_PREFIX="${HOME}/.homebrew"
 HOMEBREW_INSTALL_PATH="${HOMEBREW_PREFIX}"
-ANSIBLE_INVENTORY="macbox/hosts"              # -i
-ANSIBLE_PLAYBOOK=mac_core                       # -p
+ANSIBLE_INVENTORY="macbox/hosts"
+ANSIBLE_PLAYBOOK=""
 ANSIBLE_RUN_VAULT=0
-TEST=false                          # -t
-USER_NAME=$(whoami)                 # -u
+USER_NAME=$(whoami)
 USER_GROUP=$(getUserGroup)
-COMPUTER_NAME=$(hostname)
+HOSTNAME=$(hostname)
 SUDO=0
 SECURE_NETWORK=0
 SCRIPTS_FULL_MACOS_CUSTOM=0
@@ -226,43 +229,60 @@ SCRIPTS_MACOS_HOMECALL=0
 
 function processArguments {
   DEBUG "📈  Registered Configuration"
-  while getopts "h?ad:b:i:p:m:n:strvu:" opt; do
+  while getopts "h?ad:b:fgi:mnp:rs:u:v" opt; do
     case "$opt" in
     h|\?)
         usage
         exit 0
         ;;
-    a)  DEBUG "  - ONLY_ANSIBLE=true"
+    a)  TRACE "ONLY_ANSIBLE=true"
         ONLY_ANSIBLE=true
         ;;
-    d)  DEBUG "  - MAIN_DIR ${MAIN_DIR} => ${OPTARG}"
-        MAIN_DIR=${OPTARG}
-        SCRIPTS="${MAIN_DIR}/scripts"
-        ;;
-    b)  DEBUG "  - HOMEBREW_PREFIX ${HOMEBREW_PREFIX} => ${OPTARG}"
+    b)  TRACE "HOMEBREW_PREFIX ${HOMEBREW_PREFIX} => ${OPTARG}"
         HOMEBREW_PREFIX=${OPTARG}
         HOMEBREW_INSTALL_PATH="${OPTARG}/Homebrew"
         ;;
-    i)  DEBUG "  - ANSIBLE_INVENTORY ${ANSIBLE_INVENTORY} => ${OPTARG}"
+    d)  TRACE "MAIN_DIR ${MAIN_DIR} => ${OPTARG}"
+        MAIN_DIR=${OPTARG}
+        SCRIPTS="${MAIN_DIR}/scripts"
+        ;;
+    f)  TRACE "FAST_ASSUME_DEPENDENCIES_INSTALLED=true"
+        FAST_ASSUME_DEPENDENCIES_INSTALLED=1
+        ;;
+    g)  TRACE "Stash .files changes and run in Git headless mode"
+        GIT_DETACH=1
+        ;;
+    i)  TRACE "ANSIBLE_INVENTORY ${ANSIBLE_INVENTORY} => ${OPTARG}"
         ANSIBLE_INVENTORY=${OPTARG}
         ;;
-    p)  DEBUG "  - ANSIBLE_PLAYBOOK ${ANSIBLE_PLAYBOOK} => ${OPTARG}"
+    m)  TRACE "SCRIPTS_FULL_MACOS_CUSTOM=true"
+        TRACE "SUDO=true"
+        SCRIPTS_FULL_MACOS_CUSTOM=1
+        SUDO=1
+        ;;
+    n)  TRACE "SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=true"
+        TRACE "SUDO=true"
+        SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=1
+        SUDO=1
+        ;;
+    p)  TRACE "ANSIBLE_PLAYBOOK ${ANSIBLE_PLAYBOOK} => ${OPTARG}"
         ANSIBLE_PLAYBOOK=${OPTARG}
         ;;
-    r)  DEBUG "   - SUDO=true"
+    r)  TRACE "SUDO=true"
         SUDO=1
         ;;    
-    s)  DEBUG "  - Secure network and custom host name"
+    s)  TRACE "Run secure network"
+        TRACE "Change hostname ${HOSTNAME} => ${OPTARG}"
+        TRACE "SUDO=true"
+        SUDO=1
         SECURE_NETWORK=1
+        HOSTNAME=${OPTARG}
         ;;
-    t)  DEBUG "  - Test Environment (Git Head still attached)"
-        TEST=true
-        ;;
-    u)  DEBUG "  - USER ${USER_NAME} => ${OPTARG}"
+    u)  TRACE "USER ${USER_NAME} => ${OPTARG}"
         USER_NAME=${OPTARG}
         HOME="/Users/${USER_NAME}"
         ;;
-    v)  DEBUG "   - RUN_VAULT=true"
+    v)  TRACE "RUN_VAULT=true"
         ANSIBLE_RUN_VAULT=1
         ;;
     esac
@@ -270,6 +290,25 @@ function processArguments {
 
   shift $((OPTIND-1))
   DEBUG "Leftovers: $*"
+}
+
+function printConfig {
+  DEBUG "ONLY_ANSIBLE = ${ONLY_ANSIBLE}"
+  DEBUG "MAIN_DIR = ${MAIN_DIR}"
+  DEBUG "SCRIPTS = ${SCRIPTS}"
+  DEBUG "HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}"
+  DEBUG "HOMEBREW_INSTALL_PATH = ${HOMEBREW_INSTALL_PATH}"
+  DEBUG "ANSIBLE_INVENTORY = ${ANSIBLE_INVENTORY}"
+  DEBUG "ANSIBLE_PLAYBOOK = ${ANSIBLE_PLAYBOOK}"
+  DEBUG "ANSIBLE_RUN_VAULT = ${ANSIBLE_RUN_VAULT}"
+  DEBUG "USER_NAME = ${USER_NAME}"
+  DEBUG "USER_GROUP = ${USER_GROUP}"
+  DEBUG "HOSTNAME = ${HOSTNAME}"
+  DEBUG "SUDO = ${SUDO}"
+  DEBUG "SECURE_NETWORK = ${SECURE_NETWORK}"
+  DEBUG "SCRIPTS_FULL_MACOS_CUSTOM = ${SCRIPTS_FULL_MACOS_CUSTOM}"
+  DEBUG "SCRIPTS_NO_ANIMATE_MACOS_CUSTOM = ${SCRIPTS_NO_ANIMATE_MACOS_CUSTOM}"
+  DEBUG "SCRIPTS_MACOS_HOMECALL = ${SCRIPTS_MACOS_HOMECALL}"
 }
 
 function interactiveArguments {
@@ -289,12 +328,12 @@ function interactiveArguments {
   function qSecureNetwork {
     ADRWL "[Q SECURE]" ""
     DEBUG "# Secure your Computer Name and Network Settings?"
-    DEBUG "Change your computer name from ${COMPUTER_NAME}, turn on firewall, randomize MAC address"
-    read -p "[Enter] to skip. Type to run with new computer name: " -r Q_COMPUTER_NAME
-    if [[ $Q_COMPUTER_NAME != "" ]]; then
-      COMPUTER_NAME=$Q_COMPUTER_NAME
+    DEBUG "Change your hostname from ${HOSTNAME}, turn on firewall, randomize MAC address"
+    read -p "[Enter] to skip. Type to run with new hostname: " -r Q_HOSTNAME
+    if [[ $Q_HOSTNAME != "" ]]; then
+      HOSTNAME=$Q_HOSTNAME
       SECURE_NETWORK=1
-      NOTICE "Will run secure network tasks and rename computer to ${COMPUTER_NAME}"
+      NOTICE "Will run secure network tasks and rename computer to ${HOSTNAME}"
     fi
   }
 
@@ -388,7 +427,7 @@ function interactiveArguments {
 }
 
 function mac_runbook {
-  mac_install_dependencies  
+  ((!FAST_ASSUME_DEPENDENCIES_INSTALLED)) && mac_install_dependencies  
   INFO "Required dependencies installed"
 
   if [[ ! -d ${MAIN_DIR} ]]; then
@@ -396,15 +435,21 @@ function mac_runbook {
     INFO "Clone .files"
   fi
 
+  cd "${MAIN_DIR}"
+
+  ((GIT_DETACH)) && decap && git checkout origin/master
+
   DEBUG "Starting your custom runbook..."
   ((SUDO)) && ((SECURE_NETWORK)) && secure_hostname_network && INFO "Finished Secure Network"
   
   DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "1" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "2" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "3" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "4" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "1" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "2" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "3" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "4" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
   INFO "Ansible Playbook"
+
+  cd "${MAIN_DIR}"
 
   ((SUDO)) && ((SCRIPTS_FULL_MACOS_CUSTOM)) && run_script "${SCRIPTS}/custom.macos" && run_script "${SCRIPTS}/.macos"
   ((SUDO)) && ((SCRIPTS_NO_ANIMATE_MACOS_CUSTOM)) && run_script "${SCRIPTS}/no_animate.macos"
@@ -412,6 +457,7 @@ function mac_runbook {
   INFO "Finished macOS Custom Scripts"
 
   sudo -k
+  # kill -9 $STAY_ALIVE_PID
   DEBUG "🍺  Fin. Bootstrap Script"
   exit 0
 }

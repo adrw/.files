@@ -144,6 +144,7 @@ function killall {
 
 # Decapitate git repo – headless – (disregard all local changes, reset back to master)
 function decap {
+  git stash
   git fetch --all
   if [ $# -eq 0 ]; then
     git reset --hard origin/master
