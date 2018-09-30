@@ -23,23 +23,68 @@ function usage {
   cat << EOF
   Usage :: .files/bootstrap.sh <opts>
 
-  Options |   Description                       |   Default (or alternate) Values
-  ${div}
-  -h      |   Show help menu                    |                         
-  -a      |   Only run Ansible Playbook         |   Def: runs .macos      
-  -d      |   .files/ directory                 |   ${HOME}/.files        
-  -b      |   Homebrew install directory        |   ${HOME}/.homebrew     
-          |       Homebrew default              |   /usr/local            
-  -i      |   Ansible Inventory                 |   macbox/hosts          
-  -p      |   Ansible Playbook                  |                         
-          |     - Default: Main Mac environment |   mac_core                        
-          |     - Dev environment (no media)    |   mac_dev               
-          |     - Homebrew, Atom, Docker...     |   mac_jekyll            
-          |     - etchost domain blocking       |   mac_etchost_no_animate
-          |     - Linux environment             |   linux_core
-  -s      |   Set hostname, turn on Firewall    |                         
-  -t      |   Test env, don't detach Git head   |                         
-  -u      |   User name                         |   me                    
+  -h    Usage
+
+  -b    Change homebrew prefix / install path
+        Default: ${HOME}/.homebrew
+        Args:
+          - homebrew directory
+        Example: -b "/usr/local/bin"
+
+  -d    Change where .files is installed
+        Default: ${HOME}/.files
+        Args:
+          - install directory : String
+        Example: -d "~/code/.files"
+  
+  -f    Fast Mode: Doesn't check for installed dependencies
+          - macOS Command Line Tools
+          - homebrew
+          - ansible
+          - python
+  
+  -g    Detached Git Mode: Stashes all changes in .files directory and resets to origin/master
+
+  -i    Ansible Inventory
+        Default: macbox/hosts (runs playbook on local machine over localhost)
+        Args:
+          - inventory : String
+        Example: -i "customprovision/hosts"
+
+  -l    Logging Level
+        Default: Trace
+        Args:
+          - level : Number
+        Example: -l 5
+        Levels are a number between 1 and 10
+
+  -m    Run macOS Full Customization Script
+  
+  -n    Run macOS No Animate Customization Script
+
+  -p    Ansible Playbook
+        Runs a playbook located in ansible/plays/provision/*.yml
+        Args:
+          - playbook : String
+        Example: -p "mac_core"
+
+  -r    Run tasks that require Sudo permissions
+        This will prompt for your Sudo password at different times
+
+  -s    Run secure network and hostname change script
+        Default: current hostname
+        Args:
+          - new hostname : String
+        Example: -s "John's Macbook Pro"
+
+  -u    Change username that the script is run under
+        Default: current username
+        Args:
+          - new username : String
+        Example -u "john"
+  
+  -v    Run tasks that include Ansible Vault
+        Will prompt at some point for vault password to decrypt Ansible tasks
 
   Learn more at https://github.com/adrw/.files
 EOF
@@ -138,7 +183,6 @@ function run_secure_hostname_network {
 
 function printConfig {
   ADRWL "[CONFIG]" ""
-  TRACE "ONLY_ANSIBLE = ${ONLY_ANSIBLE}"
   TRACE "FAST_ASSUME_DEPENDENCIES_INSTALLED = ${FAST_ASSUME_DEPENDENCIES_INSTALLED}"
   TRACE "GIT_DETACH = ${GIT_DETACH}"
   TRACE "MAIN_DIR = ${MAIN_DIR}"
@@ -159,7 +203,6 @@ function printConfig {
   ADRWL "" "" ""
 }
 
-ONLY_ANSIBLE=false
 FAST_ASSUME_DEPENDENCIES_INSTALLED=0
 GIT_DETACH=0
 MAIN_DIR="${HOME}/.files"
@@ -180,14 +223,11 @@ SCRIPTS_MACOS_HOMECALL=0
 
 function processArguments {
   TRACE "[SETUP]" "Register options"
-  while getopts "h?ad:b:fgi:l:mnp:rs:u:v" opt; do
+  while getopts "h?b:d:fgi:l:mnp:rs:u:v" opt; do
     case "$opt" in
     h|\?)
         usage
         exit 0
-        ;;
-    a)  TRACE "ONLY_ANSIBLE=true"
-        ONLY_ANSIBLE=true
         ;;
     b)  TRACE "HOMEBREW_PREFIX ${HOMEBREW_PREFIX} => ${OPTARG}"
         HOMEBREW_PREFIX=${OPTARG}

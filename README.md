@@ -16,33 +16,47 @@ Mac
 1. Erase `Macintosh HD` and install latest macOS from bootable USB
 1. Reboot and setup primary user account
 1. Login and enable Filevault full disk encryption
-1. Provision with command below in Terminal (add any other option flags before running)
+1. Provision with command below in Terminal for interactive mode
 ```Bash
-$ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh -s; rm ${HOME}/bootstrap.sh
+$ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
+```
+1. OR provision with command below including any custom arguments in Terminal
+```Bash
+$ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh; rm ${HOME}/bootstrap.sh
 ```
 5. Reboot (sometimes required) and fin.
 
-**`bootstrap.sh` options**
-- `-b` homebrew install directory. Default: `${HOME}/.homebrew`. Other: `/usr/local`
-- `-d` choose main directory for the `.files/`. Default: `${HOME}/.files`
-- `-h` show help menu
-- `-i` ansible inventory. Default: `macbox/hosts`
-- `-l` install basic Linux (.ap-aliases, .ap-functions, bash & zsh powerline themes)
-- `-m` mac app store email
-- `-n` mac app store password
-- `-p` ansible playbook to run. Default: `mac_core`. Other: `mac_dev`, `mac_jekyll`, `mac_etchost_no_animate`
-- `-s` run security setup, set hostname (prompted to type at runtime), enable firewall
-- `-t` use test environment, no git checkout
-- `-u` set user name that will be used to set owner for all file operations. Default: `me`
+Options
+===
+Run `bootstrap.sh -h` for latest manual of options and arguments which include:
+```
+-b    Change homebrew prefix / install path
+-d    Change where .files is installed
+-f    Fast Mode: Doesn't check for installed dependencies
+-g    Detached Git Mode: Stashes all changes in .files directory and resets to origin/master
+-i    Ansible Inventory
+-l    Logging Level
+-m    Run macOS Full Customization Script
+-n    Run macOS No Animate Customization Script
+-p    Ansible Playbook
+-r    Run tasks that require Sudo permissions
+-s    Run secure network and hostname change script
+-u    Change username that the script is run under
+-v    Run tasks that include Ansible Vault
+```
 
 Included Playbooks
----
+===
 Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
-- `mac_core` my full setup on my personal Mac
-- `mac_dev` entire dev environment suitable for work machine (doesn't include any media or photo software)
-- `mac_jekyll` minimum requirements to [get-started-with-jekyll](https://github.com/adrw/get-started-with-jekyll)
+- `mac_core` full mac setup
+- `mac_dev` includes `mac_terminal` and installs dev related apps
+- `mac_dock` do dock customizations
 - `mac_etchost_no_animate` only install /etc/hosts domain blocking and disable Mac animations
-
+- `mac_jekyll` minimum requirements to [get-started-with-jekyll](https://github.com/adrw/get-started-with-jekyll)
+- `mac_second_account` smaller playbook since it assumes most apps have been installed from a primary macOS account
+- `mac_secure` different security tasks to spoof MAC address, add custom blocked hosts, and start Privoxy
+- `mac_terminal` setup custom terminal with themes, aliases, and functions
+- `mac_vault` run ansible tasks that require Ansible Vault decryption
 
 FAQ / Non-Automated Setup Tasks
 ---
@@ -50,10 +64,10 @@ FAQ / Non-Automated Setup Tasks
   - Check status with `csrutil status`
   - Reboot into Recovery OS: reboot holding Cmd+R
   - In Utilities/Terminal, enable with `csrutil enable`
-- Generate SSH keys? Delete `ansible/roles/ssh/defaults/main.yml` and use `ansible-vault create` to make new `defaults/main.yml` with following declared string:
+- Generate SSH keys? Delete `ansible/roles/ssh-keys/defaults/main.yml` and use `ansible-vault create` to make new `defaults/main.yml` with following declared string:
   - `ssh_passphrase` generate id_rsa with a given passphrase then required on every id_rsa use
   - (Optional) `id_rsa: "{ full path }"` full path to where you want the `id_rsa` file generated (usually `~/.ssh/id_rsa`). Optional since it is in mac_core.yml by default for use in other roles.
-  - Want to change the file later? `ansible-vault edit ansible/roles/ssh/defaults/main.yml`
+  - Want to change the file later? `ansible-vault edit ansible/roles/ssh-keys/defaults/main.yml`
 - Add SSH key to GitHub? `pbcopy < ~/.ssh/id_rsa.pub` -> [GitHub.com/settings/keys](https://github.com/settings/keys)
 - `Privoxy` not working? Check that proxy `127.0.0.1:8118` was added to HTTP and HTTPS sections in Airport and Ethernet
 - Want to remove `admin` privileges from a user?
