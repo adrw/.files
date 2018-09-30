@@ -9,7 +9,7 @@ matrix:
   - os: osx
     script: ./bootstrap.sh -f -p mac_dock
   - os: osx
-    script: ./bootstrap.sh -f -p mac_etchost_noanimate
+    script: ./bootstrap.sh -p mac_etchost_no_animate
   - os: osx
     script: ./bootstrap.sh -f -p mac_jekyll
   - os: osx

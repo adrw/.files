@@ -15,6 +15,10 @@ stayalive &
 STAY_ALIVE_PID=$!
 TRACE "Stay Alive PID: ${STAY_ALIVE_PID}"
 
+bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
+DEBUG "Welcome to ADRW .files"
+DEBUG "" "" "https://github.com/adrw/.files"
+
 function usage {
   cat << EOF
   Usage :: .files/bootstrap.sh <opts>
@@ -132,6 +136,29 @@ function run_secure_hostname_network {
   INFO "Computer Name: ${HOSTNAME}. Firewall: On." && ADRWL
 }
 
+function printConfig {
+  ADRWL "[CONFIG]" ""
+  TRACE "ONLY_ANSIBLE = ${ONLY_ANSIBLE}"
+  TRACE "FAST_ASSUME_DEPENDENCIES_INSTALLED = ${FAST_ASSUME_DEPENDENCIES_INSTALLED}"
+  TRACE "GIT_DETACH = ${GIT_DETACH}"
+  TRACE "MAIN_DIR = ${MAIN_DIR}"
+  TRACE "SCRIPTS = ${SCRIPTS}"
+  TRACE "HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}"
+  TRACE "HOMEBREW_INSTALL_PATH = ${HOMEBREW_INSTALL_PATH}"
+  TRACE "ANSIBLE_INVENTORY = ${ANSIBLE_INVENTORY}"
+  TRACE "ANSIBLE_PLAYBOOK = ${ANSIBLE_PLAYBOOK}"
+  TRACE "ANSIBLE_RUN_VAULT = ${ANSIBLE_RUN_VAULT}"
+  TRACE "USER_NAME = ${USER_NAME}"
+  TRACE "USER_GROUP = ${USER_GROUP}"
+  TRACE "HOSTNAME = ${HOSTNAME}"
+  TRACE "SUDO = ${SUDO}"
+  TRACE "SECURE_NETWORK = ${SECURE_NETWORK}"
+  TRACE "SCRIPTS_FULL_MACOS_CUSTOM = ${SCRIPTS_FULL_MACOS_CUSTOM}"
+  TRACE "SCRIPTS_NO_ANIMATE_MACOS_CUSTOM = ${SCRIPTS_NO_ANIMATE_MACOS_CUSTOM}"
+  TRACE "SCRIPTS_MACOS_HOMECALL = ${SCRIPTS_MACOS_HOMECALL}"
+  ADRWL "" "" ""
+}
+
 ONLY_ANSIBLE=false
 FAST_ASSUME_DEPENDENCIES_INSTALLED=0
 GIT_DETACH=0
@@ -152,8 +179,8 @@ SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=0
 SCRIPTS_MACOS_HOMECALL=0
 
 function processArguments {
-  DEBUG "📈  Registered Configuration"
-  while getopts "h?ad:b:fgi:mnp:rs:u:v" opt; do
+  TRACE "[SETUP]" "Register options"
+  while getopts "h?ad:b:fgi:l:mnp:rs:u:v" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -178,6 +205,9 @@ function processArguments {
         ;;
     i)  TRACE "ANSIBLE_INVENTORY ${ANSIBLE_INVENTORY} => ${OPTARG}"
         ANSIBLE_INVENTORY=${OPTARG}
+        ;;
+    l)  TRACE "ADRWL_LEVEL ${ADRWL_LEVEL} => ${OPTARG}"
+        ADRWL_LEVEL=${OPTARG}
         ;;
     m)  TRACE "SCRIPTS_FULL_MACOS_CUSTOM=true"
         TRACE "SUDO=true"
@@ -214,25 +244,6 @@ function processArguments {
 
   shift $((OPTIND-1))
   DEBUG "Leftovers: $*"
-}
-
-function printConfig {
-  DEBUG "ONLY_ANSIBLE = ${ONLY_ANSIBLE}"
-  DEBUG "MAIN_DIR = ${MAIN_DIR}"
-  DEBUG "SCRIPTS = ${SCRIPTS}"
-  DEBUG "HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}"
-  DEBUG "HOMEBREW_INSTALL_PATH = ${HOMEBREW_INSTALL_PATH}"
-  DEBUG "ANSIBLE_INVENTORY = ${ANSIBLE_INVENTORY}"
-  DEBUG "ANSIBLE_PLAYBOOK = ${ANSIBLE_PLAYBOOK}"
-  DEBUG "ANSIBLE_RUN_VAULT = ${ANSIBLE_RUN_VAULT}"
-  DEBUG "USER_NAME = ${USER_NAME}"
-  DEBUG "USER_GROUP = ${USER_GROUP}"
-  DEBUG "HOSTNAME = ${HOSTNAME}"
-  DEBUG "SUDO = ${SUDO}"
-  DEBUG "SECURE_NETWORK = ${SECURE_NETWORK}"
-  DEBUG "SCRIPTS_FULL_MACOS_CUSTOM = ${SCRIPTS_FULL_MACOS_CUSTOM}"
-  DEBUG "SCRIPTS_NO_ANIMATE_MACOS_CUSTOM = ${SCRIPTS_NO_ANIMATE_MACOS_CUSTOM}"
-  DEBUG "SCRIPTS_MACOS_HOMECALL = ${SCRIPTS_MACOS_HOMECALL}"
 }
 
 function interactiveArguments {
@@ -350,7 +361,7 @@ function interactiveArguments {
   INFO "Questions Finished!"
 }
 
-function mac_runbook {
+function mac_bootstrap {
   ((!FAST_ASSUME_DEPENDENCIES_INSTALLED)) && mac_install_dependencies  
   INFO "Required dependencies installed"
 
@@ -364,14 +375,14 @@ function mac_runbook {
   ((GIT_DETACH)) && decap && git checkout origin/master
 
   DEBUG "Starting your custom runbook..."
-  ((SUDO)) && ((SECURE_NETWORK)) && secure_hostname_network && INFO "Finished Secure Network"
+  ((SUDO)) && ((SECURE_NETWORK)) && run_secure_hostname_network && INFO "Finished Secure Network"
   
   DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "1" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && TRACE "2" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "3" && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && TRACE "4" && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  INFO "Ansible Playbook"
+  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  INFO "Finished Ansible Playbook"
 
   cd "${MAIN_DIR}"
 
@@ -385,21 +396,17 @@ function mac_runbook {
   DEBUG "🍺  Fin. Bootstrap Script"
   exit 0
 }
- 
-bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
-DEBUG "Welcome to ADRW .files"
-DEBUG "" "" "https://github.com/adrw/.files"
 
-# Determine platform
+# Determine platform and run bootstrap
 case "$(uname)" in
     Darwin)   PLATFORM=Darwin
               if [ $# -eq 0 ]; then
                 interactiveArguments
               else
                 processArguments "$@"
-                ((SECURE_NETWORK)) && run_secure_hostname_network
               fi
-              mac_runbook
+              printConfig
+              mac_bootstrap
               ;;
     Linux)    PLATFORM=Linux
               LINUX=true
