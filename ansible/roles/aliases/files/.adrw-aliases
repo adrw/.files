@@ -46,6 +46,7 @@ alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 # Docker
 alias dc="docker-compose"
 alias dvp="docker volume prune"
+alias dct="docker compose exec" # use terminal inside running docker-compose service dct {container name} sh
 
 # zmv                     # rename all ext1 -> ext2   zmv '*.ext1' '$(basename $f .ext1).ext2'
 alias zmv="zmv -n"        # test mode

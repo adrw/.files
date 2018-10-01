@@ -1,1 +1,4 @@
 ---
+
+vim__editor: "export VISUAL=vim
+      \nexport EDITOR=\"$VISUAL\""

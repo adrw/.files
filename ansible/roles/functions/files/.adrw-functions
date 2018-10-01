@@ -265,6 +265,22 @@ function rename_first_line {
   INFO "🍺  Fin. ${in_dir} => ${out_dir}"
 }
 
+# Makes new User
+function mk_user {
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
+  TYPE=
+  NAME=
+  while getopts "h?a:s:" opt; do
+    case "$opt" in
+      a)    TYPE="admin" && NAME="${OPTARG}" ;;
+      h|/?) INFO "" ;;
+      s)    TYPE="standard" && NAME="${OPTARG}" ;;
+    esac
+  done
+  WARN "Make user ${NAME} with ${TYPE} permissions."
+  
+}
+
 # Removes admin privileges
 # Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
 # Find GeneratedUID of account with 
