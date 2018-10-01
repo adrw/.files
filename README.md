@@ -2,6 +2,8 @@ Andrew's .files
 ===
 **Ansible provisioning of macOS and Linux with security in mind**
 
+[![Build Status](https://travis-ci.org/adrw/.files.svg?branch=master)](https://travis-ci.org/adrw/.files)
+
 Linux
 ===
 1. Installs .ap-aliases, .ap-functions, bash & zsh powerline themes
