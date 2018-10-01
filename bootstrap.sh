@@ -7,7 +7,7 @@ set -u # give an error if we reference unset variables
 set -o pipefail # for a pipeline, if any of the commands fail with a non-zero exit code, fail the entire pipeline with that exit code
 
 if [ ! -f ~/.adrw-functions ]; then
-  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions -o ~/.adrw-functions
+  curl -s0 https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/adrw-shell/files/.adrw-functions -o ~/.adrw-functions
 fi
 source ~/.adrw-functions
 ADRWL_LEVEL=$ADRWL_ALL

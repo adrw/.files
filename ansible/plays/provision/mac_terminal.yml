@@ -9,8 +9,7 @@
     - zsh-antibody
     - zmv
     - fasd
-    - aliases
-    - functions
+    - adrw-shell
     - git
     - tmux
     - vim
