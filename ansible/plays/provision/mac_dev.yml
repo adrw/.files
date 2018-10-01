@@ -5,7 +5,7 @@
 - hosts: macbox
   connection: local
   roles:
-    - homebrew
+    - { role: homebrew, when: not fast_mode }
     # - atom
     # - sublime-text
     - macdown

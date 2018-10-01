@@ -6,9 +6,10 @@
 - hosts: macbox
   connection: local
   roles:
-    - dockutil
+    - { role: homebrew, when: not fast_mode }
+    - { role: dockutil, when: not fast_mode }
   become_method: sudo
-  vars:      
+  vars:
     install_homebrew_packages: true
     install_homebrew_apps_backup: true
     install_homebrew_apps_development: true

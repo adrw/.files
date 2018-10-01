@@ -6,18 +6,14 @@
   connection: local
   roles:
     - square
-    - dockutil
+    - { role: homebrew, when: not fast_mode }
+    - { role: dockutil, when: not fast_mode }
     - macos
     - iterm2
-
   become_method: sudo
-
   vars:
-    
-
     install_homebrew_apps_media: true
     install_homebrew_apps_password: "{{ become }}"
-
     dockitems_to_persist:
       - name: Slack
         path: "/Applications/Slack.app"

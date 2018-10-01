@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
 # SOURCE https://github.com/adrw/.files
-
 # https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 
 # Easier navigation: .., ..., ...., ....., ~ and -

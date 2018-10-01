@@ -1,7 +1,7 @@
 ---
 
 - file:
-    src: "{{ roles_dir }}/aliases/files/{{ adrw_shell__aliases }}"
+    src: "{{ roles_dir }}/adrw-shell/files/{{ adrw_shell__aliases }}"
     dest: "{{ home }}/{{ adrw_shell__aliases }}"
     state: link
     owner: "{{ user_name }}"
@@ -11,7 +11,7 @@
   become: false
 
 - file:
-    src: "{{ roles_dir }}/functions/files/{{ adrw_shell__functions }}"
+    src: "{{ roles_dir }}/adrw-shell/files/{{ adrw_shell__functions }}"
     dest: "{{ home }}/{{ adrw_shell__functions }}"
     state: link
     owner: "{{ user_name }}"

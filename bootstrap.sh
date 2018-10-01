@@ -37,11 +37,17 @@ function usage {
           - install directory : String
         Example: -d "~/code/.files"
   
-  -f    Fast Mode: Doesn't check for installed dependencies
+  -f    Fast Mode: Doesn't check for installed dependencies, run select roles, or select tasks
+        Dependencies:
           - macOS Command Line Tools
           - homebrew
           - ansible
           - python
+        Roles:
+          - dockutil
+          - homebrew
+        Tasks:
+          - Install iTerm2 Theme
   
   -g    Detached Git Mode: Stashes all changes in .files directory and resets to origin/master
 
@@ -183,7 +189,7 @@ function run_secure_hostname_network {
 
 function printConfig {
   ADRWL "[CONFIG]" ""
-  TRACE "FAST_ASSUME_DEPENDENCIES_INSTALLED = ${FAST_ASSUME_DEPENDENCIES_INSTALLED}"
+  TRACE "FAST_MODE = ${FAST_MODE}"
   TRACE "GIT_DETACH = ${GIT_DETACH}"
   TRACE "MAIN_DIR = ${MAIN_DIR}"
   TRACE "SCRIPTS = ${SCRIPTS}"
@@ -203,7 +209,7 @@ function printConfig {
   ADRWL "" "" ""
 }
 
-FAST_ASSUME_DEPENDENCIES_INSTALLED=0
+FAST_MODE=0
 GIT_DETACH=0
 MAIN_DIR="${HOME}/.files"
 SCRIPTS="${MAIN_DIR}/scripts"
@@ -237,8 +243,8 @@ function processArguments {
         MAIN_DIR=${OPTARG}
         SCRIPTS="${MAIN_DIR}/scripts"
         ;;
-    f)  TRACE "FAST_ASSUME_DEPENDENCIES_INSTALLED=true"
-        FAST_ASSUME_DEPENDENCIES_INSTALLED=1
+    f)  TRACE "FAST_MODE=true"
+        FAST_MODE=1
         ;;
     g)  TRACE "Stash .files changes and run in Git headless mode"
         GIT_DETACH=1
@@ -402,7 +408,7 @@ function interactiveArguments {
 }
 
 function mac_bootstrap {
-  ((!FAST_ASSUME_DEPENDENCIES_INSTALLED)) && mac_install_dependencies  
+  ((!FAST_MODE)) && mac_install_dependencies  
   INFO "Required dependencies installed"
 
   if [[ ! -d ${MAIN_DIR} ]]; then
@@ -418,10 +424,11 @@ function mac_bootstrap {
   ((SUDO)) && ((SECURE_NETWORK)) && run_secure_hostname_network && INFO "Finished Secure Network"
   
   DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
-  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}" && echo ""
+  ANSIBLE_RUNTIME_VARIABLES="fast_mode=${FAST_MODE} home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=false ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
   INFO "Finished Ansible Playbook"
 
   cd "${MAIN_DIR}"

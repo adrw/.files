@@ -1,9 +1,11 @@
 ---
 
-square_init_div: "### Square adrw"
+square__franklin_aliases: "if [[ -f \"$SQUARE_HOME/java/franklin/bash_aliases\" ]]; then
+      \n\tsource $SQUARE_HOME/java/franklin/bash_aliases
+      \nfi"
 
-square_aliases_filename: .adrw-square-aliases
-square_aliases_source: 'source {{ home }}/.adrw-square-aliases'
+square__aliases: .adrw-square-aliases
+square__functions: .adrw-square-functions
 
-square_functions_filename: .adrw-square-functions
-square_functions_source: 'source {{ home }}/.adrw-square-functions'
+square__adrw_shell_source: "source {{ home }}/{{ square__aliases }}
+  \nsource {{ home }}/{{ square__functions }}"
