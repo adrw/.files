@@ -20,26 +20,11 @@
     force: yes
   become: false
 
-- file:
-    path: "{{ home }}/.bashrc"
-    state: touch
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-  become: false
-
-- file:
-    path: "{{ home }}/.zshrc"
-    state: touch
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-  become: false
-
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} ADRW Shell"
     content: "{{ adrw_shell__source }}"
+    create: true
   become: false
   ignore_errors: true
 
@@ -47,5 +32,6 @@
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} ADRW Shell"
     content: "{{ adrw_shell__source }}"
+    create: true
   become: false
   ignore_errors: true

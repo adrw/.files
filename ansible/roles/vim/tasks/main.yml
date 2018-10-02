@@ -14,6 +14,7 @@
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} ADRW Editor"
     content: "{{ vim__editor }}"
+    create: true
   become: false
   ignore_errors: true
 
@@ -21,5 +22,6 @@
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} ADRW Editor"
     content: "{{ vim__editor }}"
+    create: true
   become: false
   ignore_errors: true

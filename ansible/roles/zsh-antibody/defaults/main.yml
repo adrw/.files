@@ -1,7 +1,7 @@
 ---
 
 antibody__rolename: "zsh-antibody"
-antibody__div: "### Antibody"
+antibody__div: "Antibody"
 antibody__plugins_list: .zshplugins
 antibody__plugins_zsh: .zsh_plugins.sh
 zsh__default_user: "DEFAULT_USER='{{ home | win_basename}}'"

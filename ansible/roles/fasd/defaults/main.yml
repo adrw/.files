@@ -1,4 +1,4 @@
 ---
 
-fasd_div: "### fasd"
-fasd_init: 'eval "$(fasd --init auto)"'
+fasd__div: "fasd"
+fasd__init: 'eval "$(fasd --init auto)"'

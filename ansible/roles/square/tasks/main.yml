@@ -2,20 +2,21 @@
   
 - blockinfile:
     dest: "{{ home }}/.bashrc"
-    marker: "### {mark} Square Franklin Aliases"
+    marker: "### {mark} {{ square__franklin_div }}"
     content: "{{ square__franklin_aliases }}"
+    create: true
   become: false
   ignore_errors: true
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
-    marker: "### {mark} Square Franklin Aliases"
+    marker: "### {mark} {{ square__franklin_div }}"
     content: "{{ square__franklin_aliases }}"
+    create: true
   become: false
   ignore_errors: true
 
-- name: ADRW Square Aliases
-  file:
+- file:
     src: "{{ roles_dir }}/square/files/{{ square__aliases }}"
     dest: "{{ home }}/{{ square__aliases }}"
     state: link
@@ -25,8 +26,7 @@
     force: yes
   become: false
 
-- name: ADRW Square Functions
-  file:
+- file:
     src: "{{ roles_dir }}/square/files/{{ square__functions }}"
     dest: "{{ home }}/{{ square__functions }}"
     state: link
@@ -38,14 +38,14 @@
 
 - blockinfile:
     dest: "{{ home }}/.bashrc"
-    marker: "### {mark} ADRW Shell Square"
+    marker: "### {mark} {{ square__div }}"
     content: "{{ square__adrw_shell_source }}"
   become: false
   ignore_errors: true
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
-    marker: "### {mark} ADRW Shell Square"
+    marker: "### {mark} {{ square__div }}"
     content: "{{ square__adrw_shell_source }}"
   become: false
   ignore_errors: true

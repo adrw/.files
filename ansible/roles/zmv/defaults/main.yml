@@ -1,5 +1,5 @@
 ---
 
-zmv_div: "### zmv"
-zmv_init: 'autoload -U zmv'
-zmv_bash: 'alias zmv="echo Err: zmv doesnt work in bash"'
+zmv__div: "### zmv"
+zmv__zsh: 'autoload -U zmv'
+zmv__bash: 'alias zmv="echo Err: zmv doesnt work in bash"'

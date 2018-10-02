@@ -1,4 +1,3 @@
 ---
 
-anaconda__div: "### Anaconda / Jupyter ML Notebooks"
 anaconda__path: export PATH=/Users/me/.homebrew/anaconda3/bin:"$PATH"

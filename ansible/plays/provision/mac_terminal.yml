@@ -3,7 +3,6 @@
 - hosts: macbox
   connection: local
   roles:
-    - { role: homebrew, when: not fast_mode }
     - bash
     - zsh
     - zsh-antibody
@@ -17,6 +16,7 @@
     - iterm2
     # - oh-my-zsh
     # - mas
+    - { role: homebrew, when: not fast_mode }
 
   become_method: sudo
 

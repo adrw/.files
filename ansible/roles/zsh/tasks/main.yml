@@ -1,43 +1,18 @@
 ---
 
-- name: ensure .zshrc exists
-  stat:
-    path: "{{ home }}/.zshrc"
-  register: z
-
-- name: create .zshrc if not exists
-  file:
-    path: "{{ home }}/.zshrc"
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-    state: '{{ "file" if z.stat.exists else "touch" }}'
-
-- lineinfile:
-    dest: "{{ home }}/.zshrc"
-    state: present
-    line: "{{ zsh_init_div }}"
-  become: false
-
 - name: Install zsh Powerline Theme
   get_url:
-    url: "{{ zsh_powerline_url }}"
-    dest: "{{ roles_dir }}/zsh/files/{{ zsh_powerline_file }}"
+    url: "{{ zsh__powerline_url }}"
+    dest: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_file }}"
     mode: 0644
     force: yes
     backup: yes
   ignore_errors: true
   become: false
 
-- lineinfile:
-    dest: "{{ home }}/.zshrc"
-    state: present
-    line: "{{ zsh_powerline_div }}"
-  become: false
-
 - file:
-    src: "{{ roles_dir }}/zsh/files/{{ zsh_powerline_adrw_file }}"
-    dest: "{{ home }}/{{ zsh_powerline_adrw_file }}"
+    src: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_adrw_file }}"
+    dest: "{{ home }}/{{ zsh__powerline_adrw_file }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -45,16 +20,21 @@
     force: yes
   become: false
 
-- file:
-    path: "{{ home }}/.zshrc"
-    state: touch
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-  become: false
-
-- lineinfile:
+- blockinfile:
     dest: "{{ home }}/.zshrc"
-    state: present
-    line: "{{ zsh_powerline_source }}"
+    marker: "### {mark} {{ zsh__powerline_div }}"
+    content: "{{ zsh__powerline_source }}"
+    create: true
   become: false
+  ignore_errors: true
+
+- name: Check default shell
+  shell: echo $SHELL
+  register: current_shell
+
+- name: Set zsh as default shell
+  shell: chsh -s /bin/zsh
+  when: 
+    - become_skip is not defined or not become_skip
+    - current_shell.stdout != "/bin/zsh"
+  become: true

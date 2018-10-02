@@ -1,28 +1,9 @@
 ---
 
-- name: ensure .bashrc exists
-  stat:
-    path: "{{ home }}/.bashrc"
-  register: b
-
-- name: create .bashrc if not exists
-  file:
-    path: "{{ home }}/.bashrc"
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-    state: '{{ "file" if b.stat.exists else "touch" }}'
-
-- lineinfile:
-      dest: "{{ home }}/.bashrc"
-      state: present
-      line: "{{ bash_init_div }}"
-  become: false
-
 - name: Install Bash Powerline Theme
   get_url:
-    url: "{{ bash_powerline_url }}"
-    dest: "{{ roles_dir }}/bash/files/{{ bash_powerline_file }}"
+    url: "{{ bash__powerline_url }}"
+    dest: "{{ roles_dir }}/bash/files/{{ bash__powerline_file }}"
     mode: 0644
     force: yes
     backup: yes
@@ -30,8 +11,8 @@
   become: false
 
 - file:
-    src: "{{ roles_dir }}/bash/files/{{ bash_powerline_adrw_file }}"
-    dest: "{{ home }}/{{ bash_powerline_adrw_file }}"
+    src: "{{ roles_dir }}/bash/files/{{ bash__powerline_adrw_file }}"
+    dest: "{{ home }}/{{ bash__powerline_adrw_file }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
@@ -39,34 +20,17 @@
     force: yes
   become: false
 
-- file:
-    path: "{{ home }}/.bashrc"
-    state: touch
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ bash__powerline_div }}"
+    content: "{{ bash__powerline_source }}"
+    create: true
   become: false
+  ignore_errors: true
 
 - lineinfile:
-      dest: "{{ home }}/.bashrc"
-      state: present
-      line: "{{ bash_powerline_div }}"
-  become: false
-
-- lineinfile:
-      dest: "{{ home }}/.bashrc"
-      state: present
-      line: "{{ bash_powerline_source }}"
-  become: false
-
-- name: Add .bashrc to .bash_profile so it runs on launch
-  file:
-    path: "{{ home }}/.bash_profile"
-    state: touch
-  become: false
-
-- lineinfile:
-      dest: "{{ home }}/.bash_profile"
-      state: present
-      line: "source {{ home }}/.bashrc"
+    dest: "{{ home }}/.bash_profile"
+    state: present
+    line: "source {{ home }}/.bashrc"
+    create: true
   become: false

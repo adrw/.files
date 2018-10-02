@@ -1,26 +1,8 @@
 ---
 
-- file:
-    path: "{{ home }}/.zshrc"
-    state: touch
-  become: false
-
 - name: Register Antibody
   shell: echo 'source <(antibody init)'
   register: antibody_source
-  become: false
-
-- name: Add Antibody to zshrc
-  lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ antibody__div }}"
-  become: false
-
-- lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ antibody_source.stdout }}"
   become: false
 
 - file:
@@ -37,27 +19,13 @@
   shell: antibody bundle < "{{ home }}/{{ antibody__plugins_list }}" > "{{ home }}/{{ antibody__plugins_zsh }}"
   become: false
 
-- name: Source plugins
-  lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "source {{ home }}/{{ antibody__plugins_zsh }}"
-  become: false
-
-- name: "set .zshrc default_user as '{{ home | win_basename }}' for shorter cmd prompt"
-  lineinfile:
+- blockinfile:
     dest: "{{ home }}/.zshrc"
-    state: present
-    line: "{{ zsh__default_user }}"
+    marker: "### {mark} {{ antibody__div }}"
+    content: "{{ antibody_source.stdout }}
+      \nsource {{ home }}/{{ antibody__plugins_zsh }}
+      \n{{ zsh__default_user }}"
+    create: true
   become: false
-
-- name: Check default shell
-  shell: echo $SHELL
-  register: current_shell
-
-- name: Set zsh as default shell
-  shell: chsh -s /bin/zsh
-  when: 
-    - become_skip is not defined or not become_skip
-    - current_shell.stdout != "/bin/zsh"
-  become: true
+  ignore_errors: true
+  

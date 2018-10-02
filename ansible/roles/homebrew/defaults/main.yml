@@ -1,11 +1,10 @@
 ---
 
-homebrew__div: "### Homebrew"
-homebrew__path: 'PATH={{ homebrew_install_path }}/sbin:{{ homebrew_install_path }}/bin:$PATH'
-homebrew__path_prefix: 'PATH='
-homebrew__no_analytics: 'export HOMEBREW_NO_ANALYTICS=1'
-homebrew__no_insecure_redirect: 'export HOMEBREW_NO_INSECURE_REDIRECT=1'
-homebrew__require_sha: 'export HOMEBREW_CASK_OPTS=--require-sha'
+homebrew__div: "Homebrew"
+homebrew__shell: "PATH={{ homebrew_install_path }}/sbin:{{ homebrew_install_path }}/bin:$PATH
+  \nexport HOMEBREW_NO_ANALYTICS=1
+  \nexport HOMEBREW_NO_INSECURE_REDIRECT=1
+  \nexport HOMEBREW_CASK_OPTS=--require-sha"
 
 homebrew_prefix: "{{ home }}/.homebrew"
 homebrew_install_path: "{{ homebrew_prefix }}"

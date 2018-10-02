@@ -1,27 +1,17 @@
 ---
 
-- name: add to bashrc
-  lineinfile:
-      dest: "{{ home }}/.bashrc"
-      state: present
-      line: "{{ zmv_div }}"
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ zmv__div }}"
+    content: "{{ zmv__bash }}"
+    create: true
   become: false
+  ignore_errors: true
 
-- lineinfile:
-      dest: "{{ home }}/.bashrc"
-      state: present
-      line: "{{ zmv_bash }}"
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ zmv__div }}"
+    content: "{{ zmv__zsh }}"
+    create: true
   become: false
-
-- name: add to zshrc
-  lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ zmv_div }}"
-  become: false
-
-- lineinfile:
-      dest: "{{ home }}/.zshrc"
-      state: present
-      line: "{{ zmv_init }}"
-  become: false
+  ignore_errors: true

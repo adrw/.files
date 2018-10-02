@@ -1,9 +1,11 @@
 ---
 
+square__franklin_div: "Square Franklin Aliases"
 square__franklin_aliases: "if [[ -f \"$SQUARE_HOME/java/franklin/bash_aliases\" ]]; then
       \n\tsource $SQUARE_HOME/java/franklin/bash_aliases
       \nfi"
 
+square__div: "Square Shell"
 square__aliases: .adrw-square-aliases
 square__functions: .adrw-square-functions
 
