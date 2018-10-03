@@ -189,7 +189,7 @@ function run_secure_hostname_network {
 
 function printConfig {
   ADRWL "[CONFIG]" ""
-  TRACE "FAST_MODE = ${FAST_MODE}"
+  TRACE "FAST_MODE = $(numberToBoolean "${FAST_MODE}")"
   TRACE "GIT_DETACH = ${GIT_DETACH}"
   TRACE "MAIN_DIR = ${MAIN_DIR}"
   TRACE "SCRIPTS = ${SCRIPTS}"
@@ -219,7 +219,7 @@ ANSIBLE_INVENTORY="macbox/hosts"
 ANSIBLE_PLAYBOOK=""
 ANSIBLE_RUN_VAULT=0
 USER_NAME=$(whoami)
-USER_GROUP=$(getUserGroup)
+USER_GROUP=$(getUserGroup "${USER_NAME}")
 HOSTNAME=$(hostname)
 SUDO=0
 SECURE_NETWORK=0
@@ -324,7 +324,7 @@ function interactiveArguments {
     read -p "[Enter] to skip. Type to overwrite: " -r Q_USER_NAME
     if [[ $Q_USER_NAME != "" ]]; then
       USER_NAME=$Q_USER_NAME
-      USER_GROUP=$(getUserGroup)
+      USER_GROUP=$(getUserGroup "${USER_NAME}")
       NOTICE "Updated User: ${USER_NAME}"
     fi
   }
@@ -424,7 +424,7 @@ function mac_bootstrap {
   ((SUDO)) && ((SECURE_NETWORK)) && run_secure_hostname_network && INFO "Finished Secure Network"
   
   DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  ANSIBLE_RUNTIME_VARIABLES="fast_mode=${FAST_MODE} home=${HOME} user_name=${USER_NAME} user_group=${USER_GROUP} homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  ANSIBLE_RUNTIME_VARIABLES="fast_mode=$(numberToBoolean $FAST_MODE) home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup "${USER_NAME}") homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
   ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=true ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
   ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=false become_skip=true run_vault=true ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
   ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "become=true become_skip=false run_vault=false ${ANSIBLE_RUNTIME_VARIABLES}" && echo ""

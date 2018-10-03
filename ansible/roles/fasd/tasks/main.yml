@@ -8,7 +8,7 @@
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ fasd__div }}"
-    content: "{{ fasd_init }}"
+    content: "{{ fasd__init }}"
     create: true
   become: false
   ignore_errors: true
@@ -16,7 +16,7 @@
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ fasd__div }}"
-    content: "{{ fasd_init }}"
+    content: "{{ fasd__init }}"
     create: true
   become: false
   ignore_errors: true

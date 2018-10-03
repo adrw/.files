@@ -6,8 +6,8 @@
   connection: local
   roles:
     - square
-    - { role: homebrew, when: not fast_mode }
-    - { role: dockutil, when: not fast_mode }
+    - homebrew
+    - dockutil
     - macos
     - iterm2
   become_method: sudo

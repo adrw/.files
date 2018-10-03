@@ -16,7 +16,7 @@
     - iterm2
     # - oh-my-zsh
     # - mas
-    - { role: homebrew, when: not fast_mode }
+    - homebrew
 
   become_method: sudo
 

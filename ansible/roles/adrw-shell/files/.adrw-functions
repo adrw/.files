@@ -121,7 +121,12 @@ function run_script {
 }
 
 function getUserGroup { 
-  id -Gn "$USER_NAME" | cut -d " " -f1 
+  id -Gn "$1" | cut -d " " -f1 
+}
+
+function numberToBoolean {
+  (($1)) && echo "true"
+  ((!$1)) && echo "false"
 }
 
 # use ~/.zshplugins -> supercrabtree/k with fallback to ls -la

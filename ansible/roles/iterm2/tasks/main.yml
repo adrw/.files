@@ -17,7 +17,7 @@
 
 - name: install theme
   shell: open {{ roles_dir }}/iterm2/files/Solarized-High-Contrast-Dark.itermcolors
-  when: not fast_mode
+  when: fast_mode is not defined or not fast_mode
   become: false
   ignore_errors: true
 
