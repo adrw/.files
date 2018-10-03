@@ -77,7 +77,8 @@
     install_options: "appdir={{ homebrew_cask_appdir }}"
   with_items: "{{ homebrew_apps_backup }}"
   when: 
-    - install_homebrew_apps_development
+    - install_homebrew_apps_backup
+    - become_skip is not defined or not become_skip
   become: false
   ignore_errors: true
 

@@ -105,11 +105,11 @@ function linux_bootstrap {
   safe_download ~/.adrw-zsh-powerline.sh https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/zsh/files/.adrw-zsh-powerline.sh
   safe_source ~/.adrw-zsh-powerline.sh ~/.zshrc
 
-  safe_download ~/.adrw-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/aliases/files/.adrw-aliases
+  safe_download ~/.adrw-aliases https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/adrw-shell/files/.adrw-aliases
   safe_source ~/.adrw-aliases ~/.bashrc
   safe_source ~/.adrw-aliases ~/.zshrc
 
-  safe_download ~/.adrw-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/functions/files/.adrw-functions
+  safe_download ~/.adrw-functions https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/adrw-shell/files/.adrw-functions
   safe_source ~/.adrw-functions ~/.bashrc
   safe_source ~/.adrw-functions ~/.zshrc
 

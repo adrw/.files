@@ -1,5 +1,4 @@
 homebrew_packages:
-  - antibody
   - cheat
   - exiftool  # photo manipulation script
   - figlet
@@ -9,18 +8,19 @@ homebrew_packages:
   - node
   - openssl
   - pngquant
-  # - python    # broken in Command Line Tools 10.14+ https://github.com/Homebrew/homebrew-core/issues/31679
-  # - python3   # broken in Command Line Tools 10.14+ https://github.com/Homebrew/homebrew-core/issues/31679
+  - python
+  - python3
   - shellcheck
   - tldr
-  - tmux
   - travis
   - tree
   - wget
   - yarn
 
 # Packages included in other roles
+# - antibody
 # - dockutil
 # - fasd
 # - privoxy
 # - syncthing
+# - tmux

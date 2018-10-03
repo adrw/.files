@@ -1,5 +1,12 @@
 ---
 
+- name: Install Antibody
+  homebrew:
+    name: getantibody/antibody/antibody
+    state: present
+  become: false
+  ignore_errors: true
+
 - name: Register Antibody
   shell: echo 'source <(antibody init)'
   register: antibody_source

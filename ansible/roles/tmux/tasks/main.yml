@@ -1,5 +1,12 @@
 ---
 
+- name: Install Tmux
+  homebrew:
+    name: tmux
+    state: present
+  become: false
+  ignore_errors: true
+
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf"
     dest: "{{ home }}/.tmux.conf"
