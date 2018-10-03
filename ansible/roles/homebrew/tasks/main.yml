@@ -28,10 +28,9 @@
 # Tap.
 - name: Ensure configured taps are tapped.
   homebrew_tap: "tap={{ item }} state=present"
-  with_items: "{{ homebrew_taps }}"
+  loop: "{{ homebrew_taps|flatten(levels=1) }}"
   become: false
-
-
+  
 # Brew.
 - name: Upgrade all homebrew packages (if configured).
   homebrew: update_homebrew=yes upgrade_all=yes
@@ -42,13 +41,13 @@
 
 - name: Ensure configured homebrew packages are installed from homebrew_installed_packages.
   command: "brew install {{ item }}"
-  with_items: "{{ homebrew_installed_packages }}"
+  loop: "{{ homebrew_installed_packages|flatten(levels=1) }}"
   become: false
   ignore_errors: true
 
 - name: Ensure configured homebrew packages are installed from homebrew_packages.
   command: "brew install {{ item }}"
-  with_items: "{{ homebrew_packages }}"
+  loop: "{{ homebrew_packages|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_development
   become: false
@@ -56,7 +55,7 @@
 
 - name: Ensure blacklisted homebrew packages are not installed.
   homebrew: "name={{ item }} state=absent"
-  with_items: "{{ homebrew_uninstalled_packages }}"
+  loop: "{{ homebrew_uninstalled_packages|flatten(levels=1) }}"
   become: false
   ignore_errors: true
 
@@ -66,7 +65,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_cask_apps }}"
+  loop: "{{ homebrew_cask_apps|flatten(levels=1) }}"
   become: false
   ignore_errors: true
 
@@ -75,7 +74,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_apps_backup }}"
+  loop: "{{ homebrew_apps_backup|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_backup
     - become_skip is not defined or not become_skip
@@ -87,7 +86,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_apps_development }}"
+  loop: "{{ homebrew_apps_development|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_development
   become: false
@@ -98,7 +97,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_apps_media }}"
+  loop: "{{ homebrew_apps_media|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_media
   become: false
@@ -109,7 +108,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_apps_password }}"
+  loop: "{{ homebrew_apps_password|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_password 
     - become_skip is not defined or not become_skip
@@ -121,7 +120,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_apps_productivity }}"
+  loop: "{{ homebrew_apps_productivity|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_productivity
   become: false
@@ -132,7 +131,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_apps_tools }}"
+  loop: "{{ homebrew_apps_tools|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_tools
   become: false
@@ -143,7 +142,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  with_items: "{{ homebrew_fonts }}"
+  loop: "{{ homebrew_fonts|flatten(levels=1) }}"
   when: 
     - install_homebrew_fonts
   become: false
