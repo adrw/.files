@@ -7,20 +7,20 @@
 
 - name: wipe
   shell: dockutil --remove "{{ item }}"
-  loop: "{{ dockitems_to_remove|flatten(levels=1) }}"
+  with_items: "{{dockitems_to_remove}}"
   become: false
 
 - name: wipe defaults
   shell: dockutil --remove "{{ item }}"
-  loop: "{{ default_dockitems_to_remove|flatten(levels=1) }}"
+  with_items: "{{default_dockitems_to_remove}}"
   become: false
 
 - name: if item exists, add to dock
   shell: dockutil --find "{{ item.name }}" || dockutil --add "{{ item.path }}"
-  loop: "{{ dockitems_to_persist|flatten(levels=1) }}"
+  with_items: "{{dockitems_to_persist}}"
   become: false
 
 - name: fix order
   shell: dockutil --move "{{ item.name }}" --position {{ item.pos }}
-  loop: "{{ dockitems_to_persist|flatten(levels=1) }}"
+  with_items: "{{dockitems_to_persist}}"
   become: false
