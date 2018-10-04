@@ -22,6 +22,8 @@ matrix:
     script: ./bootstrap.sh -p mac_terminal
   - os: osx
     script: ./bootstrap.sh -p mac_vault
+  - os: osx
+    script: ./bootstrap.sh -p mac_test
   
 notifications:
   slack:
