@@ -35,6 +35,6 @@
 - name: Set zsh as default shell
   shell: chsh -s /bin/zsh
   when: 
-    - become_skip is not defined or not become_skip
     - current_shell.stdout != "/bin/zsh"
+  ignore_errors: true
   become: true

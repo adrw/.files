@@ -3,6 +3,7 @@ homebrew_packages:
   - exiftool  # photo manipulation script
   - figlet
   # - gnupg2  # requires java...
+  - hub
   - htop
   - jhead     # photo manipulation script
   - node

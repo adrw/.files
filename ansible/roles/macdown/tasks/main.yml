@@ -25,7 +25,7 @@
     recurse: yes
   when: 
     - not mds.stat.exists 
-    - become_skip is not defined or not become_skip
+  ignore_errors: true
   become: true
 
 - name: Link over custom CSS
