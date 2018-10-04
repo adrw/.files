@@ -18,6 +18,6 @@
 
 - name: Ensure configured atom packages are installed.
   shell: "apm install {{ item }}"
-  with_items: "{{ atom_packages }}"
+  loop: "{{ atom_packages|flatten(levels=1) }}"
   become: false
   ignore_errors: true

@@ -39,7 +39,7 @@
 
 - name: Get and Update all Sublime plugins
   git: update=yes version="{{item.version|default('master')}}" repo="{{item.repo}}" dest="{{ home }}/{{ sublime_config }}/Packages/{{item.dest}}"
-  with_items: "{{ sublime_packages }}"
+  loop: "{{ sublime_packages|flatten(levels=1) }}"
   become: false  
 
 - name: Link over Preferences.sublime-settings

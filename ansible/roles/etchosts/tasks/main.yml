@@ -54,5 +54,5 @@
     src: "{{ roles_dir }}/etchosts/files/{{ raw_ads_hosts_file }}"
     dest: /etc/hosts
     force: yes
-  ignore_errors: true
   become: true
+  ignore_errors: true

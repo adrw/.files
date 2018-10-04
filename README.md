@@ -6,7 +6,7 @@ Andrew's .files
 
 Linux
 ===
-1. Installs .ap-aliases, .ap-functions, bash & zsh powerline themes
+1. Installs .adrw-aliases, .adrw-functions, bash & zsh powerline themes
 ```Bash
 $ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
 ```
@@ -22,7 +22,7 @@ Mac
 ```Bash
 $ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
 ```
-1. OR provision with command below including any custom arguments in Terminal
+OR provision with command below including any custom arguments in Terminal
 ```Bash
 $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh; rm ${HOME}/bootstrap.sh
 ```

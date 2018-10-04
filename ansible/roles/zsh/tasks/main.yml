@@ -36,5 +36,5 @@
   shell: chsh -s /bin/zsh
   when: 
     - current_shell.stdout != "/bin/zsh"
-  ignore_errors: true
   become: true
+  ignore_errors: true

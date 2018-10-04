@@ -41,7 +41,7 @@
 
 - name: Ensure configured MAS apps are installed
   command: mas install "{{ item.id|default(item) }}"
-  with_items: "{{ mas_apps + mas_app_ids }}"
+  loop: "{{ mas_apps + mas_app_ids }}"
   when: "'{{ item.id|default(item) }}' not in mas_list.stdout"
   become: false
 

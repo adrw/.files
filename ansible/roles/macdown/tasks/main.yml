@@ -25,8 +25,8 @@
     recurse: yes
   when: 
     - not mds.stat.exists 
-  ignore_errors: true
   become: true
+  ignore_errors: true
 
 - name: Link over custom CSS
   file:
