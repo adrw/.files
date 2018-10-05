@@ -4,4 +4,5 @@ antibody__rolename: "zsh-antibody"
 antibody__div: "Antibody"
 antibody__plugins_list: .zshplugins
 antibody__plugins_zsh: .zsh_plugins.sh
+antibody__completion: "autoload -U compinit && compinit"
 zsh__default_user: "DEFAULT_USER='{{ home | win_basename}}'"

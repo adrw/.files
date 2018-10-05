@@ -31,7 +31,8 @@
     marker: "### {mark} {{ antibody__div }}"
     content: "{{ antibody_source.stdout }}
       \nsource {{ home }}/{{ antibody__plugins_zsh }}
-      \n{{ zsh__default_user }}"
+      \n{{ zsh__default_user }}
+      \n{{ antibody__completion }}"
     create: true
   become: false
   ignore_errors: true
