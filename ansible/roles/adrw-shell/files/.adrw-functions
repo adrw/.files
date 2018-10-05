@@ -161,7 +161,7 @@ function decap {
 # git new branch
 function gcob {
   if [[ $# == 0 ]]; then
-    git checkout -b "$(date +"adrw/%Y%m%d.WB%H%M%S")"
+    git checkout -b "$(date +"adrw/%Y%m%d.WIP%H%M%S")"
   else
     git checkout -b "$(date +"adrw/%Y%m%d.$*")"
   fi

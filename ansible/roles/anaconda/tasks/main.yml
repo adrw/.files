@@ -1,9 +1,10 @@
 ---
 
 - name: Install Anaconda
-  homebrew:
+  homebrew_cask:
     name: anaconda
     state: present
+    install_options: "appdir={{ homebrew_cask_appdir }}"
   become: false
   ignore_errors: true
 
