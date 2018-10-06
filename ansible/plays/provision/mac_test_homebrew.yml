@@ -1,0 +1,19 @@
+---
+
+- hosts: macbox
+  connection: local
+  roles:
+    - homebrew
+
+  become_method: sudo
+  ignore_errors: true
+
+  vars:
+    install_homebrew_packages: true
+    install_homebrew_apps_backup: true
+    install_homebrew_apps_development: true
+    install_homebrew_apps_media: true
+    install_homebrew_apps_password: true
+    install_homebrew_apps_productivity: true
+    install_homebrew_apps_tools: true
+    install_homebrew_fonts: true
