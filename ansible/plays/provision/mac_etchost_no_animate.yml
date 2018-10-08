@@ -5,4 +5,5 @@
   roles:
     - etchosts
   become_method: sudo
+  ignore_errors: true
   vars:

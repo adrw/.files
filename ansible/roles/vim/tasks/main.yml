@@ -8,20 +8,20 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} ADRW Editor"
     content: "{{ vim__editor }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} ADRW Editor"
     content: "{{ vim__editor }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  

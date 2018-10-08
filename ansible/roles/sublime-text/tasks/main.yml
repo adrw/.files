@@ -7,16 +7,16 @@
     dir: ../vars/
     extensions:
       - yml
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install Sublime Text 3
   homebrew_cask:
     name: sublime-text
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Create Directories
   file:
@@ -28,19 +28,19 @@
     - "{{ home }}/{{ sublime_config }}/Packages"
     - "{{ home }}/{{ sublime_config }}/Packages/User"
     - "{{ home }}/{{ sublime_config }}/Installed Packages"
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install Package Control
   get_url:
     url: "{{ sublime_package_control_url }}"
     dest: "{{ home }}/{{ sublime_config }}/Installed Packages/{{ sublime_package_control_name }}"
-  become: false    
+      
 
 - name: Get and Update all Sublime plugins
   git: update=yes version="{{item.version|default('master')}}" repo="{{item.repo}}" dest="{{ home }}/{{ sublime_config }}/Packages/{{item.dest}}"
   loop: "{{ sublime_packages|flatten(levels=1) }}"
-  become: false  
+    
 
 - name: Link over Preferences.sublime-settings
   file:
@@ -51,4 +51,4 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  

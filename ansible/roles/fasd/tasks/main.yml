@@ -3,20 +3,20 @@
 - name: install fasd
   homebrew:
     name: fasd
-  become: false
+  
 
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ fasd__div }}"
     content: "{{ fasd__init }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ fasd__div }}"
     content: "{{ fasd__init }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  

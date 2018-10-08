@@ -8,6 +8,7 @@
   roles:
     - dockutil
   become_method: sudo
+  ignore_errors: true
   vars:
     dockitems_to_persist:
       - name: Messages

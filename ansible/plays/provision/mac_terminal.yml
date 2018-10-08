@@ -17,9 +17,8 @@
     - iterm2
     # - oh-my-zsh
     # - mas
-
   become_method: sudo
-
+  ignore_errors: true
   vars:
     install_homebrew_packages: true
     install_homebrew_fonts: true

@@ -4,10 +4,10 @@
     src: "{{ roles_dir }}/automator-workflows/files/CombinePDF20.zip"
     dest: "{{ home }}/Library/Services/"
     force: yes
-  become: false
+  
 
 - file:
     path: "{{ home }}/Library/Services/__MACOSX"
     state: absent
     force: yes
-  become: false
+  

@@ -7,8 +7,8 @@
     mode: 0666
     force: yes
     backup: yes
-  ignore_errors: true
-  become: false
+  
+  
 
 - name: download ad+social list to .raw-social.hosts
   get_url:
@@ -17,8 +17,8 @@
     mode: 0666
     force: yes
     backup: yes
-  ignore_errors: true
-  become: false
+  
+  
 
 - name: ...but let messenger.com work
   shell: sed '/{{ facebook_header }}/,/{{ twitter_header }}/d' {{ roles_dir }}/etchosts/files/{{ raw_social_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}
@@ -55,4 +55,4 @@
     dest: /etc/hosts
     force: yes
   become: true
-  ignore_errors: true
+  

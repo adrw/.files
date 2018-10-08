@@ -7,8 +7,8 @@
     name: macdown
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: ensure MacDown Styles exists
   stat:
@@ -26,7 +26,7 @@
   when: 
     - not mds.stat.exists 
   become: true
-  ignore_errors: true
+  
 
 - name: Link over custom CSS
   file:
@@ -36,8 +36,8 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Link over custom CSS
   file:
@@ -47,8 +47,8 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Link over custom CSS
   file:
@@ -58,5 +58,5 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-  become: false
-  ignore_errors: true
+  
+  

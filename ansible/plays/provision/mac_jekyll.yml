@@ -6,6 +6,7 @@
     - homebrew
     - atom
   become_method: sudo
+  ignore_errors: true
   vars:
     homebrew_cask_require_sha: false
     homebrew_taps:

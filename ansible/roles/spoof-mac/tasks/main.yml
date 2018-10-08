@@ -5,8 +5,8 @@
 - name: Install SpoofMAC
   pip:
     name: SpoofMAC
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Copy plist to LaunchDaemons
   file:
@@ -18,4 +18,4 @@
     mode: 0644
     force: yes
   become: true
-  ignore_errors: true
+  

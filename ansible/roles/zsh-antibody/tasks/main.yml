@@ -4,13 +4,13 @@
   homebrew:
     name: getantibody/antibody/antibody
     state: present
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Register Antibody
   shell: echo 'source <(antibody init)'
   register: antibody_source
-  become: false
+  
 
 - file:
     src: "{{ roles_dir }}/{{ antibody__rolename }}/files/{{ antibody__plugins_list }}"
@@ -20,11 +20,11 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - name: Antibody Bundle
   shell: antibody bundle < "{{ home }}/{{ antibody__plugins_list }}" > "{{ home }}/{{ antibody__plugins_zsh }}"
-  become: false
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
@@ -34,6 +34,6 @@
       \n{{ zsh__default_user }}
       \n{{ antibody__completion }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
   

@@ -6,7 +6,7 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0700
-  become: false
+  
 
 - file:
     src: "{{ roles_dir }}/ssh/files/config"
@@ -16,9 +16,9 @@
     group: "{{ user_group }}"
     mode: 0600
     force: yes
-  become: false
+  
 
 - name: Add id_rsa to ssh agent
   shell: "ssh-add -K {{ id_rsa }}"
-  become: false
-  ignore_errors: true
+  
+  

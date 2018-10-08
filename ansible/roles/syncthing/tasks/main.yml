@@ -4,21 +4,21 @@
   homebrew:
     name: syncthing
     state: present
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: start syncthing as service
   command: brew services start syncthing
   register: syncthing_service_status
   ignore_errors: yes
-  become: false
+  
   
 # - find:
 #     paths: "{{ homebrew_install_path }}"
 #     patterns: "*.syncthing.plist"
 #     recurse: yes
 #   register: syncthing_plist_path
-#   become: false
+#   
 #
 # - debug:
 #     msg: "{{ syncthing_plist_path.files[0]['path'] }}"
@@ -30,8 +30,8 @@
 #     group: wheel
 #     mode: 0644
 #   become: true
-#   ignore_errors: true
+#   
 #
 # - command: "launchctl load {{ home }}/Library/LaunchAgents/syncthing.plist"
 #   become: true
-#   ignore_errors: true
+#   

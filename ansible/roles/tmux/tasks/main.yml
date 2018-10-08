@@ -4,8 +4,8 @@
   homebrew:
     name: tmux
     state: present
-  become: false
-  ignore_errors: true
+  
+  
 
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf"
@@ -15,7 +15,7 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf.local"
@@ -25,4 +25,4 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  

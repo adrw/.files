@@ -5,59 +5,59 @@
     dir: ../vars/
     extensions:
       - yml
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ homebrew__div }}"
     content: "{{ homebrew__shell }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ homebrew__div }}"
     content: "{{ homebrew__shell }}"
     create: true    
-  become: false
-  ignore_errors: true
+  
+  
 
 # https://github.com/geerlingguy/ansible-role-homebrew
 # Tap.
 - name: Ensure configured taps are tapped.
   homebrew_tap: "tap={{ item }} state=present"
   loop: "{{ homebrew_taps|flatten(levels=1) }}"
-  become: false
+  
   
 # Brew.
 - name: Upgrade all homebrew packages (if configured).
   homebrew: update_homebrew=yes upgrade_all=yes
   when: 
     - install_homebrew_apps_development
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Ensure configured homebrew packages are installed from homebrew_installed_packages.
   command: "brew install {{ item }}"
   loop: "{{ homebrew_installed_packages|flatten(levels=1) }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Ensure configured homebrew packages are installed from homebrew_packages.
   command: "brew install {{ item }}"
   loop: "{{ homebrew_packages|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_development
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Ensure blacklisted homebrew packages are not installed.
   homebrew: "name={{ item }} state=absent"
   loop: "{{ homebrew_uninstalled_packages|flatten(levels=1) }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 # Cask.
 - name: Install configured cask applications from homebrew_cask_apps.
@@ -66,8 +66,8 @@
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
   loop: "{{ homebrew_cask_apps|flatten(levels=1) }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install configured cask applications from homebrew_apps_backup.
   homebrew_cask:
@@ -77,8 +77,8 @@
   loop: "{{ homebrew_apps_backup|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_backup
-  ignore_errors: true
-  become: false
+  
+  
 
 - name: Install configured cask applications from homebrew_apps_development.
   homebrew_cask:
@@ -88,8 +88,8 @@
   loop: "{{ homebrew_apps_development|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_development
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install configured cask applications from homebrew_apps_media.
   homebrew_cask:
@@ -99,8 +99,8 @@
   loop: "{{ homebrew_apps_media|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_media
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install configured cask applications from homebrew_apps_password.
   homebrew_cask:
@@ -110,8 +110,8 @@
   loop: "{{ homebrew_apps_password|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_password 
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install configured cask applications from homebrew_apps_productivity.
   homebrew_cask:
@@ -121,8 +121,8 @@
   loop: "{{ homebrew_apps_productivity|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_productivity
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install configured cask applications from homebrew_apps_tools.
   homebrew_cask:
@@ -132,8 +132,8 @@
   loop: "{{ homebrew_apps_tools|flatten(levels=1) }}"
   when: 
     - install_homebrew_apps_tools
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Install configured font homebrew_fonts.
   homebrew_cask:
@@ -143,18 +143,18 @@
   loop: "{{ homebrew_fonts|flatten(levels=1) }}"
   when: 
     - install_homebrew_fonts
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Check for Brewfile.
   stat:
     path: "{{ homebrew_brewfile_dir }}/Brewfile"
   register: homebrew_brewfile
-  become: false
+  
 
 - name: Install from Brewfile.
   command: "brew bundle chdir={{ homebrew_brewfile_dir }}"
   when: 
     - homebrew_brewfile.stat.exists
     - homebrew_use_brewfile
-  become: false
+  

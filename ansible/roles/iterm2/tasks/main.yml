@@ -5,8 +5,8 @@
     name: iterm2
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 - osx_defaults:
     domain: com.googlecode.iterm2
@@ -18,8 +18,8 @@
 - name: install theme
   shell: open {{ roles_dir }}/iterm2/files/Solarized-High-Contrast-Dark.itermcolors
   when: fast_mode is not defined or not fast_mode
-  become: false
-  ignore_errors: true
+  
+  
 
 # customizations, profile, default font size
 

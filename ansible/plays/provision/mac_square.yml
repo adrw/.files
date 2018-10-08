@@ -11,6 +11,7 @@
     - macos
     - iterm2
   become_method: sudo
+  ignore_errors: true
   vars:
     install_homebrew_apps_password: "{{ become }}"
     dockitems_to_persist:

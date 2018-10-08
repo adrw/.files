@@ -12,6 +12,7 @@
     - automator-workflows
     # - anaconda
   become_method: sudo
+  ignore_errors: true
   vars:
     install_homebrew_apps_development: true
     install_homebrew_apps_password: true

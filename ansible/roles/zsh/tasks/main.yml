@@ -7,8 +7,8 @@
     mode: 0644
     force: yes
     backup: yes
-  ignore_errors: true
-  become: false
+  
+  
 
 - file:
     src: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_adrw_file }}"
@@ -18,15 +18,15 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ zsh__powerline_div }}"
     content: "{{ zsh__powerline_source }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - name: Check default shell
   shell: echo $SHELL
@@ -37,4 +37,4 @@
   when: 
     - current_shell.stdout != "/bin/zsh"
   become: true
-  ignore_errors: true
+  

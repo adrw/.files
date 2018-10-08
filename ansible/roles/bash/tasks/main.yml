@@ -7,8 +7,8 @@
     mode: 0644
     force: yes
     backup: yes
-  ignore_errors: true
-  become: false
+  
+  
 
 - file:
     src: "{{ roles_dir }}/bash/files/{{ bash__powerline_adrw_file }}"
@@ -18,19 +18,19 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ bash__powerline_div }}"
     content: "{{ bash__powerline_source }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - lineinfile:
     dest: "{{ home }}/.bash_profile"
     state: present
     line: "source {{ home }}/.bashrc"
     create: true
-  become: false
+  

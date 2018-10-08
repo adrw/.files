@@ -2,12 +2,12 @@
 
 - name: "install oh-my-zsh"
   shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  become: false
+  
 
 - name: "store .zshrc location"
   shell: echo {{ home }}/.zshrc
   register: shellrc
-  become: false
+  
 
 - assert:
     that:
@@ -17,7 +17,7 @@
 - name: "store zshrc as variable"
   shell: cat {{ shellrc.stdout }}
   register: shellrc_file
-  become: false
+  
 
 - assert:
     that:
@@ -34,7 +34,7 @@
 - name: "install Powerlevel9k"
   shell: git clone https://github.com/bhilburn/powerlevel9k.git {{ home }}/.oh-my-zsh/custom/themes/powerlevel9k
   when: powershell_exists.stat.isdir is not defined
-  become: false
+  
 
 - name: "add Powerlevel9k to .zshrc"
   lineinfile:
@@ -43,7 +43,7 @@
     regexp: "^{{ zsh__theme_prefix }}"
     insertafter: "{{ zsh__pre_theme }}"
     line: "{{ zsh__powerlevel_theme }}"
-  become: false
+  
 
 - name: "set .zshrc default_user as '{{ home | win_basename }}' for shorter cmd prompt"
   lineinfile:
@@ -52,7 +52,7 @@
     regexp: "^{{ zsh__default_user }}"
     insertafter: "{{ zsh__powerlevel_theme }}"
     line: "{{ zsh__default_user }}"
-  become: false
+  
 
 - name: "check if autosuggestions"
   stat:
@@ -62,7 +62,7 @@
 - name: "install autosuggestions"
   shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   when: autosuggestions_exists.stat.isdir is not defined
-  become: false
+  
 
 - name: "add autosuggestions to .zshrc"
   lineinfile:
@@ -70,7 +70,7 @@
     state: present
     insertafter: "{{ zsh__plugin_prefix }}"
     line: "{{ zsh__autosuggestions_plugin }}"
-  become: false
+  
 
 - name: "check if syntax_highlighting"
   stat:
@@ -83,4 +83,4 @@
     state: present
     line: "{{ zsh__syntax_highlighting }}"
   when: syntax_exists
-  become: false
+  

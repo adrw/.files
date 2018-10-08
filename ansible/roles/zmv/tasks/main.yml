@@ -5,13 +5,13 @@
     marker: "### {mark} {{ zmv__div }}"
     content: "{{ zmv__bash }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ zmv__div }}"
     content: "{{ zmv__zsh }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  

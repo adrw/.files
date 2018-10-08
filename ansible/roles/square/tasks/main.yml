@@ -5,16 +5,16 @@
     marker: "### {mark} {{ square__franklin_div }}"
     content: "{{ square__franklin_aliases }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ square__franklin_div }}"
     content: "{{ square__franklin_aliases }}"
     create: true
-  become: false
-  ignore_errors: true
+  
+  
 
 - file:
     src: "{{ roles_dir }}/square/files/{{ square__aliases }}"
@@ -24,7 +24,7 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - file:
     src: "{{ roles_dir }}/square/files/{{ square__functions }}"
@@ -34,18 +34,18 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  become: false
+  
 
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ square__div }}"
     content: "{{ square__adrw_shell_source }}"
-  become: false
-  ignore_errors: true
+  
+  
 
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ square__div }}"
     content: "{{ square__adrw_shell_source }}"
-  become: false
-  ignore_errors: true
+  
+  
