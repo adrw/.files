@@ -7,14 +7,10 @@
     name: macdown
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  
-  
-
 - name: ensure MacDown Styles exists
   stat:
     path: "{{ home }}/{{ macdown_styles_dest }}"
   register: mds
-
 - name: Ensure custom CSS directory present
   file:
     path: "{{ home }}/{{ macdown_styles_dest }}"
@@ -26,8 +22,6 @@
   when: 
     - not mds.stat.exists 
   become: true
-  
-
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/GitHubAP.css"
@@ -36,9 +30,6 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-  
-  
-
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/LatexAP.css"
@@ -47,9 +38,6 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-  
-  
-
 - name: Link over custom CSS
   file:
     src: "{{ roles_dir }}/{{ macdown_role_file }}/PrintAP.css"
@@ -58,5 +46,3 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-  
-  

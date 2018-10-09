@@ -4,9 +4,6 @@
   homebrew:
     name: tmux
     state: present
-  
-  
-
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf"
     dest: "{{ home }}/.tmux.conf"
@@ -15,8 +12,6 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  
-
 - file:
     src: "{{ roles_dir }}/tmux/files/.tmux.conf.local"
     dest: "{{ home }}/.tmux.conf.local"

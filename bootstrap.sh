@@ -209,6 +209,7 @@ function printConfig {
   ADRWL "" "" ""
 }
 
+PLATFORM=$(uname)
 FAST_MODE=0
 GIT_DETACH=0
 MAIN_DIR="${HOME}/.files"
@@ -216,7 +217,6 @@ SCRIPTS="${MAIN_DIR}/scripts"
 HOMEBREW_PREFIX="${HOME}/.homebrew"
 HOMEBREW_INSTALL_PATH="${HOMEBREW_PREFIX}"
 ANSIBLE_INVENTORY="macbox/hosts"
-ANSIBLE_PLAYBOOK=""
 ANSIBLE_RUN_VAULT=0
 USER_NAME=$(whoami)
 USER_GROUP=$(getUserGroup "${USER_NAME}")
@@ -265,7 +265,7 @@ function processArguments {
         SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=1
         SUDO=1
         ;;
-    p)  TRACE "ANSIBLE_PLAYBOOK ${ANSIBLE_PLAYBOOK} => ${OPTARG}"
+    p)  TRACE "ANSIBLE_PLAYBOOK ${OPTARG}"
         ANSIBLE_PLAYBOOK=${OPTARG}
         ;;
     r)  TRACE "SUDO=true"
@@ -445,9 +445,8 @@ function mac_bootstrap {
 }
 
 # Determine platform and run bootstrap
-case "$(uname)" in
-    Darwin)   PLATFORM=Darwin
-              if [ $# -eq 0 ]; then
+case "$PLATFORM" in
+    Darwin)   if [ $# -eq 0 ] && [ -z ${ANSIBLE_PLAYBOOK+mac_test} ]; then
                 interactiveArguments
               else
                 processArguments "$@"
@@ -455,11 +454,7 @@ case "$(uname)" in
               printConfig
               mac_bootstrap
               ;;
-    Linux)    PLATFORM=Linux
-              LINUX=true
-              linux_bootstrap
-              ;;
-    *)        PLATFORM=NULL
+    Linux)    linux_bootstrap
               ;;
 esac
 

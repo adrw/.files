@@ -30,12 +30,9 @@
   stat:
     path: "{{ home }}/.oh-my-zsh/custom/themes/powerlevel9k"
   register: powershell_exists
-
 - name: "install Powerlevel9k"
   shell: git clone https://github.com/bhilburn/powerlevel9k.git {{ home }}/.oh-my-zsh/custom/themes/powerlevel9k
   when: powershell_exists.stat.isdir is not defined
-  
-
 - name: "add Powerlevel9k to .zshrc"
   lineinfile:
     dest: "{{ home }}/.zshrc"
@@ -43,8 +40,6 @@
     regexp: "^{{ zsh__theme_prefix }}"
     insertafter: "{{ zsh__pre_theme }}"
     line: "{{ zsh__powerlevel_theme }}"
-  
-
 - name: "set .zshrc default_user as '{{ home | win_basename }}' for shorter cmd prompt"
   lineinfile:
     dest: "{{ home }}/.zshrc"
@@ -52,35 +47,26 @@
     regexp: "^{{ zsh__default_user }}"
     insertafter: "{{ zsh__powerlevel_theme }}"
     line: "{{ zsh__default_user }}"
-  
-
 - name: "check if autosuggestions"
   stat:
     path: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
   register: autosuggestions_exists
-
 - name: "install autosuggestions"
   shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   when: autosuggestions_exists.stat.isdir is not defined
-  
-
 - name: "add autosuggestions to .zshrc"
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
     insertafter: "{{ zsh__plugin_prefix }}"
     line: "{{ zsh__autosuggestions_plugin }}"
-  
-
 - name: "check if syntax_highlighting"
   stat:
     path: "{{ zsh__syntax_highlighting }}"
   register: syntax_exists
-
 - name: "add syntax_highlighting to .zshrc"
   lineinfile:
     dest: "{{ home }}/.zshrc"
     state: present
     line: "{{ zsh__syntax_highlighting }}"
   when: syntax_exists
-  

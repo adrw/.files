@@ -4,22 +4,16 @@
   command: csrutil status
   register: sip_status
   failed_when: "'disabled' in sip_status.stderr"
-  
 - assert:
     that: sip_status.stdout.find('enabled') != -1
     msg: "System Integrity Protection is disabled"
-
 - name: check filevault full disk encryption status
   command: fdesetup isactive
   register: filevault_status
   failed_when: "'FAILED' in filevault_status.stderr"
-  
 - name: seed /dev/random before enabling filevault
   when: filevault_status.stdout.find('true') == -1
   shell: echo "{{ fde_seed }}" >> /dev/random
-  
 - assert:
     that: filevault_status.stdout.find('true') != -1
     msg: "Filevault is not on"
-  
-

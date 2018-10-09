@@ -5,21 +5,13 @@
     name: anaconda
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  
-  
-
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} Anaconda / Jupyter ML Notebooks"
     content: "{{ anaconda__path }}"
     create: true
-  
-  
-
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} Anaconda / Jupyter ML Notebooks"
     content: "{{ anaconda__path }}"
     create: true
-  
-  

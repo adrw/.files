@@ -7,9 +7,6 @@
     mode: 0644
     force: yes
     backup: yes
-  
-  
-
 - file:
     src: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_adrw_file }}"
     dest: "{{ home }}/{{ zsh__powerline_adrw_file }}"
@@ -18,20 +15,14 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  
-
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ zsh__powerline_div }}"
     content: "{{ zsh__powerline_source }}"
     create: true
-  
-  
-
 - name: Check default shell
   shell: echo $SHELL
   register: current_shell
-
 - name: Set zsh as default shell
   shell: chsh -s /bin/zsh
   when: 

@@ -8,8 +8,6 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  
-
 - file:
     src: "{{ roles_dir }}/adrw-shell/files/{{ adrw_shell__functions }}"
     dest: "{{ home }}/{{ adrw_shell__functions }}"
@@ -18,20 +16,14 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  
-
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} ADRW Shell"
     content: "{{ adrw_shell__source }}"
     create: true
-  
-  
-
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} ADRW Shell"
     content: "{{ adrw_shell__source }}"
     create: true
-  
-  
+    

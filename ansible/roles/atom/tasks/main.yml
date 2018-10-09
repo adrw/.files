@@ -5,19 +5,11 @@
     dir: ../vars/
     extensions:
       - yml
-  
-  
-
 - name: Install Atom
   homebrew_cask:
     name: atom
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  
-  
-
 - name: Ensure configured atom packages are installed.
   shell: "apm install {{ item }}"
   loop: "{{ atom_packages|flatten(levels=1) }}"
-  
-  

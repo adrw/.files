@@ -5,7 +5,7 @@
     dest: "{{ home }}/.gnupg/gpg.conf"
     state: link
     force: yes
-
+    
 # copy gpg.conf to {{ home }}/.gnupg/gpg.conf
 #
 # $ curl -O https://sks-keyservers.net/sks-keyservers.netCA.pem

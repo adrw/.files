@@ -5,9 +5,6 @@
 - name: Install SpoofMAC
   pip:
     name: SpoofMAC
-  
-  
-
 - name: Copy plist to LaunchDaemons
   file:
     src: "{{ roles_dir }}/{{ spoof_mac_role_file }}/local.macspoof.plist"
