@@ -34,12 +34,12 @@ Run `bootstrap.sh -h` for latest manual of options and arguments which include:
 ```
 -b    Change homebrew prefix / install path
 -d    Change where .files is installed
--f    Fast Mode: Doesn't check for installed dependencies, run [dockutil, homebrew] roles, or install iTerm2 Theme
 -g    Detached Git Mode: Stashes all changes in .files directory and resets to origin/master
 -i    Ansible Inventory
 -l    Logging Level
 -m    Run macOS Full Customization Script
 -n    Run macOS No Animate Customization Script
+-o    Run macOS Homecall Script
 -p    Ansible Playbook
 -r    Run tasks that require Sudo permissions
 -s    Run secure network and hostname change script

@@ -3,6 +3,7 @@ os:
   - osx
 script: ./bootstrap.sh
 env: 
+  - ANSIBLE_PLAYBOOK=mac_test
   - ANSIBLE_PLAYBOOK=mac_core
   - ANSIBLE_PLAYBOOK=mac_dev
   - ANSIBLE_PLAYBOOK=mac_dock
@@ -13,7 +14,6 @@ env:
   - ANSIBLE_PLAYBOOK=mac_square
   - ANSIBLE_PLAYBOOK=mac_terminal
   - ANSIBLE_PLAYBOOK=mac_vault
-  - ANSIBLE_PLAYBOOK=mac_test
   
 notifications:
   slack:

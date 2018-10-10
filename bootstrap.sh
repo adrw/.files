@@ -37,18 +37,6 @@ function usage {
           - install directory : String
         Example: -d "~/code/.files"
   
-  -f    Fast Mode: Doesn't check for installed dependencies, run select roles, or select tasks
-        Dependencies:
-          - macOS Command Line Tools
-          - homebrew
-          - ansible
-          - python
-        Roles:
-          - dockutil
-          - homebrew
-        Tasks:
-          - Install iTerm2 Theme
-  
   -g    Detached Git Mode: Stashes all changes in .files directory and resets to origin/master
 
   -i    Ansible Inventory
@@ -67,6 +55,8 @@ function usage {
   -m    Run macOS Full Customization Script
   
   -n    Run macOS No Animate Customization Script
+
+  -o    Run macOS Homecall Script
 
   -p    Ansible Playbook
         Runs a playbook located in ansible/plays/provision/*.yml
@@ -155,7 +145,6 @@ function mac_install_dependencies {
   INFO "xcode-select, git, homebrew, ansible"
 }
 
-
 function run_secure_hostname_network {
   DEBUG "[🔐 Network]" "Secure network and change hostname: $(hostname) => ${HOSTNAME}"
   # randomize MAC address
@@ -187,6 +176,40 @@ function run_secure_hostname_network {
   INFO "Computer Name: ${HOSTNAME}. Firewall: On." && ADRWL
 }
 
+function generateShortcutCommand {
+  _b=""
+  _d=""
+  _f=""
+  _g=""
+  _i=""
+  _l=""
+  _m=""
+  _n=""
+  _o=""
+  _p=""
+  _r=""
+  _s=""
+  _u=""
+  _v=""
+
+  [ "${HOMEBREW_PREFIX}" != "${HOME}/.homebrew" ] && _b=" -b ${HOMEBREW_PREFIX}"
+  [ "${MAIN_DIR}" != "${HOME}/.files" ] && _d=" -d ${MAIN_DIR}"
+  ((FAST_MODE)) && _f="-f"
+  ((GIT_DETACH)) && _g="=g"
+  [ "${ANSIBLE_INVENTORY}" != "macbox/hosts" ] && _i=" -i ${ANSIBLE_INVENTORY}"
+  [ "${ADRWL_LEVEL}" != "${ADRWL_ALL}" ] && _l=" -l ${ADRWL_LEVEL}"
+  ((SCRIPTS_FULL_MACOS_CUSTOM)) && _m=" -m"
+  ((SCRIPTS_NO_ANIMATE_MACOS_CUSTOM)) && _n=" -n"
+  ((SCRIPTS_MACOS_HOMECALL)) && _o=" -o"
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && _p=" -p ${ANSIBLE_PLAYBOOK}"
+  ((SUDO)) && _r=" -r"
+  ((SECURE_NETWORK)) && _s=" -s"
+  [ "${USER_NAME}" != "$(whoami)" ] && _u=" -u ${USER_NAME}"
+  ((ANSIBLE_RUN_VAULT)) && _v=" -v"
+  
+  echo "${MAIN_DIR}/bootstrap.sh${_b}${_d}${_f}${_g}${_i}${_l}${_m}${_n}${_o}${_p}${_r}${_s}${_u}${_v}"
+}
+
 function printConfig {
   ADRWL "[CONFIG]" ""
   TRACE "FAST_MODE = $(numberToBoolean "${FAST_MODE}")"
@@ -196,7 +219,7 @@ function printConfig {
   TRACE "HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}"
   TRACE "HOMEBREW_INSTALL_PATH = ${HOMEBREW_INSTALL_PATH}"
   TRACE "ANSIBLE_INVENTORY = ${ANSIBLE_INVENTORY}"
-  TRACE "ANSIBLE_PLAYBOOK = ${ANSIBLE_PLAYBOOK}"
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && TRACE "ANSIBLE_PLAYBOOK = ${ANSIBLE_PLAYBOOK}"
   TRACE "ANSIBLE_RUN_VAULT = ${ANSIBLE_RUN_VAULT}"
   TRACE "USER_NAME = ${USER_NAME}"
   TRACE "USER_GROUP = ${USER_GROUP}"
@@ -221,15 +244,15 @@ ANSIBLE_RUN_VAULT=0
 USER_NAME=$(whoami)
 USER_GROUP=$(getUserGroup "${USER_NAME}")
 HOSTNAME=$(hostname)
-SUDO=0
-SECURE_NETWORK=0
 SCRIPTS_FULL_MACOS_CUSTOM=0
 SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=0
 SCRIPTS_MACOS_HOMECALL=0
+SUDO=0
+SECURE_NETWORK=0
 
 function processArguments {
   TRACE "[SETUP]" "Register options"
-  while getopts "h?b:d:fgi:l:mnp:rs:u:v" opt; do
+  while getopts "h?b:d:fgi:l:mnop:rs:u:v" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -263,6 +286,11 @@ function processArguments {
     n)  TRACE "SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=true"
         TRACE "SUDO=true"
         SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=1
+        SUDO=1
+        ;;
+    o)  TRACE "SCRIPTS_MACOS_HOMECALL=true"
+        TRACE "SUDO=true"
+        SCRIPTS_MACOS_HOMECALL=1
         SUDO=1
         ;;
     p)  TRACE "ANSIBLE_PLAYBOOK ${OPTARG}"
@@ -423,13 +451,13 @@ function mac_bootstrap {
   DEBUG "Starting your custom runbook..."
   ((SUDO)) && ((SECURE_NETWORK)) && run_secure_hostname_network && INFO "Finished Secure Network"
   
-  DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
-  ANSIBLE_RUNTIME_VARIABLES="home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup "${USER_NAME}") homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
-  ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
-  ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
-  ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
-  ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
-  INFO "Finished Ansible Playbook"
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ANSIBLE_RUNTIME_VARIABLES="home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup "${USER_NAME}") homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ((!SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i --ask-vault-pass "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ((SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ((!SUDO)) && ((!ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
+  [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && INFO "Finished Ansible Playbook"
 
   cd "${MAIN_DIR}"
 
@@ -440,13 +468,14 @@ function mac_bootstrap {
 
   sudo -k
   kill -9 $STAY_ALIVE_PID
+  INFO "Shortcut Command: $(generateShortcutCommand)"
   DEBUG "🍺  Fin. Bootstrap Script"
   exit 0
 }
 
 # Determine platform and run bootstrap
 case "$PLATFORM" in
-    Darwin)   if [ $# -eq 0 ] && [ -z ${ANSIBLE_PLAYBOOK+mac_test} ]; then
+    Darwin)   if [ $# -eq 0 ] && [ -z "${ANSIBLE_PLAYBOOK+mac_test}" ]; then
                 interactiveArguments
               else
                 processArguments "$@"
