@@ -27,32 +27,26 @@
       - name: Signal
         path: "/Applications/Signal.app"
         pos: 3
-      - name: Google Chrome
-        path: "/Applications/Google Chrome.app"
-        pos: 4
       - name: Firefox Developer Edition
         path: "/Applications/Firefox Developer Edition.app"
-        pos: 5
-      - name: Safari
-        path: "/Applications/Safari.app"
-        pos: 6
+        pos: 4
       - name: MacDown
         path: /Applications/MacDown.app
-        pos: 7
+        pos: 5
       - name: Visual Studio Code
         path: /Applications/Visual Studio Code.app
-        pos: 8
+        pos: 6
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 9
+        pos: 7
       - name: Preview
         path: /Applications/Preview.app
-        pos: 10
+        pos: 8
       - name: iTunes
         path: /Applications/iTunes.app
-        pos: 11
+        pos: 9
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 12
+        pos: 10
 
     dockitems_to_remove:

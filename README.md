@@ -53,7 +53,7 @@ Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
 - `mac_core` full mac setup
 - `mac_dev` includes `mac_terminal` and installs dev related apps
 - `mac_dock` do dock customizations
-- `mac_etchost_no_animate` only install /etc/hosts domain blocking and disable Mac animations
+- `mac_etchosts` only install /etc/hosts domain blocking
 - `mac_jekyll` minimum requirements to [get-started-with-jekyll](https://github.com/adrw/get-started-with-jekyll)
 - `mac_second_account` smaller playbook since it assumes most apps have been installed from a primary macOS account
 - `mac_secure` different security tasks to spoof MAC address, add custom blocked hosts, and start Privoxy

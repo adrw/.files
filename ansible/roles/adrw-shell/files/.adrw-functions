@@ -183,9 +183,9 @@ function etc {
   ADRWL "[${package}::${0}]" "Register Logging Prefix"
   hosts="/etc/hosts"
   default_hosts=".no-social.hosts"
-  default_hosts_dir="/Users/me/.files/ansible/roles/etchosts/files/"
+  default_hosts_dir="/${HOME}/.files/ansible/roles/etchosts/files/"
   alt_hosts=".raw-ads.hosts"
-  wait=60
+  wait=10
   
   if [ $# -eq 0 ]; then
     hosts_dir="$default_hosts_dir"; new_hosts="$default_hosts"

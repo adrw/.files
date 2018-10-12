@@ -9,7 +9,6 @@
     - homebrew
     - dockutil
     - macos
-    - iterm2
   become_method: sudo
   ignore_errors: true
   vars:
@@ -18,29 +17,26 @@
       - name: Slack
         path: "/Applications/Slack.app"
         pos: 1
-      - name: Google Chrome
-        path: "/Applications/Google Chrome.app"
-        pos: 2
       - name: Firefox Developer Edition
         path: "/Applications/Firefox Developer Edition.app"
-        pos: 3
+        pos: 2
       - name: MacDown
         path: /Applications/MacDown.app
-        pos: 4
+        pos: 3
       - name: Visual Studio Code
         path: /Applications/Visual Studio Code.app
-        pos: 5
+        pos: 4
       - name: IntelliJ IDEA
         path: /Applications/IntelliJ IDEA.app
-        pos: 6
+        pos: 5
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 7
+        pos: 6
       - name: Preview
         path: /Applications/Preview.app
-        pos: 8
+        pos: 7
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 9
+        pos: 8
 
     dockitems_to_remove:
