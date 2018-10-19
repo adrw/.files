@@ -3,7 +3,7 @@ homebrew_apps_development:
   # - coda
   - dash
   # - docker
-  # - insomnia
+  - insomnia
   - ngrok
   # - sqlpro-for-sqlite
   - visual-studio-code

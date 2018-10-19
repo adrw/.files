@@ -1,0 +1,13 @@
+vscode_packages:
+  - deerawan.vscode-dash
+  - eg2.tslint
+  - esbenp.prettier-vscode
+  - giladgray.theme-blueprint
+  - mathiasfrohlich.Kotlin
+  - msjsdiag.debugger-for-chrome
+  - PeterJausovec.vscode-docker
+  - robinbentley.sass-indented
+  - shakram02.bash-beautify
+  - shinnn.stylelint
+  - timonwong.shellcheck
+  - tommasov.hosts
