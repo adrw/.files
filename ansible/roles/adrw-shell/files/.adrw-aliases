@@ -41,6 +41,7 @@ alias gpmf="git push me -f"
 alias gpom="git pull origin master"
 alias gl="git log --oneline"
 alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
+alias git_undo="git reset HEAD~" # unstages most recent commit but keeps changes
 
 # Docker
 alias dc="docker-compose"
