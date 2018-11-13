@@ -1,5 +1,4 @@
-Rockbox-ing iPod Classic 5.5
----
+## Rockbox-ing iPod Classic 5.5
 
 1. Use iTunes on Windows computer to restore and setup iPod as FAT32 / Windows format iPod
 2. `sudo open RockboxUtility.app`
@@ -8,12 +7,12 @@ Rockbox-ing iPod Classic 5.5
 5. Should restart into Rockbox!
 6. Use iVideo theme.
 
-Theme
----
+## Theme
+
 - iVideo
 
-Plugin
----
+## Plugin
+
 - https://www.rockbox.org/wiki/PluginIndex
 - https://www.rockbox.org/wiki/PluginViewer
 - https://www.rockbox.org/wiki/PluginTextEditor

@@ -1,5 +1,3 @@
----
-
 - name: download ads list to .raw-ads.hosts
   get_url:
     url: "{{ raw_ads_hosts_url }}"
@@ -21,25 +19,24 @@
     dest: "{{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}"
     state: present
     line: "{{ facebook_header }}\n"
-    insertbefore: '^({{ twitter_1_domain }})'
+    insertbefore: "^({{ twitter_1_domain }})"
 - name: add back in Twitter header
   lineinfile:
     dest: "{{ roles_dir }}/etchosts/files/{{ clean_hosts_file }}"
     state: present
     line: "{{ twitter_header }}\n"
-    insertbefore: '^({{ twitter_1_domain }})'
+    insertbefore: "^({{ twitter_1_domain }})"
 - name: copy lines up to facebook section into .no-social.hosts
-  shell: "head -n$(expr $(cat {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} | grep -n \"{{ facebook_header }}\" | cut -d : -f 1) - 2) {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}"
+  shell: 'head -n$(expr $(cat {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} | grep -n "{{ facebook_header }}" | cut -d : -f 1) - 2) {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} > {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}'
 - name: copy modified facebook domains into .no-social.hosts
-  shell: "cat {{ roles_dir }}/etchosts/files/{{ facebook_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}; echo \"\" >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}"
+  shell: 'cat {{ roles_dir }}/etchosts/files/{{ facebook_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}; echo "" >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}'
 - name: copy media domains into .no-social.hosts
   shell: "cat {{ roles_dir }}/etchosts/files/{{ media_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}"
 - name: copy lines after facebook section into .no-social.hosts
-  shell: "tail -n +$(expr $(cat {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} | grep -n \"{{ facebook_header }}\" | cut -d : -f 1) + 1) {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}"
+  shell: 'tail -n +$(expr $(cat {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} | grep -n "{{ facebook_header }}" | cut -d : -f 1) + 1) {{ roles_dir }}/etchosts/files/{{ clean_hosts_file }} >> {{ roles_dir }}/etchosts/files/{{ no_social_hosts_file }}'
 - name: install .raw-ads.hosts blacklist to hosts file
   copy:
     src: "{{ roles_dir }}/etchosts/files/{{ raw_ads_hosts_file }}"
     dest: /etc/hosts
     force: yes
   become: true
-  

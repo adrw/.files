@@ -1,36 +1,43 @@
-Andrew's .files
-===
+# Andrew's .files
+
 **Ansible provisioning of macOS and Linux with security in mind**
 
 [![Build Status](https://travis-ci.org/adrw/.files.svg?branch=master)](https://travis-ci.org/adrw/.files)
 
-Linux
-===
+# Linux
+
 1. Installs .adrw-aliases, .adrw-functions, bash & zsh powerline themes
+
 ```Bash
 $ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
 ```
+
 2. fin.
 
-Mac
-===
+# Mac
+
 1. Reboot with `option` into Recovery parition on a USB
 1. Erase `Macintosh HD` and install latest macOS from bootable USB
 1. Reboot and setup primary user account
 1. Login and enable Filevault full disk encryption
 1. Provision with command below in Terminal for interactive mode
+
 ```Bash
 $ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
 ```
+
 OR provision with command below including any custom arguments in Terminal
+
 ```Bash
 $ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh; rm ${HOME}/bootstrap.sh
 ```
+
 5. Reboot (sometimes required) and fin.
 
-Options
-===
+# Options
+
 Run `bootstrap.sh -h` for latest manual of options and arguments which include:
+
 ```
 -b    Change homebrew prefix / install path
 -d    Change where .files is installed
@@ -47,9 +54,10 @@ Run `bootstrap.sh -h` for latest manual of options and arguments which include:
 -v    Run tasks that include Ansible Vault
 ```
 
-Included Playbooks
-===
-Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
+# Included Playbooks
+
+Change which is run with `-p {play}` flag in the `bootstrap.sh` script
+
 - `mac_core` full mac setup
 - `mac_dev` includes `mac_terminal` and installs dev related apps
 - `mac_dock` do dock customizations
@@ -60,8 +68,8 @@ Change which is run with  `-p {play}` flag in the `bootstrap.sh` script
 - `mac_terminal` setup custom terminal with themes, aliases, and functions
 - `mac_vault` run ansible tasks that require Ansible Vault decryption
 
-FAQ / Non-Automated Setup Tasks
----
+## FAQ / Non-Automated Setup Tasks
+
 - Enable `System Integrity Protection`
   - Check status with `csrutil status`
   - Reboot into Recovery OS: reboot holding Cmd+R
@@ -73,7 +81,7 @@ FAQ / Non-Automated Setup Tasks
 - Add SSH key to GitHub? `pbcopy < ~/.ssh/id_rsa.pub` -> [GitHub.com/settings/keys](https://github.com/settings/keys)
 - `Privoxy` not working? Check that proxy `127.0.0.1:8118` was added to HTTP and HTTPS sections in Airport and Ethernet
 - Want to remove `admin` privileges from a user?
-  - Use function `chmod_admin {username}` found in `.ap-functions` which safely implements the steps below. 
+  - Use function `chmod_admin {username}` found in `.ap-functions` which safely implements the steps below.
   - Reversible in System Preferences / Users by logging in with `admin` account and adding privileges back to another user.
   1. Find `GeneratedUID` of account with `$ dscl . -read /Users/<username> GeneratedUID`
   2. Remove from admin with `$ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>`
@@ -82,20 +90,19 @@ FAQ / Non-Automated Setup Tasks
   - Calling function again on a hidden user, restores user to both login and Finder.
   1. Hide from login screen `$ sudo dscl . create /Users/hiddenuser IsHidden 1`
   2. Hide home directory and share point
-    ```Bash
-    $ sudo mv /Users/hiddenuser /var/hiddenuser
-    $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
-    $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
-    ```
+  ```Bash
+  $ sudo mv /Users/hiddenuser /var/hiddenuser
+  $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
+  $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
+  ```
 - Syncthing? Installed at `https://127.0.0.1:8384/`
 - Auto-launch Syncthing? [Syncthing docs](https://github.com/syncthing/syncthing/tree/master/etc/macosx-launchd)
   1. Find Syncthing in brew folder (usually '~/.homebrew/Cellar/syncthing')
   1. Copy the `syncthing.plist` file to `~/Library/LaunchAgents`.
-  1. Log out and in again, or run `launchctl load
-   ~/Library/LaunchAgents/syncthing.plist`.
+  1. Log out and in again, or run `launchctl load ~/Library/LaunchAgents/syncthing.plist`.
 
-Resources
----
+## Resources
+
 - [Ansible docs](https://docs.ansible.com/ansible/) very thorough spec for all standard Ansible modules and functionality
 - [macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) - [@drduh](https://github.com/drduh) consolidates best practices from enterprise IT and government to secure macOS from many standard threat models
 - [SpoofMAC](https://github.com/feross/SpoofMAC) - [@feross](https://github.com/feross) Python and nodeJS script for new randomized MAC address each boot to reduce tracking of your computer across networks. Find in `ansible/roles/spoof-mac`.

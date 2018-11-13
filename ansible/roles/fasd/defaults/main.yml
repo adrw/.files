@@ -1,4 +1,2 @@
----
-
 fasd__div: "fasd"
 fasd__init: 'eval "$(fasd --init auto)"'

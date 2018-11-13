@@ -1,5 +1,3 @@
----
-
 # package manager https://packagecontrol.io/installation
 
 - name: Include sublime vars files
@@ -38,4 +36,3 @@
     group: "{{ user_group }}"
     mode: 0644
     force: yes
-  

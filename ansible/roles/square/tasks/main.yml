@@ -1,5 +1,3 @@
----
-  
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ square__franklin_div }}"
@@ -34,4 +32,3 @@
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ square__div }}"
     content: "{{ square__adrw_shell_source }}"
-  

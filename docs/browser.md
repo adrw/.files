@@ -1,8 +1,7 @@
-Browser
----
+## Browser
 
-Safari
-===
+# Safari
+
 - 1Password
 - Tab Lister (akin to OneTab)
 - Ghostery
@@ -10,8 +9,8 @@ Safari
 - uBlock Origin
 - DuckDuckGo Privacy Essentials
 
-Firefox
-===
+# Firefox
+
 - https://ffprofile.com/
 - 1Password
 - OneTab

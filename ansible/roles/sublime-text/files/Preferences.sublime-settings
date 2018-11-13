@@ -1,13 +1,10 @@
 {
-	"color_scheme": "Packages/Solarized/Solarized (dark).tmTheme",
-	"font_face": "Fira Code",
-	"font_size": 11,
-	"ignored_packages":
-	[
-		"Vintage"
-	],
-	"indent_to_bracket": true,
-	"tab_size": 2,
-	"theme": "Adaptive.sublime-theme",
-	"translate_tabs_to_spaces": true
+  "color_scheme": "Packages/Solarized/Solarized (dark).tmTheme",
+  "font_face": "Fira Code",
+  "font_size": 11,
+  "ignored_packages": ["Vintage"],
+  "indent_to_bracket": true,
+  "tab_size": 2,
+  "theme": "Adaptive.sublime-theme",
+  "translate_tabs_to_spaces": true
 }

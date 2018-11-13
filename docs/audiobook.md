@@ -1,5 +1,4 @@
-Reformatting Audio Books for iPod
----
+## Reformatting Audio Books for iPod
 
 - Use `brew cask install mediahuman-audio-converter` to compress the files with the following settings
   - 24kbps

@@ -7,7 +7,6 @@ homebrew_apps_development:
   - ngrok
   # - sqlpro-for-sqlite
   - visual-studio-code
-
 # Packages included in other roles
 # - atom
 # - iterm2

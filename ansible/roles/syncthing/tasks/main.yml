@@ -1,5 +1,3 @@
----
-
 - name: Install Syncthing
   homebrew:
     name: syncthing
@@ -24,4 +22,4 @@
 #   become: true
 # - command: "launchctl load {{ home }}/Library/LaunchAgents/syncthing.plist"
 #   become: true
-#   
+#

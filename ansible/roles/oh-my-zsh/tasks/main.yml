@@ -1,13 +1,9 @@
----
-
 - name: "install oh-my-zsh"
   shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  
 
 - name: "store .zshrc location"
   shell: echo {{ home }}/.zshrc
   register: shellrc
-  
 
 - assert:
     that:
@@ -17,7 +13,6 @@
 - name: "store zshrc as variable"
   shell: cat {{ shellrc.stdout }}
   register: shellrc_file
-  
 
 - assert:
     that:

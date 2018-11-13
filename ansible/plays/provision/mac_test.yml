@@ -1,5 +1,3 @@
----
-
 - hosts: macbox
   connection: local
   roles:
@@ -32,4 +30,3 @@
   become_method: sudo
   ignore_errors: true
   vars:
-    

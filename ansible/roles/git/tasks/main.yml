@@ -1,5 +1,3 @@
----
-
 - file:
     src: "{{ roles_dir }}/git/files/.gitconfig"
     dest: "{{ home }}/.gitconfig"

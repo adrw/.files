@@ -1,5 +1,3 @@
----
-
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ zmv__div }}"

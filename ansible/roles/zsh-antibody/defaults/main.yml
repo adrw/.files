@@ -1,5 +1,3 @@
----
-
 antibody__rolename: "zsh-antibody"
 antibody__div: "Antibody"
 antibody__plugins_list: .zshplugins

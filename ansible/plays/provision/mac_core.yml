@@ -1,5 +1,3 @@
----
-
 - import_playbook: mac_dev.yml
 - import_playbook: mac_secure.yml
 

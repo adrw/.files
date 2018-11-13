@@ -1,5 +1,3 @@
----
-
 - file:
     src: "{{ roles_dir }}/vim/files/.vimrc"
     dest: "{{ home }}/.vimrc"
@@ -18,4 +16,3 @@
     marker: "### {mark} ADRW Editor"
     content: "{{ vim__editor }}"
     create: true
-  

@@ -1,5 +1,3 @@
----
-
 - name: Install Antibody
   homebrew:
     name: getantibody/antibody/antibody
@@ -25,4 +23,3 @@
       \n{{ zsh__default_user }}
       \n{{ antibody__completion }}"
     create: true
-  

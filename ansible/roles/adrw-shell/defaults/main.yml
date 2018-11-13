@@ -1,5 +1,3 @@
----
-
 adrw_shell__aliases: .adrw-aliases
 adrw_shell__functions: .adrw-functions
 adrw_shell__source: "source {{ home }}/{{ adrw_shell__aliases }}

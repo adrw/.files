@@ -1,5 +1,3 @@
----
-
 # package manager https://packagecontrol.io/installation
 
 - name: Install MacDown
@@ -19,8 +17,8 @@
     group: "{{ user_group }}"
     mode: 0644
     recurse: yes
-  when: 
-    - not mds.stat.exists 
+  when:
+    - not mds.stat.exists
   become: true
 - name: Link over custom CSS
   file:

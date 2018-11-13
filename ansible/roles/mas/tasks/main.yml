@@ -1,4 +1,3 @@
----
 # https://github.com/geerlingguy/ansible-role-mas
 
 - name: Include mas vars files
@@ -9,7 +8,7 @@
 - name: Ensure MAS is installed
   homebrew: name=mas state=present
 - name: Get MAS sign in status
-  shell: 'mas account'
+  shell: "mas account"
   register: mas_account_result
   failed_when: mas_account_result.rc > 1
   changed_when: false

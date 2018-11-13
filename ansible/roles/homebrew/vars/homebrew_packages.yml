@@ -1,11 +1,11 @@
 homebrew_packages:
   - cheat
-  - exiftool  # photo manipulation script
+  - exiftool # photo manipulation script
   - figlet
   # - gnupg2  # requires java...
   - hub
   - htop
-  - jhead     # photo manipulation script
+  - jhead # photo manipulation script
   - node
   - openssl
   - pngquant
@@ -17,7 +17,6 @@ homebrew_packages:
   - tree
   - wget
   - yarn
-
 # Packages included in other roles
 # - antibody
 # - dockutil

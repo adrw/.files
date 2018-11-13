@@ -1,5 +1,3 @@
----
-
 - name: Install zsh Powerline Theme
   get_url:
     url: "{{ zsh__powerline_url }}"
@@ -25,7 +23,6 @@
   register: current_shell
 - name: Set zsh as default shell
   shell: chsh -s /bin/zsh
-  when: 
+  when:
     - current_shell.stdout != "/bin/zsh"
   become: true
-  

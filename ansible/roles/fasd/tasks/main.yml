@@ -1,5 +1,3 @@
----
-
 - name: install fasd
   homebrew:
     name: fasd
@@ -13,4 +11,3 @@
     marker: "### {mark} {{ fasd__div }}"
     content: "{{ fasd__init }}"
     create: true
-  

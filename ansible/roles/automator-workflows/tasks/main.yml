@@ -1,5 +1,3 @@
----
-
 - unarchive:
     src: "{{ roles_dir }}/automator-workflows/files/CombinePDF20.zip"
     dest: "{{ home }}/Library/Services/"

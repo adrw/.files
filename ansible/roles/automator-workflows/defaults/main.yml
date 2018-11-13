@@ -1,2 +1,1 @@
----
-aliases__source: 'source {{ home }}/.ap-aliases'
+aliases__source: "source {{ home }}/.ap-aliases"

@@ -1,5 +1,3 @@
----
-
 - import_playbook: mac_terminal.yml
 
 - hosts: macbox

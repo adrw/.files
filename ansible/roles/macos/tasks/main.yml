@@ -1,5 +1,3 @@
----
-
 - name: ensure system integrity protection
   command: csrutil status
   register: sip_status

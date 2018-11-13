@@ -1,5 +1,3 @@
----
-
 # https://github.com/feross/SpoofMAC
 
 - name: Install SpoofMAC
@@ -15,4 +13,3 @@
     mode: 0644
     force: yes
   become: true
-  

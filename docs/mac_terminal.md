@@ -2,7 +2,7 @@ Mac Terminal Syntax
 
 #Mac Terminal Commands
 ##Force Empty Trash
-rm -rf ~/.Trash/*
+rm -rf ~/.Trash/\*
 or option click empty
 
 ##Empty DNS Cache
@@ -51,13 +51,10 @@ Reverse: defaults write com.apple.dock static-only -bool FALSE; killall
 
 http://www.techradar.com/news/computing/apple/top-25-os-x-terminal-commands-696443
 
-
-
-
 You can create a new administrator account by restarting the Setup Assistant:
 
-1.    Boot into Single User Mode ⌘ + S.
-2.    Mount the drive by typing /sbin/mount -uw / then  enter.
-3.    Remove the Apple Setup Done file by typing rm /var/db/.AppleSetupDone then ↩ enter.
-4.    Reboot by typing reboot then ↩ enter.
-5.    Complete the setup process, creating a new admin account.
+1.  Boot into Single User Mode ⌘ + S.
+2.  Mount the drive by typing /sbin/mount -uw / then enter.
+3.  Remove the Apple Setup Done file by typing rm /var/db/.AppleSetupDone then ↩ enter.
+4.  Reboot by typing reboot then ↩ enter.
+5.  Complete the setup process, creating a new admin account.

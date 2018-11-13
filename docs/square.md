@@ -1,5 +1,4 @@
-Square Setup
----
+## Square Setup
 
 ```
 ./bootstrap.sh -st -u aparadi -p mac_square

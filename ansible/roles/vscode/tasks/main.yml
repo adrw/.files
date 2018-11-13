@@ -1,5 +1,3 @@
----
-
 - name: Include vscode vars files
   include_vars:
     dir: ../vars/

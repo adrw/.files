@@ -1,4 +1,2 @@
----
-
 roles_dir: "{{ home }}/.files/ansible/roles"
 homebrew_cask_appdir: /Applications

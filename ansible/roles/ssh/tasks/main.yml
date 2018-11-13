@@ -1,5 +1,3 @@
----
-
 - file:
     path: "{{ home }}/.ssh/"
     state: directory
@@ -16,4 +14,3 @@
     force: yes
 - name: Add id_rsa to ssh agent
   shell: "ssh-add -K {{ id_rsa }}"
-  

@@ -1,10 +1,7 @@
----
-
 - hosts: macbox
   connection: local
   roles:
-    - role: ssh-keys          #id_rsa key generation
+    - role: ssh-keys #id_rsa key generation
   become_method: sudo
   ignore_errors: true
   vars:
-    

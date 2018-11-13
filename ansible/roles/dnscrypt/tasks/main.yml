@@ -1,9 +1,7 @@
----
-
 # - name: install dnscrypt-proxy
 #   homebrew:
 #     name: dnscrypt-proxy
-#   
+#
 # - name: start dnscrypt-proxy as service
 #   command: brew services start dnscrypt-proxy
-#   
+#
