@@ -1,0 +1,19 @@
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} Ruby"
+    content: "{{ ruby__path }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} Ruby"
+    content: "{{ ruby__path }}"
+    create: true
+- name: Install Ruby
+  homebrew:
+    name: ruby
+    state: present
+- name: Install Travis
+  gem:
+    name: travis
+    version: 1.8.9
+    state: present

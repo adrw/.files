@@ -12,6 +12,7 @@
     - tmux
     - vim
     - ssh
+    - travis
     - iterm2
     # - oh-my-zsh
     # - mas

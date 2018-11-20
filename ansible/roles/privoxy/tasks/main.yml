@@ -4,7 +4,6 @@
 - name: start privoxy as service
   command: brew services start privoxy
   register: privoxy_service_status
-  ignore_errors: yes
 - name: configure network to privoxy
   command: networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8118
   become: true

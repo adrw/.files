@@ -1,0 +1,4 @@
+ruby__path: "export PATH=\"/Users/adrw/.homebrew/opt/ruby/bin:$PATH\"
+\nexport LDFLAGS=\"-L/Users/adrw/.homebrew/opt/ruby/lib\"
+\nexport CPPFLAGS=\"-I/Users/adrw/.homebrew/opt/ruby/include\"
+\nexport PKG_CONFIG_PATH=\"/Users/adrw/.homebrew/opt/ruby/lib/pkgconfig\""
