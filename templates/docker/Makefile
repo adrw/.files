@@ -1,4 +1,4 @@
-# By Andrew Paradi | Source at https://github.com/andrewparadi/docker-cs350-os161
+# By Andrew Alexander | Source at https://github.com/andrewparadi/docker-cs350-os161
 DOCKER_COMPOSE=$(shell which docker-compose)
 DOCKER_COMPOSE_TARGETS=-f docker-compose.yml
 

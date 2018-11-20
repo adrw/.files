@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# By Andrew Paradi | Source at https://github.com/adrw/.files
+# By Andrew Alexander | Source at https://github.com/adrw/.files
 
 # set up bash to handle errors more aggressively - a "strict mode" of sorts
 set -e # give an error if any command finishes with a non-zero exit code

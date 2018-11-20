@@ -1,4 +1,4 @@
-# By Andrew Paradi | Source at https://github.com/adrw/.files
+# By Andrew Alexander | Source at https://github.com/adrw/.files
 #!/usr/bin/env bash
 
 # set up bash to handle errors more aggressively - a "strict mode" of sorts
@@ -79,7 +79,7 @@ function linux_bootstrap {
 }
 
 status t "Welcome to .files bootstrap!"
-status s "Andrew Paradi. https://github.com/adrw/.files"
+status s "Andrew Alexander. https://github.com/adrw/.files"
 
 MAIN_DIR="$HOME/.files"             # -d
 SCRIPTS="$MAIN_DIR/scripts"
