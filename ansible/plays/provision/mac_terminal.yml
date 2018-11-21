@@ -13,6 +13,7 @@
     - vim
     - ssh
     - travis
+    - go
     - iterm2
     # - oh-my-zsh
     # - mas

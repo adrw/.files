@@ -1,0 +1,14 @@
+- name: Install Go
+  homebrew:
+    name: go
+    state: present
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} Go"
+    content: "{{ go__path }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} Go"
+    content: "{{ go__path }}"
+    create: true
