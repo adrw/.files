@@ -17,7 +17,7 @@
   ```
 
 - Use `zmv` to rename all files to m4b to enable Audiobook functionality like progress tracking
-  - Example command `zmv '*.m4a' '\$(basename \$f .m4a).m4b'`
+  - Example command `zmv "*.m4a" "\$(basename \$f .m4a).m4b"`
 - Use `brew cask install musicbrainz-picard` to set the file metadata using the filename
   - `Tools -> Tags from File Names`
   - Manually set Artist, Album to ensure consistency
