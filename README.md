@@ -9,7 +9,7 @@
 1. Installs .adrw-aliases, .adrw-functions, bash & zsh powerline themes
 
 ```Bash
-$ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
+$ curl -s https://raw.githubusercontent.com/adrw/.files/master/get-bootstrap.sh | bash -s && ./bootstrap.sh
 ```
 
 2. fin.
@@ -23,13 +23,13 @@ $ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | ba
 1. Provision with command below in Terminal for interactive mode
 
 ```Bash
-$ curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s
+$ curl -s https://raw.githubusercontent.com/adrw/.files/master/get-bootstrap.sh | bash -s && ./bootstrap.sh
 ```
 
 OR provision with command below including any custom arguments in Terminal
 
 ```Bash
-$ cd ${HOME}/; curl -sO https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh; chmod +x ${HOME}/bootstrap.sh; ${HOME}/bootstrap.sh; rm ${HOME}/bootstrap.sh
+$ curl -s https://raw.githubusercontent.com/adrw/.files/master/get-bootstrap.sh | bash -s && ./bootstrap.sh <opts>
 ```
 
 5. Reboot (sometimes required) and fin.
