@@ -12,8 +12,9 @@
     - tmux
     - vim
     - ssh
-    - travis
+    - nvm
     - go
+    - travis
     - iterm2
     # - oh-my-zsh
     # - mas

@@ -7,7 +7,6 @@ homebrew_packages:
   - htop
   - jhead # photo manipulation script
   - node
-  - nvm
   - openssl
   - pngquant
   - python
@@ -22,6 +21,7 @@ homebrew_packages:
 # - antibody
 # - dockutil
 # - fasd
+# - nvm
 # - privoxy
 # - syncthing
 # - tmux

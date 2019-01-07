@@ -1,0 +1,20 @@
+- name: install nvm
+  homebrew:
+    name: nvm
+- name: ensure ~/.nvm exists
+  file:
+    path: ~/.nvm
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ nvm__div }}"
+    content: "{{ nvm__init }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ nvm__div }}"
+    content: "{{ nvm__init }}"
+    create: true
