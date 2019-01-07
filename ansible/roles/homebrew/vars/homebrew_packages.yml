@@ -7,6 +7,7 @@ homebrew_packages:
   - htop
   - jhead # photo manipulation script
   - node
+  - nvm
   - openssl
   - pngquant
   - python
