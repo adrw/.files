@@ -7,7 +7,7 @@
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
-    mode: 0644
+    mode: 0777
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ nvm__div }}"
