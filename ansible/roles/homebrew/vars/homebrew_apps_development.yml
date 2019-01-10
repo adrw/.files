@@ -4,6 +4,7 @@ homebrew_apps_development:
   - dash
   # - docker
   - insomnia
+  - intellij-idea
   - ngrok
   # - sqlpro-for-sqlite
   - visual-studio-code
