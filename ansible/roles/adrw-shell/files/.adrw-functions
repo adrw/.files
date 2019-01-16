@@ -120,8 +120,8 @@ function run_script {
   INFO "${name}"
 }
 
-function getUserGroup { 
-  id -Gn "$1" | cut -d " " -f1 
+function getUserGroup {
+  id -Gn "$1" | cut -d " " -f1
 }
 
 function numberToBoolean {
@@ -183,10 +183,28 @@ function etc {
   ADRWL "[${package}::${0}]" "Register Logging Prefix"
   hosts="/etc/hosts"
   default_hosts=".no-social.hosts"
-  default_hosts_dir="/${HOME}/.files/ansible/roles/etchosts/files/"
+  default_hosts_dir="${HOME}/.files/ansible/roles/etchosts/files/"
   alt_hosts=".raw-ads.hosts"
   wait=10
-  
+  function usage {
+    cat << EOF
+    Usage: default dir dhr = ${default_hosts_dir}
+     etc              toggles dhr/${default_hosts} <-> dhr/${alt_hosts}
+     etc {new}        installs dhr/{new}
+     etc {dir} {new}  installs {dir}{new}
+     etc {dir} \"\"     installs {new}
+
+    Valid Host Files
+    - .clean.hosts
+    - .no-social.hosts (no media)
+    - .raw-ads.hosts
+    - .raw-social.hosts
+    - default.hosts
+    - facebook.hosts
+    - media.hosts
+EOF
+  }
+
   if [ $# -eq 0 ]; then
     hosts_dir="$default_hosts_dir"; new_hosts="$default_hosts"
   elif [ $# -eq 1 ]; then
@@ -195,13 +213,7 @@ function etc {
     hosts_dir="$1"; new_hosts="$2"
   else
     ERROR "Invalid operation."
-    cat << EOF
-    Usage: default dir dhr = ${default_hosts_dir}
-     etc              toggles dhr/${default_hosts} <-> dhr/${alt_hosts}
-     etc {new}        installs dhr/{new}
-     etc {dir} {new}  installs {dir}{new}
-     etc {dir} \"\"     installs {new}
-EOF
+    usage
     return
   fi
 
@@ -223,7 +235,7 @@ EOF
     WARN "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
     sleep ${wait}
   else
-    updated_hosts="${new_hosts}"    
+    updated_hosts="${new_hosts}"
   fi
 
   DEBUG "Update ${hosts} => ${updated_hosts}"
@@ -235,7 +247,7 @@ EOF
     sudo dscacheutil -flushcache  # flush dns cache
     sudo bash -c "killall -HUP mDNSResponder"
     INFO "🍺  Fin. ${hosts} = ${updated_hosts}"
-  else    
+  else
     ERROR "${hosts} update failed."
   fi
   sudo -k # remove sudo permissions
@@ -283,14 +295,14 @@ function mk_user {
     esac
   done
   WARN "Make user ${NAME} with ${TYPE} permissions."
-  
+
 }
 
 # Removes admin privileges
 # Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
-# Find GeneratedUID of account with 
+# Find GeneratedUID of account with
 #   $ dscl . -read /Users/<username> GeneratedUID
-# Remove from admin with 
+# Remove from admin with
 #   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
 function chmod_admin {
   ADRWL "[${package}::${0}]" "Register Logging Prefix"
@@ -325,7 +337,7 @@ function chmod_admin {
 # Hide / unhide use profile from login screens and moves home directory to /var/
 # Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
 # https://support.apple.com/en-us/HT203998
-# Hide from login screen 
+# Hide from login screen
 #   $ sudo dscl . create /Users/hiddenuser IsHidden 1
 # Hide home directory and share point
 #   $ sudo mv /Users/hiddenuser /var/hiddenuser
@@ -375,7 +387,7 @@ function mv_user {
         sudo dscl . -create "/SharePoints/${user}'s Public Folder"
         INFO "Restore ${user} Public Folder"
         result="restored"
-      fi      
+      fi
 
       sudo -k
       INFO "🍺  Fin. '${user}' = ${result}"
