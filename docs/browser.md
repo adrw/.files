@@ -22,3 +22,4 @@
 - HTTPS Everywhere
 - Firefox Multi-Account Containers
 - Facebook Container
+- Decentraleyes
