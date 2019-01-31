@@ -32,3 +32,12 @@
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ square__div }}"
     content: "{{ square__adrw_shell_source }}"
+- name: "Polyrepo Env Variable"
+  blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ square__polyrepo_div }}"
+    content: "{{ square__polyrepo }}"
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ square__polyrepo_div }}"
+    content: "{{ square__polyrepo }}"

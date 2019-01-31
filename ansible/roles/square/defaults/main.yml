@@ -10,3 +10,6 @@ square__functions: .adrw-square-functions
 
 square__adrw_shell_source: "source {{ home }}/{{ square__aliases }}
   \nsource {{ home }}/{{ square__functions }}"
+
+square__polyrepo_div: "Square Cash Polyrepo"
+square__polyrepo: "export POLYREPO={{ home }}/Development/cash-services"
