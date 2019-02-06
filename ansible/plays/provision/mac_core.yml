@@ -28,8 +28,8 @@
       - name: Firefox Developer Edition
         path: "/Applications/Firefox Developer Edition.app"
         pos: 4
-      - name: MacDown
-        path: /Applications/MacDown.app
+      - name: Byword
+        path: /Applications/Byword.app
         pos: 5
       - name: Visual Studio Code
         path: /Applications/Visual Studio Code.app
