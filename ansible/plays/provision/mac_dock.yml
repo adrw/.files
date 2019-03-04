@@ -1,5 +1,4 @@
 ---
-
 - hosts: macbox
   connection: local
   roles:
@@ -11,8 +10,8 @@
       - name: Slack
         path: "/Applications/Slack.app"
         pos: 1
-      - name: Google Chrome
-        path: "/Applications/Google Chrome.app"
+      - name: Brave Browser
+        path: "/Applications/Brave Browser.app"
         pos: 2
       - name: Firefox Developer Edition
         path: "/Applications/Firefox Developer Edition.app"

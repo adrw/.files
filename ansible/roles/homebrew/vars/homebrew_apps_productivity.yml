@@ -1,6 +1,7 @@
 homebrew_apps_productivity:
   - adobe-acrobat-reader
   - blisk
+  - brave-browser
   - dropbox
   # - eloston-chromium
   # - firefox
