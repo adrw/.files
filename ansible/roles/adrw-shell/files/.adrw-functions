@@ -193,6 +193,21 @@ function gfa() {
   fi
 }
 
+# fast forward git branch to latest master
+function ff() {
+  CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+  if [ "$CURRENT_BRANCH" = "master" ]; then
+    echo "Already on master. Exiting."
+  else
+    set -ex
+    git co master
+    git pull && git submodule sync && git submodule update --init --recursive
+    git co "$CURRENT_BRANCH"
+    git rebase -i master
+  fi
+}
+
 # update etchosts. has bias towards maintaining the default (locked down) state
 function etc {
   ADRWL "[${package}::${0}]" "Register Logging Prefix"
