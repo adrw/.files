@@ -17,6 +17,7 @@ alias ka="killall"
 
 # Applications
 alias jn="jupyter notebook"
+alias mw="miskweb"
 # alias npm="yarn"
 alias st="syncthing"
 alias c="code ."
