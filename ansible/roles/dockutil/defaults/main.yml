@@ -1,5 +1,4 @@
 ---
-
 default_dockitems_to_remove:
   - Siri
   - Launchpad
@@ -14,5 +13,7 @@ default_dockitems_to_remove:
   - FaceTime
   - iBooks
   - App Store
+  - News
+  - iTunes
 
 dockitems_to_remove:
