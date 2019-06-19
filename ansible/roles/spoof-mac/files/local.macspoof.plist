@@ -9,7 +9,7 @@
 	    <array>
 	    	<string>bash</string>
 	    	<string>-c</string>
-	    	<string>/Users/me/.homebrew/bin/spoof-mac.py randomize en0; /Users/me/.homebrew/bin/spoof-mac.py randomize en1; /Users/me/.homebrew/bin/spoof-mac.py randomize en2; /Users/me/.homebrew/bin/spoof-mac.py randomize en4</string>
+	    	<string>{{ homebrew_prefix }}/bin/spoof-mac.py randomize en0; {{ homebrew_prefix }}/bin/spoof-mac.py randomize en1; {{ homebrew_prefix }}/bin/spoof-mac.py randomize en2; {{ homebrew_prefix }}/bin/spoof-mac.py randomize en4</string>
 	    </array>
 
 	    <key>RunAtLoad</key>

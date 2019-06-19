@@ -1,4 +1,4 @@
 nvm__div: "nvm"
 nvm__init: "export NVM_DIR=\"$HOME/.nvm\"
-  \n[ -s \"{{ home }}/.homebrew/opt/nvm/nvm.sh\" ] && . \"{{ home }}/.homebrew/opt/nvm/nvm.sh\"  # This loads nvm
-  \n[ -s \"{{ home }}/.homebrew/opt/nvm/etc/bash_completion\" ] && . \"{{ home }}/.homebrew/opt/nvm/etc/bash_completion\"  # This loads nvm bash_completion"
+  \n[ -s \"{{ homebrew_prefix }}/opt/nvm/nvm.sh\" ] && . \"{{ homebrew_prefix }}/opt/nvm/nvm.sh\"  # This loads nvm
+  \n[ -s \"{{ homebrew_prefix }}/opt/nvm/etc/bash_completion\" ] && . \"{{ homebrew_prefix }}/opt/nvm/etc/bash_completion\"  # This loads nvm bash_completion"

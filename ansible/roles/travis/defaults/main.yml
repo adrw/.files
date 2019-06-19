@@ -1,4 +1,4 @@
-ruby__path: "export PATH=\"/Users/adrw/.homebrew/opt/ruby/bin:$PATH\"
-\nexport LDFLAGS=\"-L/Users/adrw/.homebrew/opt/ruby/lib\"
-\nexport CPPFLAGS=\"-I/Users/adrw/.homebrew/opt/ruby/include\"
-\nexport PKG_CONFIG_PATH=\"/Users/adrw/.homebrew/opt/ruby/lib/pkgconfig\""
+ruby__path: "export PATH=\"{{ homebrew_prefix }}/opt/ruby/bin:$PATH\"
+\nexport LDFLAGS=\"-L{{ homebrew_prefix }}/opt/ruby/lib\"
+\nexport CPPFLAGS=\"-I{{ homebrew_prefix }}/opt/ruby/include\"
+\nexport PKG_CONFIG_PATH=\"{{ homebrew_prefix }}/opt/ruby/lib/pkgconfig\""

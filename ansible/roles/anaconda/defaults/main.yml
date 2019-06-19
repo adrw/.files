@@ -1,1 +1,1 @@
-anaconda__path: export PATH=/Users/me/.homebrew/anaconda3/bin:"$PATH"
+anaconda__path: export PATH={{ homebrew_prefix }}/anaconda3/bin:"$PATH"

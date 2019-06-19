@@ -1,2 +1,2 @@
-go__path: "export GOROOT=/Users/adrw/.homebrew/opt/go/libexec
-\nexport PATH=$PATH:/Users/adrw/.homebrew/opt/go/libexec/bin"
+go__path: "export GOROOT={{ homebrew_prefix }}/opt/go/libexec
+\nexport PATH=$PATH:{{ homebrew_prefix }}/opt/go/libexec/bin"
