@@ -13,3 +13,8 @@ square__adrw_shell_source: "source {{ home }}/{{ square__aliases }}
 
 square__polyrepo_div: "Square Cash Polyrepo"
 square__polyrepo: "export POLYREPO={{ home }}/Development/cash-services"
+
+square__homebrew_tap_name: square/formula
+square__homebrew_tap_url: https://git.sqcorp.co/scm/sq/homebrew-formulas.git
+square__homebrew_packages:
+  - polyrepo

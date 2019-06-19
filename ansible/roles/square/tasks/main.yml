@@ -41,3 +41,13 @@
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ square__polyrepo_div }}"
     content: "{{ square__polyrepo }}"
+- name: Configure square tap
+  homebrew_tap:
+    name: "{{ square__homebrew_tap_name}}"
+    url: "{{ square__homebrew_tap_url }}"
+- name: Install Square specific brew packages
+  command: "brew install {{ item }}"
+  loop: "{{ homebrew_installed_packages|flatten(levels=1) }}"
+- name: Ensure configured homebrew packages are installed from homebrew_packages.
+  command: "brew install {{ item }}"
+  loop: "{{ square__homebrew_packages|flatten(levels=1) }}"
