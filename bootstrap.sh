@@ -122,7 +122,11 @@ function mac_install_dependencies {
     INFO  "Install xcode-select (Command Line Tools)"
   fi
 
-  if [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]]; then
+  if [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]] && [ "${HOMEBREW_PREFIX}" == "/usr/local" ]; then
+    DEBUG "Install Homebrew"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    INFO "Install Homebrew"
+  elif [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]]; then
     DEBUG "Install Homebrew"
     mkdir -p ${HOMEBREW_PREFIX} && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C $HOMEBREW_PREFIX
     INFO "Install Homebrew"
