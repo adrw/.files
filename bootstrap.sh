@@ -36,7 +36,7 @@ function usage {
         Args:
           - install directory : String
         Example: -d "~/code/.files"
-  
+
   -g    Detached Git Mode: Stashes all changes in .files directory and resets to origin/master
 
   -i    Ansible Inventory
@@ -53,7 +53,7 @@ function usage {
         Levels are a number between 1 and 10
 
   -m    Run macOS Full Customization Script
-  
+
   -n    Run macOS No Animate Customization Script
 
   -o    Run macOS Homecall Script
@@ -78,7 +78,7 @@ function usage {
         Args:
           - new username : String
         Example -u "john"
-  
+
   -v    Run tasks that include Ansible Vault
         Will prompt at some point for vault password to decrypt Ansible tasks
 
@@ -104,7 +104,7 @@ function linux_bootstrap {
   safe_source ~/.adrw-functions ~/.zshrc
 
   safe_download ~/.vimrc https://raw.githubusercontent.com/adrw/.files/master/ansible/roles/vim/files/.vimrc
-  
+
   echo "curl -s https://raw.githubusercontent.com/adrw/.files/master/bootstrap.sh | bash -s" > .adrw-update.sh
   chmod +x .adrw-update.sh
 
@@ -206,7 +206,7 @@ function generateShortcutCommand {
   ((SECURE_NETWORK)) && _s=" -s"
   [ "${USER_NAME}" != "$(whoami)" ] && _u=" -u ${USER_NAME}"
   ((ANSIBLE_RUN_VAULT)) && _v=" -v"
-  
+
   echo "${MAIN_DIR}/bootstrap.sh${_b}${_d}${_f}${_g}${_i}${_l}${_m}${_n}${_o}${_p}${_r}${_s}${_u}${_v}"
 }
 
@@ -298,7 +298,7 @@ function processArguments {
         ;;
     r)  TRACE "SUDO=true"
         SUDO=1
-        ;;    
+        ;;
     s)  TRACE "Run secure network"
         TRACE "Change hostname ${HOSTNAME} => ${OPTARG}"
         TRACE "SUDO=true"
@@ -333,7 +333,7 @@ function interactiveArguments {
       NOTICE "Will run Sudo tasks"
     fi
   }
-  
+
   function qSecureNetwork {
     ADRWL "[Q SECURE]" ""
     DEBUG "# Secure your Computer Name and Network Settings?"
@@ -379,20 +379,20 @@ function interactiveArguments {
     DEBUG "-  mac_clear_dock "
     DEBUG "-  mac_core "
     DEBUG "-  mac_etchost_no_animate "
-    DEBUG "-  mac__jekyll "
+    DEBUG "-  mac_jekyll "
     DEBUG "-  mac_second_account "
     DEBUG "-  mac_square "
     DEBUG "-  mac_test_short "
     DEBUG "-  mac_test_full "
     read -p "[Enter] to skip. Type to overwrite: " -r Q_ANSIBLE_PLAYBOOK
-    if [[ $ANSIBLE_PLAYBOOK != "" ]]; then
+    if [ -n "$Q_ANSIBLE_PLAYBOOK" ]; then
       ANSIBLE_PLAYBOOK=$Q_ANSIBLE_PLAYBOOK
     fi
 
     DEBUG "# Run included roles that reference encrypted vault?"
     DEBUG "These may include generating ssh/gpg keys and will require the Ansible-Vault password"
     read -p "[Enter] to skip. Type any character to run vault: " -n 1 -r Q_ANSIBLE_RUN_VAULT && echo ""
-    if [[ $Q_ANSIBLE_RUN_VAULT != "" ]]; then
+    if [[ -n $Q_ANSIBLE_RUN_VAULT ]]; then
       ANSIBLE_RUN_VAULT=1
     fi
   }
@@ -402,21 +402,21 @@ function interactiveArguments {
     DEBUG "# Run full set of macOS customizations?"
     DEBUG "Customizations including reducing animation, increasing keyboard click speed...etc"
     read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_SCRIPTS_FULL_MACOS_CUSTOM && echo ""
-    if [[ $Q_SCRIPTS_FULL_MACOS_CUSTOM != "" ]]; then
+    if [[ -z $Q_SCRIPTS_FULL_MACOS_CUSTOM ]]; then
       SCRIPTS_FULL_MACOS_CUSTOM=1
     else
       DEBUG "# Run smaller set of macOS customizations? Exclusively removes animations"
       read -p "[Enter] to skip. Type any character to run customizations: " -n 1 -r Q_SCRIPTS_NO_ANIMATE_MACOS_CUSTOM && echo ""
-      if [[ $Q_SCRIPTS_NO_ANIMATE_MACOS_CUSTOM != "" ]]; then
+      if [[ -n $Q_SCRIPTS_NO_ANIMATE_MACOS_CUSTOM  ]]; then
         SCRIPTS_NO_ANIMATE_MACOS_CUSTOM=1
       fi
     fi
-    
+
     DEBUG "# Turn off macOS homecall processes?"
     if [[ $(csrutil status) != *enabled* ]]; then
       DEBUG "Many macOS processes 'phone home' periodically, this script attempts to stop this."
       read -p "[Enter] to skip. Type any character to run macOS homecall blocking script: " -n 1 -r Q_SCRIPTS_MACOS_HOMECALL && echo ""
-      if [[ $Q_SCRIPTS_MACOS_HOMECALL != "" ]]; then
+      if [[ -n $Q_SCRIPTS_MACOS_HOMECALL ]]; then
         SCRIPTS_MACOS_HOMECALL=1
       fi
     else
@@ -436,7 +436,7 @@ function interactiveArguments {
 }
 
 function mac_bootstrap {
-  ((!FAST_MODE)) && mac_install_dependencies  
+  ((!FAST_MODE)) && mac_install_dependencies
   INFO "Required dependencies installed"
 
   if [[ ! -d ${MAIN_DIR} ]]; then
@@ -450,7 +450,7 @@ function mac_bootstrap {
 
   DEBUG "Starting your custom runbook..."
   ((SUDO)) && ((SECURE_NETWORK)) && run_secure_hostname_network && INFO "Finished Secure Network"
-  
+
   [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
   [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ANSIBLE_RUNTIME_VARIABLES="home=${HOME} user_name=${USER_NAME} user_group=$(getUserGroup "${USER_NAME}") homebrew_prefix=${HOMEBREW_PREFIX} homebrew_install_path=${HOMEBREW_INSTALL_PATH}"
   [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && ((SUDO)) && ((ANSIBLE_RUN_VAULT)) && cd "${MAIN_DIR}/ansible" && ansible-playbook --ask-become-pass --ask-vault-pass -i "inventories/${ANSIBLE_INVENTORY}" "plays/provision/${ANSIBLE_PLAYBOOK}.yml" -e "${ANSIBLE_RUNTIME_VARIABLES}" && echo ""
