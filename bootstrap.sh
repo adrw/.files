@@ -208,7 +208,7 @@ function generateShortcutCommand {
   ((SCRIPTS_MACOS_HOMECALL)) && _o=" -o"
   [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && _p=" -p ${ANSIBLE_PLAYBOOK}"
   ((SUDO)) && _r=" -r"
-  ((SECURE_NETWORK)) && _s=" -s"
+  ((SECURE_NETWORK)) && _s=" -s ${HOSTNAME}"
   [ "${USER_NAME}" != "$(whoami)" ] && _u=" -u ${USER_NAME}"
   ((ANSIBLE_RUN_VAULT)) && _v=" -v"
 
