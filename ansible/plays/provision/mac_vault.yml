@@ -5,3 +5,4 @@
   become_method: sudo
   ignore_errors: true
   vars:
+    - id_rsa: "{{ home }}/.ssh/id_rsa"
