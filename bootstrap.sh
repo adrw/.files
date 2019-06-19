@@ -229,6 +229,7 @@ function printConfig {
   TRACE "SCRIPTS_FULL_MACOS_CUSTOM = ${SCRIPTS_FULL_MACOS_CUSTOM}"
   TRACE "SCRIPTS_NO_ANIMATE_MACOS_CUSTOM = ${SCRIPTS_NO_ANIMATE_MACOS_CUSTOM}"
   TRACE "SCRIPTS_MACOS_HOMECALL = ${SCRIPTS_MACOS_HOMECALL}"
+  TRACE "Shortcut Command: $(generateShortcutCommand)"
   ADRWL "" "" ""
 }
 
@@ -468,7 +469,6 @@ function mac_bootstrap {
 
   sudo -k
   kill -9 $STAY_ALIVE_PID
-  INFO "Shortcut Command: $(generateShortcutCommand)"
   DEBUG "🍺  Fin. Bootstrap Script"
   exit 0
 }
