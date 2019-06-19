@@ -13,9 +13,9 @@
     - vim
     - ssh
     - nvm
-    - go
-    - travis
     - iterm2
+    # - go
+    # - travis
     # - oh-my-zsh
     # - mas
   become_method: sudo
