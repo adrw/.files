@@ -5,6 +5,7 @@ homebrew_apps_development:
   # - docker
   - insomnia
   - intellij-idea
+  - java11
   - ngrok
   # - sqlpro-for-sqlite
   - visual-studio-code
