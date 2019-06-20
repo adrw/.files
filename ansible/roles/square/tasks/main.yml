@@ -41,13 +41,31 @@
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ square__polyrepo_div }}"
     content: "{{ square__polyrepo }}"
-- name: Configure square tap
+- name: Configure Square tap
   homebrew_tap:
     name: "{{ square__homebrew_tap_name}}"
     url: "{{ square__homebrew_tap_url }}"
 - name: Install Square specific brew packages
   command: "brew install {{ item }}"
-  loop: "{{ homebrew_installed_packages|flatten(levels=1) }}"
-- name: Ensure configured homebrew packages are installed from homebrew_packages.
-  command: "brew install {{ item }}"
   loop: "{{ square__homebrew_packages|flatten(levels=1) }}"
+- name: Install Babushka
+  shell: sh -c "`curl https://babushka.me/up`" </dev/null
+  become: true
+- name: Create code directories
+  file:
+    path: "{{item}}"
+    state: directory
+    recurse: yes
+  with_items: "{{ square__code_directories }}"
+- name: Clone code repos
+  shell: git clone {{ item.url }}
+  args:
+    chdir: "{{ home }}/Development"
+    creates: "{{ home }}/Development/{{ item.name }}"
+  with_items: "{{ square__development_repositories }}"
+- name: Add Square/topsoil deps to Babushka (go/notopsoil)
+  file:
+    src: "{{ square__topsoil_babushka_deps }}"
+    dest: "{{ square__babushka_deps }}"
+    state: link
+  become: true
