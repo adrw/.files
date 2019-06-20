@@ -9,6 +9,7 @@ homebrew_apps_tools:
   # - ipartition
   - keybase
   # - kdiff3
+  - pock
   # - protonvpn
   - quitter
   - spectacle
