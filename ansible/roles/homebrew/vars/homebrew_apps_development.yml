@@ -5,7 +5,7 @@ homebrew_apps_development:
   # - docker
   - insomnia
   - intellij-idea
-  - java11
+  # - java11 # not current enough for work purposes
   - ngrok
   # - sqlpro-for-sqlite
   - visual-studio-code
