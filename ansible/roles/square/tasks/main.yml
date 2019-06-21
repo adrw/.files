@@ -69,3 +69,7 @@
     dest: "{{ square__babushka_deps }}"
     state: link
   become: true
+- name: Install python requirements for MkDocs documentation
+  pip:
+    name: "{{ square__pip_packages }}"
+    extra_args: "--user"

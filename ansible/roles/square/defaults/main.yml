@@ -28,3 +28,6 @@ square__development_repositories:
     url: ssh://git@git.corp.squareup.com/sq/topsoil.git
 square__topsoil_babushka_deps: "{{ home }}/Development/topsoil/babushka-deps"
 square__babushka_deps: "{{ home }}/.babushka/deps"
+square__pip_packages:
+  - mkdocs
+  - mkdocs-material
