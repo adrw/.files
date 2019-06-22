@@ -31,3 +31,4 @@ square__babushka_deps: "{{ home }}/.babushka/deps"
 square__pip_packages:
   - mkdocs
   - mkdocs-material
+square__pip_path: export PATH=`python3 -m site --user-base`/bin:"$PATH"

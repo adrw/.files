@@ -73,3 +73,15 @@
   pip:
     name: "{{ square__pip_packages }}"
     extra_args: "--user"
+    executable: "pip3"
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} Pip Packages"
+    content: "{{ square__pip_path }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} Pip Packages"
+    content: "{{ square__pip_path }}"
+    create: true
+
