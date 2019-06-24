@@ -22,25 +22,10 @@
   become: true
 - name: Link over custom CSS
   file:
-    src: "{{ roles_dir }}/{{ macdown_role_file }}/GitHubAP.css"
-    dest: "{{ home }}/{{ macdown_styles_dest }}/GitHubAP.css"
+    src: "{{ roles_dir }}/{{ macdown_role_file }}/{{ item }}"
+    dest: "{{ home }}/{{ macdown_styles_dest }}/{{ item }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
-- name: Link over custom CSS
-  file:
-    src: "{{ roles_dir }}/{{ macdown_role_file }}/LatexAP.css"
-    dest: "{{ home }}/{{ macdown_styles_dest }}/LatexAP.css"
-    state: link
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-- name: Link over custom CSS
-  file:
-    src: "{{ roles_dir }}/{{ macdown_role_file }}/PrintAP.css"
-    dest: "{{ home }}/{{ macdown_styles_dest }}/PrintAP.css"
-    state: link
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
+  with_items: "{{ macdown_styles }}"

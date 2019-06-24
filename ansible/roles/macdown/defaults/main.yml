@@ -1,2 +1,6 @@
 macdown_role_file: "macdown/files"
 macdown_styles_dest: "Library/Application Support/MacDown/Styles"
+macdown_styles:
+ - adrwGitHub.css
+ - adrwLatex.css
+ - adrwPrint.css
