@@ -35,3 +35,4 @@ square__pip_packages:
   - mkdocs-material
 square__pip_path: export PATH=`python3 -m site --user-base`/bin:"$PATH"
 square__config_files_bin_path: export PATH={{ home }}/Development/config_files/bin:"$PATH"
+square__config_files_gitignore: "{{ home }}/Development/config_files/dot-files/gitignore"

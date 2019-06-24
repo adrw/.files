@@ -94,4 +94,11 @@
     marker: "### {mark} Square Bin"
     content: "{{ square__config_files_bin_path }}"
     create: true
-
+- file:
+    src: "{{ square__config_files_gitignore }}"
+    dest: "{{ home }}/.gitignore"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
