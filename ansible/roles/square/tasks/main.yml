@@ -84,4 +84,14 @@
     marker: "### {mark} Pip Packages"
     content: "{{ square__pip_path }}"
     create: true
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} Square Bin"
+    content: "{{ square__config_files_bin_path }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} Square Bin"
+    content: "{{ square__config_files_bin_path }}"
+    create: true
 

@@ -26,9 +26,12 @@ square__code_directories:
 square__development_repositories:
   - name: topsoil
     url: ssh://git@git.corp.squareup.com/sq/topsoil.git
+  - name: config_files
+    url: ssh://git@git.corp.squareup.com/sq/config_files.git
 square__topsoil_babushka_deps: "{{ home }}/Development/topsoil/babushka-deps"
 square__babushka_deps: "{{ home }}/.babushka/deps"
 square__pip_packages:
   - mkdocs
   - mkdocs-material
 square__pip_path: export PATH=`python3 -m site --user-base`/bin:"$PATH"
+square__config_files_bin_path: export PATH={{ home }}/Development/config_files/bin:"$PATH"
