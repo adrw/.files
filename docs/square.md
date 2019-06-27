@@ -8,7 +8,7 @@ $ ./bootstrap.sh -p mac_square -r -b /usr/local -v -s adrw
 - Use quick start command from README to run bootstrap with the above options
 - Follow steps in go/ssh to create new SSH key, and add to Bitbucket, Github, and Registry
 - Rerun bootstrap which now should succeed (especially for the Square specific parts that require Bitbucket access)
-- Run `$ babushka cacerts`
+- Run `$ babushka cacerts java mysql`
 - Manually import square-primary-g2 cert
   - `cd ~/.babushka/deps/cacerts`
   - `sudo keytool -import -noprompt -storepass changeit -cacerts -alias square-service-authority -file square-primary-g2.pem`

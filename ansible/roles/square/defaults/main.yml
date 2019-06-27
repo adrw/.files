@@ -19,7 +19,6 @@ square__homebrew_tap_url: https://git.sqcorp.co/scm/sq/homebrew-formulas.git
 square__homebrew_packages:
   - polyrepo
   - sqm
-
 square__code_directories:
   - "{{ home }}/Development"
   - "{{ home }}/src/github.com"
