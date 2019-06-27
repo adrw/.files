@@ -2,7 +2,7 @@ homebrew_apps_development:
   # - anaconda  # python ML libraries
   # - coda
   - dash
-  # - docker
+  - docker
   - insomnia
   - intellij-idea
   # - java11 # not current enough for work purposes
