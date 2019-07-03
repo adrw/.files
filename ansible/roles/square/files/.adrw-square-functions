@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
 # SOURCE https://github.com/adrw/.files
+
+function pb() {
+  PROJECT=$1
+  echo "$ REGENERATE_BUILD=yes ./pants idea $PROJECT:: --idea-project-name=$PROJECT"
+  REGENERATE_BUILD=yes ./pants idea $PROJECT:: --idea-project-name=$PROJECT
+}
