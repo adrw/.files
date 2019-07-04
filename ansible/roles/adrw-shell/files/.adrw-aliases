@@ -74,7 +74,7 @@ alias jj='fasd_cd -i'
 alias j='fasd_cd -i -1'
 
 # Java
-JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+JAVA_HOME=$(/usr/libexec/java_home -v 11)
 export JAVA_HOME
 alias java12="export JAVA_HOME=\$(/usr/libexec/java_home -v 12) && java -version"
 alias java11="export JAVA_HOME=\$(/usr/libexec/java_home -v 11) && java -version"
