@@ -3,6 +3,7 @@ homebrew_apps_development:
   # - coda
   - dash
   - docker
+  - goland
   - insomnia
   - intellij-idea
   # - java11 # not current enough for work purposes

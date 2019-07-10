@@ -180,8 +180,10 @@ function gri {
 
 # merge current changes into previous commit
 function gfa() {
-  if [ "$(git merge-base "$(git rev-parse --abbrev-ref HEAD)" master)" == "$(git rev-parse HEAD)" ]
-  then
+  ref="$(git rev-parse --abbrev-ref HEAD)"
+  base="$(git merge-base $ref master)"
+  head="$(git rev-parse HEAD)"
+  if [ "$base" == "$head" ]; then
     echo "No commits from master found!"
   else
     if [ "$#" -eq 0 ]
