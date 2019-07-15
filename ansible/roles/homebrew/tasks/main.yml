@@ -17,7 +17,7 @@
 # Tap.
 - name: Ensure configured taps are tapped.
   homebrew_tap: "tap={{ item }} state=present"
-  loop: "{{ homebrew_taps|flatten(levels=1) }}"
+  with_items: "{{ homebrew_taps|flatten(levels=1) }}"
 # Brew.
 - name: Upgrade all homebrew packages (if configured).
   homebrew: update_homebrew=yes upgrade_all=yes
@@ -25,28 +25,28 @@
     - install_homebrew_apps_development
 - name: Ensure configured homebrew packages are installed from homebrew_installed_packages.
   command: "brew install {{ item }}"
-  loop: "{{ homebrew_installed_packages|flatten(levels=1) }}"
+  with_items: "{{ homebrew_installed_packages|flatten(levels=1) }}"
 - name: Ensure configured homebrew packages are installed from homebrew_packages.
   command: "brew install {{ item }}"
-  loop: "{{ homebrew_packages|flatten(levels=1) }}"
+  with_items: "{{ homebrew_packages|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_development
 - name: Ensure blacklisted homebrew packages are not installed.
   homebrew: "name={{ item }} state=absent"
-  loop: "{{ homebrew_uninstalled_packages|flatten(levels=1) }}"
+  with_items: "{{ homebrew_uninstalled_packages|flatten(levels=1) }}"
 # Cask.
 - name: Install configured cask applications from homebrew_cask_apps.
   homebrew_cask:
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_cask_apps|flatten(levels=1) }}"
+  with_items: "{{ homebrew_cask_apps|flatten(levels=1) }}"
 - name: Install configured cask applications from homebrew_apps_backup.
   homebrew_cask:
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_apps_backup|flatten(levels=1) }}"
+  with_items: "{{ homebrew_apps_backup|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_backup
 - name: Install configured cask applications from homebrew_apps_development.
@@ -54,7 +54,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_apps_development|flatten(levels=1) }}"
+  with_items: "{{ homebrew_apps_development|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_development
 - name: Install configured cask applications from homebrew_apps_media.
@@ -62,7 +62,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_apps_media|flatten(levels=1) }}"
+  with_items: "{{ homebrew_apps_media|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_media
 - name: Install configured cask applications from homebrew_apps_password.
@@ -70,7 +70,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_apps_password|flatten(levels=1) }}"
+  with_items: "{{ homebrew_apps_password|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_password
 - name: Install configured cask applications from homebrew_apps_productivity.
@@ -78,7 +78,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_apps_productivity|flatten(levels=1) }}"
+  with_items: "{{ homebrew_apps_productivity|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_productivity
 - name: Install configured cask applications from homebrew_apps_tools.
@@ -86,7 +86,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_apps_tools|flatten(levels=1) }}"
+  with_items: "{{ homebrew_apps_tools|flatten(levels=1) }}"
   when:
     - install_homebrew_apps_tools
 - name: Install configured font homebrew_fonts.
@@ -94,7 +94,7 @@
     name: "{{ item }}"
     state: present
     install_options: "appdir={{ homebrew_cask_appdir }}"
-  loop: "{{ homebrew_fonts|flatten(levels=1) }}"
+  with_items: "{{ homebrew_fonts|flatten(levels=1) }}"
   when:
     - install_homebrew_fonts
 - name: Check for Brewfile.

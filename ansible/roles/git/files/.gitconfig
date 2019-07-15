@@ -2,3 +2,5 @@
 [user]
 	name = Andrew Alexander
 	email = adrw@squareup.com
+[core]
+	excludesfile = ~/.gitignore

@@ -1,8 +1,9 @@
 - file:
-    src: "{{ roles_dir }}/git/files/.gitconfig"
-    dest: "{{ home }}/.gitconfig"
+    src: "{{ roles_dir }}/git/files/{{ item }}"
+    dest: "{{ home }}/{{ item }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0644
     force: yes
+  with_items: "{{ git__files }}"
