@@ -22,3 +22,5 @@ $ ./bootstrap.sh -p mac_square -r -b /usr/local -v -s adrw
 - Setup Yubikey
   - `go/yubikey`
 
+## Steps to Automate
+- In `config_files`, run `$ bundle install` to get all necessary Ruby Gems installed
