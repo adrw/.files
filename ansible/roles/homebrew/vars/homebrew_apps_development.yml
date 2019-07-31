@@ -6,6 +6,7 @@ homebrew_apps_development:
   - goland
   - insomnia
   - intellij-idea
+  - jetbrains-toolbox
   # - java11 # not current enough for work purposes
   - ngrok
   # - sqlpro-for-sqlite
