@@ -183,7 +183,7 @@ function gfa() {
   ref="$(git rev-parse --abbrev-ref HEAD)"
   base="$(git merge-base $ref master)"
   head="$(git rev-parse HEAD)"
-  if [ "$base" == "$head" ]; then
+  if [ "$base" = "$head" ]; then
     echo "No commits from master found!"
   else
     if [ "$#" -eq 0 ]
