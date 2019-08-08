@@ -1,22 +1,25 @@
-- name: Install zsh Powerline Theme
-  get_url:
-    url: "{{ zsh__powerline_url }}"
-    dest: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_file }}"
-    mode: 0644
-    force: yes
-    backup: yes
-- file:
-    src: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_adrw_file }}"
-    dest: "{{ home }}/{{ zsh__powerline_adrw_file }}"
-    state: link
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
-    mode: 0644
-    force: yes
-- blockinfile:
+# - name: Install zsh Powerline Theme
+#   get_url:
+#     url: "{{ zsh__powerline_url }}"
+#     dest: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_file }}"
+#     mode: 0644
+#     force: yes
+#     backup: yes
+# - file:
+#     src: "{{ roles_dir }}/zsh/files/{{ zsh__powerline_adrw_file }}"
+#     dest: "{{ home }}/{{ zsh__powerline_adrw_file }}"
+#     state: link
+#     owner: "{{ user_name }}"
+#     group: "{{ user_group }}"
+#     mode: 0644
+#     force: yes
+
+- name: Add zsh theme to .zshrc
+  blockinfile:
     dest: "{{ home }}/.zshrc"
-    marker: "### {mark} {{ zsh__powerline_div }}"
-    content: "{{ zsh__powerline_source }}"
+    marker: "### {mark} {{ zsh__theme_div }}"
+    # content: "{{ zsh__powerline_source }}"
+    content: "{{ zsh__pure_theme }}"
     create: true
 - name: Check default shell
   shell: echo $SHELL

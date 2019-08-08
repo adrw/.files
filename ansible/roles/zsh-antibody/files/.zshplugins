@@ -4,7 +4,9 @@ bric3/nice-exit-code
 djui/alias-tips
 caarlos0/ports kind:path
 caarlos0/zsh-add-upstream
+mafredri/zsh-async
 peterhurford/git-it-on.zsh
+sindresorhus/pure
 supercrabtree/k
 Tarrasch/zsh-autoenv
 Tarrasch/zsh-colors
