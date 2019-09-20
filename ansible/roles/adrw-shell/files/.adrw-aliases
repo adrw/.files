@@ -11,6 +11,7 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 #Functions
+alias cat="bat"
 # alias l="ls -la" || "k -a" => adrw-functions::l()
 alias l="safe_k"
 alias ka="killall"

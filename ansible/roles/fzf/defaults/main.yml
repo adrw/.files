@@ -1,2 +1,5 @@
 fzf__div: "fzf"
-fzf__init: "$(brew --prefix)/opt/fzf/install"
+fzf__bash_init: "[ -f ~/.fzf.bash ] || $(brew --prefix)/opt/fzf/install
+\n[ -f ~/.fzf.bash ] && source ~/.fzf.bash"
+fzf__zsh_init: "[ -f ~/.fzf.zsh ] || $(brew --prefix)/opt/fzf/install
+\n[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh"

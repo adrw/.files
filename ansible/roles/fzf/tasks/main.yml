@@ -4,10 +4,10 @@
 - blockinfile:
     dest: "{{ home }}/.bashrc"
     marker: "### {mark} {{ fzf__div }}"
-    content: "{{ fzf__init }}"
+    content: "{{ fzf__bash_init }}"
     create: true
 - blockinfile:
     dest: "{{ home }}/.zshrc"
     marker: "### {mark} {{ fzf__div }}"
-    content: "{{ fzf__init }}"
+    content: "{{ fzf__zsh_init }}"
     create: true

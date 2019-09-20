@@ -1,4 +1,5 @@
 homebrew_packages:
+  - bat
   - cheat
   - exiftool # photo manipulation script
   - figlet
