@@ -11,7 +11,7 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 #Functions
-alias cat="bat"
+alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
 # alias l="ls -la" || "k -a" => adrw-functions::l()
 alias l="safe_k"
 alias ka="killall"
