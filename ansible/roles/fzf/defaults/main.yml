@@ -1,0 +1,2 @@
+fzf__div: "fzf"
+fzf__init: "$(brew --prefix)/opt/fzf/install"

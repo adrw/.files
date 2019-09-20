@@ -1,0 +1,13 @@
+- name: install fzf
+  homebrew:
+    name: fzf
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ fzf__div }}"
+    content: "{{ fzf__init }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ fzf__div }}"
+    content: "{{ fzf__init }}"
+    create: true
