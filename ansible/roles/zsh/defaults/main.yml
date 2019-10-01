@@ -1,7 +1,7 @@
 zsh__theme_div: "### Theme"
 zsh__pure_theme: "antibody bundle mafredri/zsh-async > /dev/null
   \nantibody bundle sindresorhus/pure > /dev/null
-  \nzstyle :prompt:pure:prompt:success blue"
+  \nzstyle :prompt:pure:prompt:success color blue"
 zsh__powerline_source: "source {{ home }}/.adrw-zsh-powerline.sh"
 zsh__powerline_url: https://raw.githubusercontent.com/riobard/zsh-powerline/master/zsh-powerline.sh
 zsh__powerline_file: .zsh-powerline.sh
