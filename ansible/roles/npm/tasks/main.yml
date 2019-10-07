@@ -1,0 +1,13 @@
+- name: install global npm packages
+  npm: "name={{ item }} globale=yes"
+  with_items: "{{ npm_packages|flatten(levels=1) }}"
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ npx__div }}"
+    content: "{{ npx__init }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ npx__div }}"
+    content: "{{ npx__init }}"
+    create: true

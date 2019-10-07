@@ -10,12 +10,16 @@
     - dockutil
     - etchosts
     - fasd
+    - fzf
     - git
+    - go
     - gpg
     - iterm2
     - macdown
     - macos
     - mas
+    - npm
+    - nvm
     - privoxy
     - spoof-mac
     - square
@@ -24,6 +28,7 @@
     - syncthing
     - tmux
     - vim
+    - vscode
     - zmv
     - zsh
     - zsh-antibody

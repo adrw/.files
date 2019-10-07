@@ -1,0 +1,7 @@
+npm_packages:
+  - @microsoft/rush
+  - @misk/cli
+  - jest
+  - jheadx
+  - npm
+  - npx

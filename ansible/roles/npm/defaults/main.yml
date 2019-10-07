@@ -1,0 +1,2 @@
+npx__div: "npx"
+npx__init: "source <(npx --shell-auto-fallback $(basename $SHELL))"
