@@ -49,6 +49,7 @@ alias gg="git grep"
 alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 alias git_undo="git reset HEAD~" # unstages most recent commit but keeps changes
 alias gfap='gfa; git push -f'
+alias gdiff="git diff | cat"
 
 # Docker
 alias dc="docker-compose"
