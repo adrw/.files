@@ -11,9 +11,14 @@ if [ ! -f ~/.adrw-functions ]; then
 fi
 source ~/.adrw-functions
 ADRWL_LEVEL=$ADRWL_ALL
-stayalive &
-STAY_ALIVE_PID=$!
-TRACE "Stay Alive PID: ${STAY_ALIVE_PID}"
+
+if [[ -z ${CI+x} ]] && [[ -z ${TRAVIS+x} ]]; then
+  TRACE "Skipping stayalive for non-CI environment"
+else
+  stayalive &
+  STAY_ALIVE_PID=$!
+  TRACE "Stay Alive PID: ${STAY_ALIVE_PID}"
+fi
 
 bash -c 'figlet -f slant "ADRW .files" 2> /dev/null; echo -n ""'
 DEBUG "Welcome to ADRW .files"
@@ -473,7 +478,11 @@ function mac_bootstrap {
   INFO "Finished macOS Custom Scripts"
 
   sudo -k
-  kill -9 $STAY_ALIVE_PID
+  if [[ -z ${CI+x} ]] && [[ -z ${TRAVIS+x} ]]; then
+    TRACE "Skipping killing stayalive process in non-CI environment"
+  else
+    kill -9 $STAY_ALIVE_PID
+  fi
   DEBUG "🍺  Fin. Bootstrap Script"
   exit 0
 }
