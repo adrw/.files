@@ -4,3 +4,5 @@
 	email = adrw@squareup.com
 [core]
 	excludesfile = ~/.gitignore
+[diff]
+    noprefix = true
