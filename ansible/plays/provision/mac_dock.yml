@@ -22,17 +22,14 @@
       - name: Visual Studio Code
         path: /Applications/Visual Studio Code.app
         pos: 5
-      - name: IntelliJ IDEA
-        path: /Applications/IntelliJ IDEA.app
-        pos: 6
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 7
+        pos: 6
       - name: Preview
         path: /Applications/Preview.app
-        pos: 8
+        pos: 7
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 9
+        pos: 8
 
     dockitems_to_remove:

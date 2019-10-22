@@ -1,6 +1,6 @@
 - name: Install Go
   homebrew:
-    name: go
+    name: golang
     state: present
 - blockinfile:
     dest: "{{ home }}/.bashrc"
@@ -12,3 +12,14 @@
     marker: "### {mark} Go"
     content: "{{ go__path }}"
     create: true
+# - name: Create GOPATH directory
+#   file:
+#     path: "{{ home }}/{{ macdown_styles_dest }}"
+#     state: directory
+#     owner: "{{ user_name }}"
+#     group: "{{ user_group }}"
+#     mode: 0644
+#     recurse: yes
+#   when:
+#     - not mds.stat.exists
+#   become: true

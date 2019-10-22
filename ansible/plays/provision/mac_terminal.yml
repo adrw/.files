@@ -16,7 +16,6 @@
     - nvm
     - npm
     - iterm2
-    # - go
     # - travis
     # - oh-my-zsh
     # - mas

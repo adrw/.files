@@ -1,2 +1,0 @@
-go__path: "export GOROOT={{ homebrew_prefix }}/opt/go/libexec
-\nexport PATH=$PATH:{{ homebrew_prefix }}/opt/go/libexec/bin"

@@ -12,7 +12,6 @@
     - fasd
     - fzf
     - git
-    - go
     - gpg
     - iterm2
     - macdown
@@ -23,6 +22,7 @@
     - privoxy
     - spoof-mac
     - square
+    - square-go
     - ssh
     - sublime-text
     - syncthing

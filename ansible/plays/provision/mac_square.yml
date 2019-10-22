@@ -4,6 +4,7 @@
   connection: local
   roles:
     - square
+    - square-go
     - homebrew
     - dockutil
     - macos
@@ -25,17 +26,14 @@
       - name: Visual Studio Code
         path: /Applications/Visual Studio Code.app
         pos: 4
-      - name: IntelliJ IDEA
-        path: /Applications/IntelliJ IDEA.app
-        pos: 5
       - name: iTerm
         path: /Applications/iTerm.app
-        pos: 6
+        pos: 5
       - name: Preview
         path: /Applications/Preview.app
-        pos: 7
+        pos: 6
       - name: System Preferences
         path: /Applications/System Preferences.app
-        pos: 8
+        pos: 7
 
     dockitems_to_remove:

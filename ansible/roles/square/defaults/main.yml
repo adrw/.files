@@ -11,6 +11,8 @@ square__functions: .adrw-square-functions
 square__adrw_shell_source: "source {{ home }}/{{ square__aliases }}
   \nsource {{ home }}/{{ square__functions }}"
 
+square__ruby_bin_path: export PATH="`ruby -e 'puts Gem.dir'`/bin:`ruby -e 'puts Gem.user_dir'`/bin:$PATH"
+
 square__polyrepo_div: "Square Cash Polyrepo"
 square__polyrepo: "export POLYREPO={{ home }}/Development/cash-services"
 
