@@ -1,4 +1,5 @@
 homebrew_packages:
+  - nektos/tap/act
   - bat
   - cheat
   - exiftool # photo manipulation script

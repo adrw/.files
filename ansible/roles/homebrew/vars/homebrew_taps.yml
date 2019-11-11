@@ -5,3 +5,4 @@ homebrew_taps:
   - homebrew/cask-drivers
   - homebrew/cask-versions
   - getantibody/antibody
+  - nektos/tap
