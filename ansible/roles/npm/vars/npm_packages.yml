@@ -5,3 +5,4 @@ npm_packages:
   - jheadx
   - npm
   - npx
+  - typesync
