@@ -20,6 +20,7 @@
     marker: "### {mark} {{ zsh__theme_div }}"
     # content: "{{ zsh__powerline_source }}"
     content: "{{ zsh__pure_theme }}"
+    # content: "{{ zsh__spaceship_theme }}"
     create: true
 - name: Check default shell
   shell: echo $SHELL
