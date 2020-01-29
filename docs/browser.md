@@ -9,10 +9,19 @@
 - uBlock Origin
 - DuckDuckGo Privacy Essentials
 
+# Chrome / Edge / Brave / Chromium
+
+- 1Password X
+- DuckDuckGo Privacy Essentials
+- OneTab
+- Redux DevTools
+- React DevTools
+- Honey
+
 # Firefox
 
 - https://ffprofile.com/
-- 1Password
+- 1Password X
 - OneTab
 - Ghostery
 - NoScript

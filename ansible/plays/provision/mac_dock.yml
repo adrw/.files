@@ -10,8 +10,8 @@
       - name: Slack
         path: "/Applications/Slack.app"
         pos: 1
-      - name: Brave Browser
-        path: "/Applications/Brave Browser.app"
+      - name: Microsoft Edge Dev
+        path: "/Applications/Microsoft Edge Dev.app"
         pos: 2
       - name: Firefox Developer Edition
         path: "/Applications/Firefox Developer Edition.app"
