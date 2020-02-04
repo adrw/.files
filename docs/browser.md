@@ -13,6 +13,7 @@
 
 - 1Password X
 - DuckDuckGo Privacy Essentials
+- uBlock Origin
 - OneTab
 - Redux DevTools
 - React DevTools
