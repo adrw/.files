@@ -9,7 +9,7 @@
 - uBlock Origin
 - DuckDuckGo Privacy Essentials
 
-# Chrome / Edge / Brave / Chromium
+# Brave / Chrome / Chromium
 
 - 1Password X
 - DuckDuckGo Privacy Essentials
@@ -31,5 +31,4 @@
 - Privacy Badger
 - HTTPS Everywhere
 - Firefox Multi-Account Containers
-- Facebook Container
 - Decentraleyes
