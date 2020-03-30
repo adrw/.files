@@ -6,3 +6,4 @@ homebrew_taps:
   - homebrew/cask-versions
   - getantibody/antibody
   - nektos/tap
+  - teamookla/speedtest

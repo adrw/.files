@@ -13,7 +13,8 @@ homebrew_apps_tools:
   # - protonvpn
   - quitter
   - spectacle
-  - synology-drive
+  - speedtest
+  # - synology-drive
   - the-unarchiver
   - utc-menu-clock
   - viscosity
