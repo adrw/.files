@@ -20,6 +20,7 @@ square__homebrew_tap_name: square/formula
 square__homebrew_tap_url: https://git.sqcorp.co/scm/sq/homebrew-formulas.git
 square__homebrew_packages:
   - polyrepo
+  - snapifact # Artifactory JAR cache
   - sqm
 square__code_directories:
   - "{{ home }}/Development"
