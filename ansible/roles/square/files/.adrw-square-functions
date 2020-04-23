@@ -16,7 +16,7 @@ function kochiku-rebuild-master() {
     PART_ID=$(beyond-curl "https://kochiku.sqprod.co/cash/$REPO/builds/$LATEST_BUILD_ID?format=json" | jq '."build" | ."build_parts" | .[0] | ."id"')
     echo "\nPART_ID=$PART_ID"
     beyond-curl "https://kochiku.sqprod.co/cash/$REPO/builds/$LATEST_BUILD_ID/parts/$PART_ID/rebuild" -X POST -L
-    echo "Done 🍺"
+    echo "Done REPO=$REPO LATEST_BUILD_ID=$LATEST_BUILD_ID PART_ID=$PART_ID 🍺"
 }
 
 function kochiku-rebuild-all-master() {
