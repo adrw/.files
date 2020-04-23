@@ -3,7 +3,32 @@
 # SOURCE https://github.com/adrw/.files
 
 function pb() {
-  PROJECT=$1
-  echo "$ REGENERATE_BUILD=yes ./pants idea $PROJECT:: --idea-project-name=$PROJECT"
-  REGENERATE_BUILD=yes ./pants idea $PROJECT:: --idea-project-name=$PROJECT
+    PROJECT=$1
+    echo "$ REGENERATE_BUILD=yes ./pants idea $PROJECT:: --idea-project-name=$PROJECT"
+    REGENERATE_BUILD=yes ./pants idea $PROJECT:: --idea-project-name=$PROJECT
+}
+
+function kochiku-rebuild-master() {
+    REPO="$1"
+    echo "REPO=$REPO"
+    LATEST_BUILD_ID=$(beyond-curl "https://kochiku.sqprod.co/cash/$REPO/master?format=json" | jq '."recent_builds" | .[-1] | ."build" | .id ')
+    echo "\nLATEST_BUILD_ID=$LATEST_BUILD_ID"
+    PART_ID=$(beyond-curl "https://kochiku.sqprod.co/cash/$REPO/builds/$LATEST_BUILD_ID?format=json" | jq '."build" | ."build_parts" | .[0] | ."id"')
+    echo "\nPART_ID=$PART_ID"
+    beyond-curl "https://kochiku.sqprod.co/cash/$REPO/builds/$LATEST_BUILD_ID/parts/$PART_ID/rebuild" -X POST -L
+    echo "Done 🍺"
+}
+
+function kochiku-rebuild-all-master() {
+    i=0
+    for RAW_REPO in $(polyrepo remove --all && polyrepo list); do
+        if [[ "$RAW_REPO" == Updating* ]] || [[ "$RAW_REPO" == /Users* ]] || [[ "$RAW_REPO" == "|--" ]] || [[ "$RAW_REPO" == "\---" ]]; then
+            echo "Skipping: $RAW_REPO"
+        else
+            ((++i))
+            echo "\nRepo $i: kochiku-rebuild-master $RAW_REPO"
+            kochiku-rebuild-master $RAW_REPO
+        fi
+    done
+    echo "Done 🍻"
 }
