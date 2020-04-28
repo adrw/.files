@@ -438,7 +438,7 @@ function drmi {
   docker rmi -f "$(docker images -q)"
 }
 function dbup {
-  docker run -d --rm --name "$(basename "$(pwd)")-mysql-57" -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7
+  docker run -d --rm --name "$(basename "$(pwd)")-mysql-57" -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7 --sql-mode=""
 }
 
 # zmv
