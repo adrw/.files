@@ -1,3 +1,11 @@
+- name: Clone Awesome Ultimate vimrc https://github.com/amix/vimrc
+  git:
+    update: yes
+    version: master
+    repo: https://github.com/amix/vimrc.git
+    dest: "{{ home }}/.vim_runtime"
+- name: Install Awesome Ultimate vimrc https://github.com/amix/vimrc
+  command: sh ~/.vim_runtime/install_awesome_vimrc.sh
 - file:
     src: "{{ roles_dir }}/vim/files/.vimrc"
     dest: "{{ home }}/.vimrc"
