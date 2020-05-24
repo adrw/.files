@@ -1,0 +1,10 @@
+- name: Clone Maximum Awesome https://github.com/square/maximum-awesome
+  git:
+    update: yes
+    version: master
+    repo: https://github.com/square/maximum-awesome.git
+    dest: "{{ home }}/.maximum-awesome"
+- name: Install Maximum Awesome https://github.com/square/maximum-awesome
+  command:
+    chdir: "{{ home }}/.maximum-awesome"
+    cmd: rake

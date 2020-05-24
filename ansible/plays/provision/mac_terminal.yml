@@ -10,15 +10,14 @@
     - fzf
     - adrw-shell
     - git
-    - tmux
-    - vim
     - ssh
     - nvm
     - npm
-    - iterm2
-    # - travis
-    # - oh-my-zsh
-    # - mas
+    - square-maximum-awesome
+    # Replaced by Square Maximum Awesome
+    # - tmux
+    # - vim
+    # - iterm2
   become_method: sudo
   ignore_errors: true
   vars:
