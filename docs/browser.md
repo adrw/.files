@@ -18,6 +18,7 @@
 - Redux DevTools
 - React DevTools
 - Honey
+- Simpl.fyi Gmail Simplification https://simpl.fyi/
 
 # Firefox
 
