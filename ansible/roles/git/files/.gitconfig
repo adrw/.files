@@ -6,3 +6,5 @@
 	excludesfile = ~/.gitignore
 [diff]
     noprefix = true
+[pull]
+	rebase = true
