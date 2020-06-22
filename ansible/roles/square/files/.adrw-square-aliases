@@ -15,3 +15,6 @@ alias cfast="cd ~/Development/java; pants fast-idea --compile franklin:: banklin
 
 # Git
 alias gpsm="git pull square master"
+
+# Snowflake
+alias snowsql="snowsql --username adrw@squareup.com --accountname square --authenticator externalbrowser $*"
