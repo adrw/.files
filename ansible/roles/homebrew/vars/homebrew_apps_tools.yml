@@ -10,11 +10,10 @@ homebrew_apps_tools:
   # - kdiff3
   - monitorcontrol
   - pock
-  # - protonvpn
+  - protonvpn
   - quitter
   - spectacle
   - speedtest
-  # - synology-drive
   - the-unarchiver
   - utc-menu-clock
   - viscosity

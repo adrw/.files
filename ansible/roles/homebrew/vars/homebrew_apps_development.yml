@@ -1,15 +1,11 @@
 homebrew_apps_development:
   # - anaconda  # python ML libraries
   # - coda
-  - dash
   - docker
-  - goland
   - insomnia
-  - intellij-idea
   - jetbrains-toolbox
   # - java11 # not current enough for work purposes
   - ngrok
-  # - sqlpro-for-sqlite
   - visual-studio-code
 # Packages included in other roles
 # - atom

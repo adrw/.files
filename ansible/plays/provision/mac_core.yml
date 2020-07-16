@@ -40,8 +40,8 @@
       - name: Preview
         path: /Applications/Preview.app
         pos: 8
-      - name: iTunes
-        path: /Applications/iTunes.app
+      - name: Music
+        path: /Applications/Music.app
         pos: 9
       - name: System Preferences
         path: /Applications/System Preferences.app

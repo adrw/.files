@@ -10,7 +10,7 @@ See [`drduh macOS Security and Privacy Guide`](https://github.com/drduh/macOS-Se
 1. Exit Disk Utility and reinstall macOS back to Macintosh HD.
 1. Restart into Mac, create temp account, don't agree to location, siri, or diagnostics.
 1. Once through Mac setup flow and on desktop, use [custom packages](./autodmg-custom.sparsebundle) to create standard users, login to standard user account, and delete temp account.
-1. Continue setup using [`bootstrap.sh`](../bootstrap.sh) (or Manual Setup below) and install with standard account. After initial setup, use command `chmod_admin` in [`.ap-functions`](../ansible/roles/functions/files/.ap-functions) to reduce privileges back to Standard.
+1. Continue setup using [`bootstrap.sh`](../bootstrap.sh) (or Manual Setup below) and install with standard account. After initial setup, use command `chmod_admin` in [`.adrw-functions`](../ansible/roles/functions/files/.adrw-functions) to reduce privileges back to Standard.
 
 ## Manual Setup
 

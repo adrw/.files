@@ -3,4 +3,4 @@ homebrew_apps_backup:
   # - createuserpkg
   - nextcloud
   # - synology-assistant
-  # - synology-drive
+  - synology-drive

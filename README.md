@@ -81,12 +81,12 @@ Change which is run with `-p {play}` flag in the `bootstrap.sh` script
 - Add SSH key to GitHub? `pbcopy < ~/.ssh/id_rsa.pub` -> [GitHub.com/settings/keys](https://github.com/settings/keys)
 - `Privoxy` not working? Check that proxy `127.0.0.1:8118` was added to HTTP and HTTPS sections in Airport and Ethernet
 - Want to remove `admin` privileges from a user?
-  - Use function `chmod_admin {username}` found in `.ap-functions` which safely implements the steps below.
+  - Use function `chmod_admin {username}` found in `.adrw-functions` which safely implements the steps below.
   - Reversible in System Preferences / Users by logging in with `admin` account and adding privileges back to another user.
   1. Find `GeneratedUID` of account with `$ dscl . -read /Users/<username> GeneratedUID`
   2. Remove from admin with `$ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>`
 - Hide a user profile? [Apple docs](https://support.apple.com/en-us/HT203998)
-  - Use function `mv_user` found in `.ap-functions` which safely implements the steps below.
+  - Use function `mv_user` found in `.adrw-functions` which safely implements the steps below.
   - Calling function again on a hidden user, restores user to both login and Finder.
   1. Hide from login screen `$ sudo dscl . create /Users/hiddenuser IsHidden 1`
   2. Hide home directory and share point
