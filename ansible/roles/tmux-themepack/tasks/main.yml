@@ -1,0 +1,13 @@
+- name: Clone Tmux Themepack https://github.com/jimeh/tmux-themepack
+  git:
+    update: yes
+    version: master
+    repo: https://github.com/jimeh/tmux-themepack.git
+    dest: "{{ home }}/.tmux-themepack"
+- name: Install Tmux Themepack
+  blockinfile:
+    dest: "{{ home }}/.tmux.conf"
+    marker: "### {mark} Tmux Themepack"
+    content: "{{ tmux_themepack__source }}"
+    create: true
+

@@ -1,0 +1,1 @@
+tmux_themepack__source: 'source-file "${HOME}/.tmux-themepack/basic.tmuxtheme"'
