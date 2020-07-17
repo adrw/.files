@@ -15,5 +15,9 @@ default_dockitems_to_remove:
   - App Store
   - News
   - Music
+  - Podcasts
+  - TV
+  - Messages
+  - System Preferences
 
 dockitems_to_remove:
