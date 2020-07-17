@@ -6,7 +6,7 @@
     - homebrew
     # - atom
     # - sublime-text
-    - macdown
+    # - macdown
     - automator-workflows
     # - anaconda
   become_method: sudo

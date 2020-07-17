@@ -3,7 +3,7 @@
   roles:
     - spoof-mac
     - etchosts
-    - privoxy
+    # - privoxy (optional)
     # - syncthing
     # - dnscrypt
     # - gpg
