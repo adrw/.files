@@ -19,32 +19,5 @@
     install_homebrew_fonts: true
 
     dockitems_to_persist:
-      - name: Messages
-        path: "/Applications/Messages.app"
-        pos: 2
-      - name: Signal
-        path: "/Applications/Signal.app"
-        pos: 3
-      - name: Firefox Developer Edition
-        path: "/Applications/Firefox Developer Edition.app"
-        pos: 4
-      - name: Byword
-        path: /Applications/Byword.app
-        pos: 5
-      - name: Visual Studio Code
-        path: /Applications/Visual Studio Code.app
-        pos: 6
-      - name: iTerm
-        path: /Applications/iTerm.app
-        pos: 7
-      - name: Preview
-        path: /Applications/Preview.app
-        pos: 8
-      - name: Music
-        path: /Applications/Music.app
-        pos: 9
-      - name: System Preferences
-        path: /Applications/System Preferences.app
-        pos: 10
 
     dockitems_to_remove:

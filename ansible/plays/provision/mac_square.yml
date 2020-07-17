@@ -14,26 +14,5 @@
     install_homebrew_apps_password: "{{ become }}"
     install_homebrew_fonts: true
     dockitems_to_persist:
-      - name: Slack
-        path: "/Applications/Slack.app"
-        pos: 1
-      - name: Firefox Developer Edition
-        path: "/Applications/Firefox Developer Edition.app"
-        pos: 2
-      - name: Byword
-        path: /Applications/Byword.app
-        pos: 3
-      - name: Visual Studio Code
-        path: /Applications/Visual Studio Code.app
-        pos: 4
-      - name: iTerm
-        path: /Applications/iTerm.app
-        pos: 5
-      - name: Preview
-        path: /Applications/Preview.app
-        pos: 6
-      - name: System Preferences
-        path: /Applications/System Preferences.app
-        pos: 7
 
     dockitems_to_remove:
