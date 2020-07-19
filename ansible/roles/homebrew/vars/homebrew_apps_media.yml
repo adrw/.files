@@ -4,6 +4,7 @@ homebrew_apps_media:
   # - handbrake
   # - handbrakebatch
   - imagealpha
+  - openaudible
   - mediahuman-audio-converter
   # - mediahuman-youtube-downloader
   - musicbrainz-picard
