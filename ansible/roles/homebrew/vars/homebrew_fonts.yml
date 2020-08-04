@@ -3,4 +3,5 @@ homebrew_fonts:
   - font-fira-code
   - font-fira-mono-for-powerline
   - font-fontawesome
+  - font-jetbrains-mono
   - font-sans-forgetica
