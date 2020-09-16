@@ -1,5 +1,6 @@
 homebrew_apps_productivity:
   - adobe-acrobat-reader
+  - basecamp
   - brave-browser-dev
   # - dropbox
   # - eloston-chromium
@@ -8,7 +9,7 @@ homebrew_apps_productivity:
   # - firefox-esr
   - google-chrome
   # - google-chrome-canary
-  # - microsoft-edge-dev
+  - notion
   - pomello
   # - protonmail-bridge
   - signal
