@@ -3,6 +3,7 @@ homebrew_apps_tools:
   - alfred
   - appcleaner
   - bartender
+  - gfxcardstatus
   # - gpgtools-beta
   # - gmvault
   # - ipartition
