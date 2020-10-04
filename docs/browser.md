@@ -19,6 +19,7 @@
 - React DevTools
 - Honey
 - Simpl.fyi Gmail Simplification https://simpl.fyi/
+- [Bypass-Paywalls](https://github.com/iamadamdev/bypass-paywalls-chrome)
 
 # Firefox
 
@@ -33,3 +34,4 @@
 - HTTPS Everywhere
 - Firefox Multi-Account Containers
 - Decentraleyes
+- [Bypass-Paywalls](https://github.com/iamadamdev/bypass-paywalls-chrome)
