@@ -72,3 +72,5 @@
 	rebase = true
 [include]
 	path = ~/.gitconfig_local
+[url "org-49461806@github.com:squareup"]
+	insteadOf = https://github.com/squareup
