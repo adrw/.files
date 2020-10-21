@@ -5,3 +5,8 @@ Host *
   HashKnownHosts yes
   PasswordAuthentication no
   UseKeychain no
+
+# Square enterprise organization on GitHub (squareup) requires SSH CA for authentication
+Match user "org-49461806" host "github.com"
+  CertificateFile ~/.ssh/id_ed25519-cert.pub
+  PKCS11Provider /Users/%user%/.ssh/pkcs11.dylib
