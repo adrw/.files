@@ -1,0 +1,12 @@
+- name: Add pyenv to .bashrc
+  blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} {{ pyenv__div }}"
+    content: "{{ pyenv__content }}"
+    create: true
+- name: Add pyenv to .zshrc
+  blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ zsh__pyenv_div }}"
+    content: "{{ zsh__pyenv_content }}"
+    create: true

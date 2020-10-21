@@ -13,6 +13,7 @@
     - ssh
     - nvm
     - npm
+    - pyenv
     - square-maximum-awesome
     - tmux-themepack
     # Replaced by Square Maximum Awesome
