@@ -1,2 +1,2 @@
-pyenv_div: "### Pyenv"
-pyenv_content: "eval "$(pyenv init -)"
+pyenv__div: "### Pyenv"
+pyenv__content: "eval \"$(pyenv init -)\""

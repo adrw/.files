@@ -7,6 +7,6 @@
 - name: Add pyenv to .zshrc
   blockinfile:
     dest: "{{ home }}/.zshrc"
-    marker: "### {mark} {{ zsh__pyenv_div }}"
-    content: "{{ zsh__pyenv_content }}"
+    marker: "### {mark} {{ pyenv__div }}"
+    content: "{{ pyenv__content }}"
     create: true
