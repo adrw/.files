@@ -6,6 +6,9 @@ Host *
   PasswordAuthentication no
   UseKeychain no
 
+Match host=*.square,*.sqprod.net,*.sjc1,*.sjc1b,*.sjc2b,*.iad1,*.iad2b,*.iad3a,*.iad3b,*.nrt1,10.*.*.*
+  PKCS11Provider /Users/%user%/.ssh/pkcs11.dylib
+
 # Square enterprise organization on GitHub (squareup) requires SSH CA for authentication
 Match user "org-49461806" host "github.com"
   CertificateFile ~/.ssh/id_ed25519-cert.pub
