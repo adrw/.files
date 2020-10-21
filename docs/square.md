@@ -39,4 +39,3 @@ $ ./bootstrap.sh -p mac_square -r -b /usr/local -v -s adrw
   $ gem install bundler:2.0.1
   $ bundle install
   ```
-- Add key to support Github Squareup `cp ~/Development/config_files/ssh/pkcs11.dylib ~/.ssh/`
