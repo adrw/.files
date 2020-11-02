@@ -20,6 +20,7 @@
 - Honey
 - Simpl.fyi Gmail Simplification https://simpl.fyi/
 - [Bypass-Paywalls](https://github.com/iamadamdev/bypass-paywalls-chrome)
+- [Gitako](https://github.com/EnixCoda/Gitako)
 
 # Firefox
 
@@ -35,3 +36,4 @@
 - Firefox Multi-Account Containers
 - Decentraleyes
 - [Bypass-Paywalls](https://github.com/iamadamdev/bypass-paywalls-chrome)
+- [Gitako](https://github.com/EnixCoda/Gitako)
