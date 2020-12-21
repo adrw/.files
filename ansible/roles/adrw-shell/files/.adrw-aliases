@@ -48,7 +48,8 @@ alias gl="git log --oneline"
 alias gg="git grep"
 alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
 alias git_undo="git reset HEAD~" # unstages most recent commit but keeps changes
-alias gfap='gfa; git push -f'
+alias gfap='echo "Use a separate commit, you have Github now!"'
+alias gfapf='gfa; git push -f'
 alias gdiff="git diff | cat"
 
 # Docker
