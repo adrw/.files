@@ -4,6 +4,7 @@ homebrew_packages:
   - cheat
   - exiftool # photo manipulation script
   - figlet
+  - git-quick-stats
   - gh # github
   # - gnupg2  # requires java...
   - hub
