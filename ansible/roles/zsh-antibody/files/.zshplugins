@@ -1,11 +1,11 @@
 adrw/gitfast-zsh-plugin
 bric3/nice-exit-code
+denysdovhan/spaceship-prompt
 djui/alias-tips
 caarlos0/ports kind:path
 caarlos0/zsh-add-upstream
 mafredri/zsh-async
 peterhurford/git-it-on.zsh
-sindresorhus/pure
 supercrabtree/k
 Tarrasch/zsh-autoenv
 Tarrasch/zsh-colors
@@ -15,8 +15,9 @@ zsh-users/zsh-history-substring-search
 zsh-users/zsh-syntax-highlighting
 
 # Old themes
-# denysdovhan/spaceship-prompt
 # bhilburn/powerlevel9k
+# denysdovhan/spaceship-prompt
+# sindresorhus/pure
 
 # Square
 # dijitalmunky/nvm-auto
