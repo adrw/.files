@@ -1,6 +1,7 @@
 homebrew_packages:
   - nektos/tap/act
   - bat
+  - certbot
   - cheat
   - exiftool # photo manipulation script
   - figlet
