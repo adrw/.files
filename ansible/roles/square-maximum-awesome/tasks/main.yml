@@ -4,6 +4,7 @@
     version: master
     repo: https://github.com/square/maximum-awesome.git
     dest: "{{ home }}/.maximum-awesome"
+    force: yes
 - name: Install Maximum Awesome
   command:
     chdir: "{{ home }}/.maximum-awesome"

@@ -17,6 +17,7 @@
     - square-maximum-awesome
     - tmux-themepack
     # Replaced by Square Maximum Awesome
+    # TODO bring back uptime tmux widget
     # - tmux
     # - vim
     # - iterm2
