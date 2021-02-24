@@ -5,7 +5,8 @@
     repo: https://github.com/square/maximum-awesome.git
     dest: "{{ home }}/.maximum-awesome"
     force: yes
-- name: Install Maximum Awesome
-  command:
-    chdir: "{{ home }}/.maximum-awesome"
-    cmd: rake
+# Don't install since it now requires [ENTER]
+# - name: Install Maximum Awesome
+#   command:
+#     chdir: "{{ home }}/.maximum-awesome"
+#     cmd: rake

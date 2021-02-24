@@ -11,6 +11,7 @@ homebrew_packages:
   - hub
   - htop
   - jhead # photo manipulation script
+  - jo
   - jq
   - node
   - openssl
