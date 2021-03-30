@@ -1,3 +1,13 @@
 - name: Install Fisher
   shell: curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-
+- name: Link plugin list file to fish config
+  file:
+    src: "{{ roles_dir }}/{{ fisher__rolename }}/files/{{ fisher__plugins_list }}"
+    dest: "{{ home }}/{{ fisher__config_dir }}/{{ fisher__plugins_list }}"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+- name: Install Plugins
+  command: "fisher update"

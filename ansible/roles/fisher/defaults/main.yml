@@ -1,0 +1,3 @@
+fisher__rolename: "fisher"
+fisher__plugins_list: "fish_plugins"
+fisher__config_dir: ".config/fish"
