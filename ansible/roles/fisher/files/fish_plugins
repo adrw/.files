@@ -1,7 +1,8 @@
 acomagu/fish-async-prompt
 edc/bass
 gazorby/fish-abbreviation-tips
-jorgebucaran/nvm.fish
-jorgebucaran/fisher
 jorgebucaran/autopair.fish
+jorgebucaran/fisher
+jorgebucaran/nvm.fish
 PatrickF1/fzf.fish
+jorgebucaran/replay.fish
