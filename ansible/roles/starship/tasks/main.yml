@@ -1,0 +1,18 @@
+- name: install starship shell prompt
+  homebrew:
+    name: starship
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "{{ starship__marker }}"
+    content: "{{ starship__bash }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.config/fish/config.fish"
+    marker: "{{ starship__marker }}"
+    content: "{{ starship__fish }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "{{ starship__marker }}"
+    content: "{{ starship__zsh }}"
+    create: true

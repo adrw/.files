@@ -1,0 +1,5 @@
+starship__marker: "### {mark} Starship"
+starship__bash: "eval \"$(starship init bash)\""
+starship__fish: "starship init fish | source
+"
+starship__zsh: "eval \"$(starship init zsh)\""

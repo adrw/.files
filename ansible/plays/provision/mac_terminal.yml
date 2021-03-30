@@ -14,6 +14,8 @@
     - nvm
     - npm
     - pyenv
+    - fisher
+    - starship
     - square-maximum-awesome
     - tmux-themepack
     # Replaced by Square Maximum Awesome

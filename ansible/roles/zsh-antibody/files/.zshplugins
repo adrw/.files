@@ -1,6 +1,6 @@
 adrw/gitfast-zsh-plugin
 bric3/nice-exit-code
-denysdovhan/spaceship-prompt
+# denysdovhan/spaceship-prompt # replaced by starship
 djui/alias-tips
 caarlos0/ports kind:path
 caarlos0/zsh-add-upstream
