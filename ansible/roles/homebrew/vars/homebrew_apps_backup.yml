@@ -2,5 +2,6 @@ homebrew_apps_backup:
   # - autodmg
   # - createuserpkg
   - nextcloud
-  # - synology-assistant
+  # - synologyassistant
   - synology-drive
+  - synology-surveillance-station-client
