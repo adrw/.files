@@ -21,6 +21,6 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "window.zoomLevel": 0,
-  "workbench.colorTheme": "Blueprint",
+  "workbench.colorTheme": "monokai-charcoal (white)",
   "workbench.startupEditor": "newUntitledFile"
 }

@@ -10,3 +10,19 @@
 #   command:
 #     chdir: "{{ home }}/.maximum-awesome"
 #     cmd: rake
+- file:
+    src: "{{ roles_dir }}/square-maximum-awesome/files/.vimrc.local"
+    dest: "{{ home }}/.vimrc.local"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+- file:
+    src: "{{ roles_dir }}/square-maximum-awesome/files/.vimrc.bundles.local"
+    dest: "{{ home }}/.vimrc.bundles.local"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
