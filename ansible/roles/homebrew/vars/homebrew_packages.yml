@@ -19,6 +19,7 @@ homebrew_packages:
   - pyenv
   - python
   - python3
+  - ripgrep
   - shellcheck
   - tldr
   - travis
