@@ -4,4 +4,4 @@ homebrew_apps_backup:
   - nextcloud
   # - synologyassistant
   - synology-drive
-  - synology-surveillance-station-client
+  # - synology-surveillance-station-client # need to pin to 1.2.9-1082 to be compatible with server version
