@@ -18,3 +18,6 @@ alias gpsm="git pull square master"
 
 # Snowflake
 alias snowsql="snowsql --username adrw@squareup.com --accountname square --authenticator externalbrowser $*"
+
+# Kill Pulse
+alias killvpn="ps j -A | grep -iE '[P]ulse' | awk '!seen[$4]++ { print $4 }' | xargs -I{} sudo kill -SIGTERM -- -{}"
