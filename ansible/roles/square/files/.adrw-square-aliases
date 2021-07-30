@@ -2,6 +2,8 @@
 
 # SOURCE https://github.com/adrw/.files
 
+alias dot="/Volumes/north-country/cloud.alxdr.ca/dot-adrw-xyz"
+
 alias gpg2="gpg"
 
 alias INTELLIJ_HOME="/Applications/IntelliJ IDEA.app"
