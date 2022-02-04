@@ -1,7 +1,7 @@
 ## Square Setup
 
 ```
-$ ./bootstrap.sh -p mac_square -r -b /usr/local -v -s adrw
+$ ./bootstrap.sh -p mac_square -r -b /opt/homebrew -v -s adrw
 ```
 
 ## Steps

@@ -16,11 +16,7 @@
   "search.exclude": {
     "node_modules/**": true
   },
-  "terminal.integrated.shell.linux": "/bin/zsh",
-  "terminal.integrated.shell.osx": "/bin/zsh",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "window.zoomLevel": 0,
-  "workbench.colorTheme": "monokai-charcoal (white)",
   "workbench.startupEditor": "newUntitledFile"
 }
