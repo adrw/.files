@@ -10,7 +10,7 @@ homebrew_apps_productivity:
   - google-chrome
   # - google-chrome-canary
   - notion
-  - pomello
+  # - pomello
   # - protonmail-bridge
   - signal
   # - skype
