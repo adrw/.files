@@ -131,6 +131,8 @@ function mac_install_dependencies {
     DEBUG "Install Homebrew"
     DEBUG "Using default Homebrew install script: $  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ${HOME}/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
     INFO "Install Homebrew"
   elif [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]]; then
     DEBUG "Install Homebrew"
