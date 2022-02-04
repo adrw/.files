@@ -31,7 +31,7 @@ function usage {
   -h    Usage
 
   -b    Change homebrew prefix / install path
-        Default: ${HOME}/.homebrew
+        Default: /opt/homebrew
         Args:
           - homebrew directory
         Example: -b "/usr/local/bin"
@@ -250,7 +250,7 @@ FAST_MODE=0
 GIT_DETACH=0
 MAIN_DIR="${HOME}/.files"
 SCRIPTS="${MAIN_DIR}/scripts"
-HOMEBREW_PREFIX="${HOME}/.homebrew"
+HOMEBREW_PREFIX="/opt/homebrew"
 HOMEBREW_INSTALL_PATH="${HOMEBREW_PREFIX}"
 ANSIBLE_INVENTORY="macbox/hosts"
 ANSIBLE_RUN_VAULT=0
