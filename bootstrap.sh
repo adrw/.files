@@ -129,7 +129,7 @@ function mac_install_dependencies {
 
   if [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]] && [ "${HOMEBREW_PREFIX}" == "/usr/local" ]; then
     DEBUG "Install Homebrew"
-    DEBUG "Using default Homebrew install script: $  /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+    DEBUG "Using default Homebrew install script: $  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     INFO "Install Homebrew"
   elif [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]]; then
