@@ -2,7 +2,7 @@ npm_packages:
   - "@microsoft/rush"
   - "@misk/cli"
   - jest
-  - jheadx
+  # - jheadx
   - npm
   - npx
   - typesync
