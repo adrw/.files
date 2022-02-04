@@ -8,7 +8,7 @@ homebrew_apps_tools:
   # - gpgtools-beta
   # - gmvault
   # - ipartition
-  - keybase
+  # - keybase
   # - kdiff3
   - monitorcontrol
   - pock
