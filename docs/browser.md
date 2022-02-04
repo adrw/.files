@@ -2,7 +2,7 @@
 
 # Safari
 
-- 1Password
+- Bitwarden
 - Tab Lister (akin to OneTab)
 - Ghostery
 - JS Blocker 5 (Open source Safari NoScript)
@@ -11,7 +11,7 @@
 
 # Brave / Chrome / Chromium
 
-- 1Password X
+- Bitwarden
 - DuckDuckGo Privacy Essentials
 - uBlock Origin
 - OneTab
@@ -25,7 +25,7 @@
 # Firefox
 
 - https://ffprofile.com/
-- 1Password X
+- Bitwarden
 - OneTab
 - Ghostery
 - NoScript

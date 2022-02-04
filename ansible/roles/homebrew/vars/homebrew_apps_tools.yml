@@ -1,8 +1,8 @@
 homebrew_apps_tools:
-  - 1password
   - alfred
   - appcleaner
   - bartender
+  - bitwarden
   - charles # http proxy inspector for mobile apps
   - gfxcardstatus
   # - gpgtools-beta
