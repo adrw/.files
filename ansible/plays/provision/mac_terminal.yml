@@ -14,7 +14,7 @@
     - nvm
     - npm
     - pyenv
-    - fisher # need to figure out how to run the install
+    # - fisher # need to figure out how to run the install
     - starship
     - square-maximum-awesome
     - tmux-themepack
