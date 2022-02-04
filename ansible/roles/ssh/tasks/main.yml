@@ -13,4 +13,4 @@
     mode: 0600
     force: yes
 - name: Add id_rsa to ssh agent
-  shell: "ssh-add -K {{ id_rsa }}"
+  shell: "ssh-add --apple-use-keychain"
