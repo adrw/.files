@@ -6,10 +6,10 @@
     dest: "{{ home }}/.maximum-awesome"
     force: yes
 # Don't install since it now requires [ENTER]
-# - name: Install Maximum Awesome
-#   command:
-#     chdir: "{{ home }}/.maximum-awesome"
-#     cmd: rake
+- name: Install Maximum Awesome
+  command:
+    chdir: "{{ home }}/.maximum-awesome"
+    cmd: rake
 - file:
     src: "{{ roles_dir }}/square-maximum-awesome/files/.vimrc.local"
     dest: "{{ home }}/.vimrc.local"
