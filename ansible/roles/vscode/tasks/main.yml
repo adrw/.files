@@ -11,3 +11,13 @@
 - name: Ensure configured vscode packages are installed.
   shell: "code install {{ item }}"
   loop: "{{ vscode_packages|flatten(levels=1) }}"
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} VS Code"
+    content: "{{ vscode__path }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} VS Code"
+    content: "{{ vscode__path }}"
+    create: true
