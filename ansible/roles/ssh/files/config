@@ -1,20 +1,10 @@
-# THIS FILE IS GENERATED AUTOMATICALLY BASED ON config_files/ssh/config.d. DO NOT EDIT.
-AddressFamily inet
-
-# Uncomment the below if you want to be able to use single ~ to quit of IPMI
-#EscapeChar none
-
-# This prevents SSH from sending SSH certs to GitHub when not using Square enterprise organization
-Host * !github.com
-  CertificateFile ~/.ssh/id_ed25519-cert.pub
-
-Host 192.168.*,*.alxdr.ca,*.adrw.xyz
-  IdentityFile ~/.ssh/id_rsa
+# Square's SSH configuration and GitHub access (must come before any Host specifications)
+Include /opt/homebrew/opt/square-ssh-config/config.d/*
 
 Host *
   AddKeysToAgent yes
   ChallengeResponseAuthentication yes
-  IdentityFile ~/.ssh/id_ed25519
+  IdentityFile ~/.ssh/id_rsa
   HashKnownHosts yes
   PasswordAuthentication no
   ForwardAgent no
@@ -25,26 +15,4 @@ Host *
   TCPKeepAlive yes
   IdentitiesOnly yes
   UseKeychain no
-  # FIXME: remove once network devices have been updated to modern ciphers.
-  # Contact @rk for info on when/if this has been done.
   Ciphers +aes128-cbc,aes256-cbc
-
-Match host=*.square,*.sqprod.net,*.sjc1,*.sjc1b,*.sjc2b,*.iad1,*.iad2b,*.iad3a,*.iad3b,*.nrt1,10.*.*.*,*.uswest*.sqcorp.co,*.useast*.sqcorp.co
-  PKCS11Provider /Users/adrw/.ssh/pkcs11.dylib
-
-# Square enterprise organization on GitHub (squareup) requires SSH CA for authentication
-Match user "org-49461806" host "github.com"
-  CertificateFile ~/.ssh/id_ed25519-cert.pub
-  PKCS11Provider /Users/adrw/.ssh/pkcs11.dylib
-  IPQoS none
-
-# Corp aws servers
-
-Host *.uswest1.sqcorp.co
-  ProxyCommand ssh _config_corp_west1a -W %h:%p
-
-Host *.uswest2.sqcorp.co
-  ProxyCommand ssh _config_corp_west2a -W %h:%p
-
-Match host=!gitmirror*,*.useast1.sqcorp.co
-  ProxyCommand ssh _config_corp_east1a -W %h:%p
