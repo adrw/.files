@@ -8,6 +8,6 @@ homebrew_apps_media:
   - mediahuman-audio-converter
   # - mediahuman-youtube-downloader
   - musicbrainz-picard
-  # - spotify
+  - spotify
   - transmission
   - vlc
