@@ -13,6 +13,7 @@
   vars:
     install_homebrew_apps_password: "{{ become }}"
     install_homebrew_fonts: true
+    install_ssh: false # rely on Square ssh config and keys
     dockitems_to_persist:
 
     dockitems_to_remove:

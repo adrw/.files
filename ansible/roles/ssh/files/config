@@ -8,10 +8,12 @@ AddressFamily inet
 Host * !github.com
   CertificateFile ~/.ssh/id_ed25519-cert.pub
 
+Host 192.168.*,*.alxdr.ca,*.adrw.xyz
+  IdentityFile ~/.ssh/id_rsa
+
 Host *
   AddKeysToAgent yes
   ChallengeResponseAuthentication yes
-  # IdentityFile ~/.ssh/id_rsa
   IdentityFile ~/.ssh/id_ed25519
   HashKnownHosts yes
   PasswordAuthentication no
