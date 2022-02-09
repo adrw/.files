@@ -1,1 +1,2 @@
 id_rsa: "{{ home }}/.ssh/id_rsa"
+install_ssh: true

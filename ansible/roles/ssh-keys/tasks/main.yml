@@ -5,3 +5,4 @@
     ssh_key_bits: 4096
     ssh_key_file: "{{ id_rsa }}"
     ssh_key_passphrase: "{{ ssh_passphrase }}"
+  when: install_ssh

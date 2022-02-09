@@ -4,6 +4,7 @@
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: 0700
+  when: install_ssh
 - file:
     src: "{{ roles_dir }}/ssh/files/config"
     dest: "{{ home }}/.ssh/config"
@@ -12,5 +13,7 @@
     group: "{{ user_group }}"
     mode: 0600
     force: yes
+  when: install_ssh
 - name: Add id_rsa to ssh agent
   shell: "ssh-add --apple-use-keychain"
+  when: install_ssh
