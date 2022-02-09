@@ -1,0 +1,3 @@
+hermit__init_bash: "hermit shell-hooks --bash"
+hermit__init_zsh: "hermit shell-hooks --zsh \
+\nautoload -U compinit && compinit -i"

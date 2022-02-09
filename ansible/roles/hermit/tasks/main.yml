@@ -1,0 +1,15 @@
+# This doesn't seem to work in Ansible
+- name: Install hermit
+  command: "curl -fsSL https://github.com/cashapp/hermit/releases/download/stable/install.sh | /bin/bash"
+  check_mode: no
+  changed_when: false
+- blockinfile:
+    dest: "{{ home }}/.bashrc"
+    marker: "### {mark} Hermit"
+    content: "{{ hermit__init_bash }}"
+    create: true
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} Hermit"
+    content: "{{ hermit__init_zsh }}"
+    create: true
