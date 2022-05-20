@@ -17,5 +17,5 @@ homebrew_apps_productivity:
   - slack
   # - standard-notes
   - tuple
-  - tor-browser-alpha
+  # - tor-browser-alpha
   # - whatsapp
