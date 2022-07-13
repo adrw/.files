@@ -149,13 +149,24 @@ function killall {
 
 # Decapitate git repo – headless – (disregard all local changes, reset back to master)
 function decap {
+  branch=$(gmb)
   git stash
   git fetch --all
   if [ $# -eq 0 ]; then
-    git reset --hard origin/master
+    git reset --hard "origin/$branch"
   else
     git reset --hard "$1"
   fi
+}
+
+# Determine the master branch for a repo
+function gmb {
+  git remote show origin | grep 'HEAD' | cut -d':' -f2 | sed -e 's/^ *//g' -e 's/ *$//g'
+}
+
+# git checkout master / main / trunk
+function gcom {
+  git checkout $(gmb)
 }
 
 # git new branch
@@ -178,13 +189,25 @@ function gri {
   esac
 }
 
+# merge git commits to master branch
+function grim {
+  if [[ $# == 0 ]]; then
+    git rebase -i $(gmb)
+  fi
+  case $@ in
+    ''|*[!0-9]*) git rebase -i "$@" ;;
+    *) git rebase -i HEAD~"$*" ;;
+  esac
+}
+
 # merge current changes into previous commit
 function gfa() {
+  branch=$(gmb)
   ref="$(git rev-parse --abbrev-ref HEAD)"
-  base="$(git merge-base $ref master)"
+  base="$(git merge-base $ref $branch)"
   head="$(git rev-parse HEAD)"
   if [ "$base" = "$head" ]; then
-    echo "No commits from master found!"
+    echo "No commits from $branch found!"
   else
     if [ "$#" -eq 0 ]
     then
@@ -198,15 +221,16 @@ function gfa() {
 # fast forward git branch to latest master
 function ff() {
   CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  MASTER_BRANCH=$(gmb)
 
-  if [ "$CURRENT_BRANCH" = "master" ]; then
-    echo "Already on master. Exiting."
+  if [ "$CURRENT_BRANCH" = "$MASTER_BRANCH" ]; then
+    echo "Already on $MASTER_BRANCH. Exiting."
   else
     set -ex
-    git co master
+    git co $MASTER_BRANCH
     git pull && git submodule sync && git submodule update --init --recursive
     git co "$CURRENT_BRANCH"
-    git rebase -i master
+    git rebase -i $MASTER_BRANCH
   fi
 }
 
