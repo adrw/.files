@@ -13,6 +13,7 @@ homebrew_packages:
   - jhead # photo manipulation script
   - jo
   - jq
+  - neofetch
   - node
   - openssl
   - pngquant
