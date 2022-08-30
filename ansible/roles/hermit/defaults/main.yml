@@ -1,3 +1,5 @@
-hermit__init_bash: "hermit shell-hooks --bash"
-hermit__init_zsh: "hermit shell-hooks --zsh \
+hermit__init_bash: "PATH=~/bin:$PATH \
+\nhermit shell-hooks --bash"
+hermit__init_zsh: "PATH=~/bin:$PATH \
+\nhermit shell-hooks --zsh \
 \nautoload -U compinit && compinit -i"
