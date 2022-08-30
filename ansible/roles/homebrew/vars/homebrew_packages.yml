@@ -1,5 +1,5 @@
 homebrew_packages:
-  - nektos/tap/act
+  - act
   - bat
   - certbot
   - cheat
