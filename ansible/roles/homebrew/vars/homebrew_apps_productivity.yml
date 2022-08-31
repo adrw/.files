@@ -1,5 +1,6 @@
 homebrew_apps_productivity:
   - adobe-acrobat-reader
+  - barrier
   - basecamp
   - brave-browser-dev
   # - dropbox
