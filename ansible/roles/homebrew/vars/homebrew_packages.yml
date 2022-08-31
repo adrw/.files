@@ -3,6 +3,7 @@ homebrew_packages:
   - bat
   - certbot
   - cheat
+  - coreutils
   - exiftool # photo manipulation script
   - figlet
   - git-quick-stats
