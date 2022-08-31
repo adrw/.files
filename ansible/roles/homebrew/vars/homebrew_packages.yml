@@ -23,6 +23,7 @@ homebrew_packages:
   - python3
   - ripgrep
   - shellcheck
+  - speedtest-cli
   - tldr
   - travis
   - tree

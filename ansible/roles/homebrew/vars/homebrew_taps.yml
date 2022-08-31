@@ -4,4 +4,3 @@ homebrew_taps:
   - homebrew/cask-fonts
   - homebrew/cask-drivers
   - homebrew/cask-versions
-  - teamookla/speedtest
