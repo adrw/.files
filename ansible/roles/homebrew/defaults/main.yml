@@ -4,6 +4,8 @@ homebrew__shell:
   \nexport HOMEBREW_NO_ANALYTICS=1
   \nexport HOMEBREW_NO_INSECURE_REDIRECT=1
   \nexport HOMEBREW_CASK_OPTS=--require-sha"
+  \n# Needed for mysql-client
+  \nexport PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
 homebrew_prefix: "{{ home }}/.homebrew"
 homebrew_install_path: "{{ homebrew_prefix }}"
