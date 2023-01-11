@@ -148,12 +148,15 @@ function mac_install_dependencies {
     INFO "Install Git"
   fi
 
-  if [[ ! -x ${HOMEBREW_PREFIX}/bin/ansible ]]; then
-    DEBUG "Install Ansible"
-    brew install ansible
-    INFO "Install Ansible"
+  if [ ! -x ${HOMEBREW_PREFIX}/bin/ansible ] && [ ! -v "${ANSIBLE_PLAYBOOK}" ]; then
+    if [ -v "${ANSIBLE_PLAYBOOK}" ]; then
+      INFO "Skipping Ansible install, no playbook set with -p"
+    else
+      DEBUG "Install Ansible"
+      brew install ansible
+      INFO "Install Ansible"
+    fi
   fi
-
   INFO "xcode-select, git, homebrew, ansible"
 }
 
@@ -462,7 +465,6 @@ function mac_bootstrap {
 
   ((GIT_DETACH)) && decap && git checkout origin/master
 
-  DEBUG "Starting your custom runbook..."
   ((SUDO)) && ((SECURE_NETWORK)) && run_secure_hostname_network && INFO "Finished Secure Network"
 
   [ -n "${ANSIBLE_PLAYBOOK+mac_test}" ] && DEBUG "Starting Ansible Playbook ${ANSIBLE_PLAYBOOK} @ ${ANSIBLE_INVENTORY}"
