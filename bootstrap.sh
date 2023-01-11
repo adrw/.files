@@ -131,8 +131,8 @@ function mac_install_dependencies {
     DEBUG "Install Homebrew"
     DEBUG "Using default Homebrew install script: $  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ${HOME}/.zprofile
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    echo `eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)"` >> ${HOME}/.zprofile
+    eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)"
     INFO "Install Homebrew"
   elif [[ ! -x "${HOMEBREW_PREFIX}/bin/brew" ]]; then
     DEBUG "Install Homebrew"
@@ -387,16 +387,17 @@ function interactiveArguments {
     ADRWL "[Q ANSIBLE]" ""
     DEBUG "# Run an Ansible playbook?"
     DEBUG "Choose from one of the playbooks below to run a set of provisioning tasks"
-    DEBUG "-  mac_becomes "
-    DEBUG "-  mac_clean "
-    DEBUG "-  mac_clear_dock "
     DEBUG "-  mac_core "
-    DEBUG "-  mac_etchost_no_animate "
+    DEBUG "-  mac_etchost"
     DEBUG "-  mac_jekyll "
     DEBUG "-  mac_second_account "
+    DEBUG "-  mac_secure "
     DEBUG "-  mac_square "
-    DEBUG "-  mac_test_short "
-    DEBUG "-  mac_test_full "
+    DEBUG "-  mac_terminal "
+    DEBUG "-  mac_test_homebrew "
+    DEBUG "-  mac_test_password "
+    DEBUG "-  mac_test "
+    DEBUG "-  mac_vault "
     read -p "[Enter] to skip. Type to overwrite: " -r Q_ANSIBLE_PLAYBOOK
     if [ -n "$Q_ANSIBLE_PLAYBOOK" ]; then
       ANSIBLE_PLAYBOOK=$Q_ANSIBLE_PLAYBOOK
