@@ -148,14 +148,10 @@ function mac_install_dependencies {
     INFO "Install Git"
   fi
 
-  if [ ! -x ${HOMEBREW_PREFIX}/bin/ansible ] && [ ! -v "${ANSIBLE_PLAYBOOK}" ]; then
-    if [ -v "${ANSIBLE_PLAYBOOK}" ]; then
-      INFO "Skipping Ansible install, no playbook set with -p"
-    else
-      DEBUG "Install Ansible"
-      brew install ansible
-      INFO "Install Ansible"
-    fi
+  if [ ! -x ${HOMEBREW_PREFIX}/bin/ansible ] && [ -n "${ANSIBLE_PLAYBOOK+mac-test}" ]; then
+    DEBUG "Install Ansible"
+    brew install ansible
+    INFO "Install Ansible"
   fi
   INFO "xcode-select, git, homebrew, ansible"
 }
