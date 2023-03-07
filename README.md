@@ -100,6 +100,10 @@ Change which is run with `-p {play}` flag in the `bootstrap.sh` script
   1. Find Syncthing in brew folder (usually '~/.homebrew/Cellar/syncthing')
   1. Copy the `syncthing.plist` file to `~/Library/LaunchAgents`.
   1. Log out and in again, or run `launchctl load ~/Library/LaunchAgents/syncthing.plist`.
+- Running into `Too many files` errors in applications?
+  - Copy the file `ansible/roles/macos/files/limit.maxfiles.plist` to `/Library/LaunchDaemons/`
+  - Then run `sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist`
+  - Test with `launchctl limit maxfiles`
 
 ## Resources
 

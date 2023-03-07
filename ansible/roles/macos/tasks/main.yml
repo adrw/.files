@@ -15,3 +15,5 @@
 - assert:
     that: filevault_status.stdout.find('true') != -1
     msg: "Filevault is not on"
+- name: set ulimit higher
+  command:
