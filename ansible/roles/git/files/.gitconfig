@@ -5,6 +5,7 @@
 [push]
 	config = default
 	default = current
+	autoSetupRemote = true
 [diff]
 	renames = true
 	indentHeuristic = on

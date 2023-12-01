@@ -9,6 +9,7 @@ homebrew_apps_tools:
   # - gmvault
   # - ipartition
   # - keybase
+  - keymapp
   # - kdiff3
   - meetingbar
   - monitorcontrol
