@@ -171,10 +171,11 @@ function gcom {
 
 # git new branch
 function gcob {
+  userPrefix=$(git remote -v | head -n 1 | cut -d ":" -f 1 | cut -d "-" -f 2)
   if [[ $# == 0 ]]; then
-    git checkout -b "$(date +"adrw.%Y-%m-%d.WIP%H%M%S")"
+    git checkout -b "$(date +"$userPrefix.%Y-%m-%d.WIP%H%M%S")"
   else
-    git checkout -b "$(date +"adrw.%Y-%m-%d.$*")"
+    git checkout -b "$(date +"$userPrefix.%Y-%m-%d.$*")"
   fi
 }
 
