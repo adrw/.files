@@ -15,6 +15,9 @@
 - DuckDuckGo Privacy Essentials
 - uBlock Origin
 - OneTab
+- Dark Reader
+- ModHeaders
+- Adblock Home
 - Redux DevTools
 - React DevTools
 - Honey
