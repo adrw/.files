@@ -6,6 +6,7 @@ homebrew_apps_development:
   - jetbrains-toolbox
   # - java11 # not current enough for work purposes
   - ngrok
+  - postico # postgres db UI
   - visual-studio-code
 # Packages included in other roles
 # - atom
