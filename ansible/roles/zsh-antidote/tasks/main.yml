@@ -1,0 +1,25 @@
+- name: Install Antidote
+  homebrew:
+    name: antidote
+    state: present
+- name: Register Antidote
+  shell: echo 'source <(antidote init)'
+  register: antidote_source
+- file:
+    src: "{{ roles_dir }}/{{ antidote__rolename }}/files/{{ antidote__plugins_list }}"
+    dest: "{{ home }}/{{ antidote__plugins_list }}"
+    state: link
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: yes
+- name: Antidote Bundle
+  shell: antidote bundle < "{{ home }}/{{ antidote__plugins_list }}" > "{{ home }}/{{ antidote__plugins_zsh }}"
+- blockinfile:
+    dest: "{{ home }}/.zshrc"
+    marker: "### {mark} {{ antidote__div }}"
+    content: "{{ antidote_source.stdout }}
+      \nsource {{ home }}/{{ antidote__plugins_zsh }}
+      \n{{ zsh__default_user }}
+      \n{{ antidote__completion }}"
+    create: true

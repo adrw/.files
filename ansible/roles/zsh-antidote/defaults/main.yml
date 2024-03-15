@@ -1,0 +1,6 @@
+antidote__rolename: "zsh-antidote"
+antidote__div: "Antidote"
+antidote__plugins_list: .zshplugins
+antidote__plugins_zsh: .zsh_plugins.sh
+antidote__completion: "autoload -U compinit && compinit"
+zsh__default_user: "DEFAULT_USER='{{ home | win_basename}}'"

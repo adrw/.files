@@ -32,7 +32,7 @@
     - vscode
     - zmv
     - zsh
-    - zsh-antibody
+    - zsh-antidote
   become_method: sudo
   ignore_errors: true
   vars:
