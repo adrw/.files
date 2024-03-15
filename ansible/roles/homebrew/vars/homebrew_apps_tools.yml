@@ -13,7 +13,7 @@ homebrew_apps_tools:
   # - kdiff3
   - meetingbar
   - monitorcontrol
-  - pock
+  # - pock # touchbar macbook widget organizer
   - protonvpn
   - quitter
   - rectangle
