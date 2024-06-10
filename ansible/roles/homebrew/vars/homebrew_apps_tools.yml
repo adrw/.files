@@ -1,12 +1,12 @@
 homebrew_apps_tools:
   - alfred
   - appcleaner
-  - bartender
   - bitwarden
   - charles # http proxy inspector for mobile apps
   - gfxcardstatus
   # - gpgtools-beta
   # - gmvault
+  - hiddenbar
   # - ipartition
   # - keybase
   - keymapp

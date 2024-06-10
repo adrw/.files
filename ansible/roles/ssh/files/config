@@ -4,7 +4,7 @@ Include /opt/homebrew/opt/square-ssh-config/config.d/*
 Host *
   AddKeysToAgent yes
   ChallengeResponseAuthentication yes
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed22519
   HashKnownHosts yes
   PasswordAuthentication no
   ForwardAgent no
