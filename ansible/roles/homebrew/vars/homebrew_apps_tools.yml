@@ -6,8 +6,8 @@ homebrew_apps_tools:
   - gfxcardstatus
   # - gpgtools-beta
   # - gmvault
-  - hiddenbar
   # - ipartition
+  - hiddenbar
   # - keybase
   - keymapp
   # - kdiff3
