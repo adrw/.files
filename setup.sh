@@ -43,8 +43,7 @@ BREW_CORE=(
   openssl
   pngquant
   pyenv
-  python
-  python3
+  python3            # `python` and `python3` are the same formula now
   ripgrep
   shellcheck
   speedtest-cli    # DEPRECATED? — Ookla now has an official `speedtest` brew package
@@ -237,11 +236,12 @@ brew_install_list() {
     clean="${clean%% *}"
     clean="$(echo "$clean" | xargs)" # trim whitespace
     [[ -z "$clean" ]] && continue
-    if brew list --formula "$clean" &>/dev/null || brew list --cask "$clean" &>/dev/null; then
+    if brew list --formula "$clean" &>/dev/null 2>&1 || brew list --cask "$clean" &>/dev/null 2>&1; then
       warn "${clean} (already installed)"
     else
       echo -e "  Installing ${BOLD}${clean}${NC}..."
-      if brew install "$clean" 2>/dev/null || brew install --cask "$clean" 2>/dev/null; then
+      # Try as formula first, then cask — don't suppress stderr so failures are visible
+      if brew install "$clean" 2>&1 || brew install --cask "$clean" 2>&1; then
         info "${clean}"
       else
         err "${clean} — install failed"
@@ -349,8 +349,8 @@ run_security() {
   fi
 
   sudo -v
-  # Keep sudo alive
-  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+  # Keep sudo alive in background
+  while true; do sudo -n true; sleep 60; kill -0 "$$" || break; done 2>/dev/null &
   local sudo_pid=$!
 
   # --- Firewall ---
@@ -377,9 +377,16 @@ run_security() {
 
   # --- Screen lock ---
   section "Screen Lock"
-  defaults write com.apple.screensaver askForPassword -int 1
-  defaults write com.apple.screensaver askForPasswordDelay -int 0
-  info "Password required immediately on sleep/screensaver"
+  # defaults write com.apple.screensaver askForPassword is unreliable on Sonoma+.
+  # sysadminctl -screenLock is the modern replacement.
+  if sysadminctl -screenLock immediate 2>/dev/null; then
+    info "Screen lock set to require password immediately"
+  else
+    # Fallback for older macOS
+    defaults write com.apple.screensaver askForPassword -int 1
+    defaults write com.apple.screensaver askForPasswordDelay -int 0
+    info "Screen lock set (legacy method)"
+  fi
 
   # --- Finder privacy ---
   section "Finder & File Privacy"
@@ -410,6 +417,7 @@ run_security() {
   defaults write com.apple.Safari SuppressSearchSuggestions -bool YES 2>/dev/null || true
   defaults write com.apple.Safari WebsiteSpecificSearchEnabled -bool NO 2>/dev/null || true
   info "Safari search suggestions and web search disabled"
+  echo "  (For deeper Spotlight/Siri suggestions blocking, also run section 5: Homecall blocking)"
 
   # --- SIP check ---
   section "System Integrity Protection"
@@ -451,12 +459,14 @@ run_macos_prefs() {
   defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
   defaults write -g com.apple.mouse.scaling 4.5
   defaults write -g com.apple.trackpad.scaling 4.5
-  defaults write ~/Library/Preferences/com.apple.AppleMultitouchTrackpad.plist ActuationStrength 0
-  info "3-finger drag enabled, tracking speed increased, silent click on"
+  # NOTE: ActuationStrength (silent click) is broken on Sonoma 14.4+ and Apple Silicon Macs.
+  # Removed — no longer scriptable.
+  info "3-finger drag enabled, tracking speed increased"
 
   # --- Menu bar ---
-  defaults write com.apple.menuextra.battery ShowPercent -string "YES" 2>/dev/null || true
-  info "Battery percentage shown"
+  # NOTE: Battery percentage can no longer be set via defaults write (broken since Big Sur).
+  # Must be set manually: System Settings > Control Center > Battery > Show Percentage.
+  warn "Battery percentage must be enabled manually: System Settings > Control Center > Battery > Show Percentage"
 
   # --- Sidebar ---
   defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
@@ -502,46 +512,60 @@ run_homecall() {
   echo "Disables macOS daemons and agents that phone home to Apple."
   echo "Based on https://github.com/karek314/macOS-home-call-drop"
   echo ""
-  echo "Note: SIP must be disabled for this to work on system LaunchDaemons."
-  echo ""
 
+  local sip_enabled=false
   if csrutil status 2>/dev/null | grep -q "enabled"; then
-    warn "SIP is enabled — homecall blocking may not work for system daemons."
-    echo "To disable SIP: reboot into Recovery OS and run 'csrutil disable'."
+    sip_enabled=true
+    warn "SIP is enabled — daemons/agents under /System/Library/ CANNOT be disabled."
+    echo "  All targets in this section are under /System/Library/ and require SIP off."
+    echo "  To disable SIP: reboot into Recovery OS (Cmd+R) and run 'csrutil disable'."
     echo ""
-    if ! confirm "Try anyway?"; then
-      warn "Skipped homecall blocking"
-      return
-    fi
-  else
-    if ! confirm "Disable phoning-home daemons/agents?"; then
-      warn "Skipped homecall blocking"
-      return
-    fi
+    echo "  The Spotlight/Safari suggestions fix below does NOT require SIP and will still work."
+    echo ""
   fi
 
-  # Disable Spotlight Siri suggestions
+  if ! confirm "Proceed with homecall blocking?"; then
+    warn "Skipped homecall blocking"
+    return
+  fi
+
+  # Disable Spotlight Siri suggestions (works with SIP enabled)
   defaults write com.apple.Spotlight orderedItems -array \
     '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}' \
     '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
     '{"enabled" = 0;"name" = "MENU_DEFINITION";}'
   info "Spotlight suggestions disabled"
 
-  for daemon in "${HOMECALL_DAEMONS[@]}"; do
-    if sudo launchctl unload -w "/System/Library/LaunchDaemons/${daemon}.plist" 2>/dev/null; then
-      info "Disabled daemon: ${daemon}"
-    else
-      warn "Could not disable daemon: ${daemon}"
-    fi
-  done
+  # Safari suggestions (works with SIP enabled)
+  defaults write com.apple.Safari UniversalSearchEnabled -bool NO 2>/dev/null || true
+  defaults write com.apple.Safari SuppressSearchSuggestions -bool YES 2>/dev/null || true
+  info "Safari search suggestions disabled"
 
-  for agent in "${HOMECALL_AGENTS[@]}"; do
-    if launchctl unload -w "/System/Library/LaunchAgents/${agent}.plist" 2>/dev/null; then
-      info "Disabled agent: ${agent}"
-    else
-      warn "Could not disable agent: ${agent}"
-    fi
-  done
+  if $sip_enabled; then
+    warn "Skipping daemon/agent unload — SIP is enabled (all targets are under /System/Library/)"
+  else
+    # Use modern launchctl syntax (bootout + disable) instead of deprecated unload -w
+    local uid
+    uid="$(id -u)"
+
+    for daemon in "${HOMECALL_DAEMONS[@]}"; do
+      if sudo launchctl bootout "system/${daemon}" 2>/dev/null; then
+        sudo launchctl disable "system/${daemon}" 2>/dev/null || true
+        info "Disabled daemon: ${daemon}"
+      else
+        warn "Could not disable daemon: ${daemon}"
+      fi
+    done
+
+    for agent in "${HOMECALL_AGENTS[@]}"; do
+      if launchctl bootout "gui/${uid}/${agent}" 2>/dev/null; then
+        launchctl disable "gui/${uid}/${agent}" 2>/dev/null || true
+        info "Disabled agent: ${agent}"
+      else
+        warn "Could not disable agent: ${agent}"
+      fi
+    done
+  fi
 
   echo ""
   info "Homecall blocking complete — restart your computer to apply changes"
