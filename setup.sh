@@ -571,6 +571,150 @@ run_homecall() {
   info "Homecall blocking complete — restart your computer to apply changes"
 }
 
+run_zsh_setup() {
+  section "Zsh Setup (lightweight)"
+  echo "Sets up a fast, modern Zsh environment without Oh My Zsh."
+  echo ""
+  echo "This will install:"
+  echo "  - antidote (plugin manager)"
+  echo "  - starship (cross-shell prompt)"
+  echo "  - zoxide (fast directory jumper, replaces fasd/autojump)"
+  echo "  - fzf (fuzzy finder with Ctrl-R history, Ctrl-T file search)"
+  echo "  - eza (modern ls replacement with git status)"
+  echo "  - direnv (per-directory environment variables)"
+  echo ""
+  echo "Zsh plugins (via antidote):"
+  echo "  - zsh-autosuggestions, zsh-syntax-highlighting, zsh-completions"
+  echo "  - zsh-history-substring-search, zsh-async"
+  echo "  - alias-tips (fast), zmv"
+  echo ""
+  if ! confirm "Install Zsh setup?"; then
+    warn "Skipped Zsh setup"
+    return
+  fi
+
+  install_homebrew
+
+  # --- Brew packages ---
+  local -a zsh_brews=(
+    antidote
+    starship
+    zoxide
+    fzf
+    eza
+    direnv
+  )
+  brew_install_list "Zsh tools" "${zsh_brews[@]}"
+
+  # --- fzf keybindings ---
+  section "fzf keybindings"
+  local fzf_prefix
+  fzf_prefix="$(brew --prefix fzf 2>/dev/null || echo "/opt/homebrew/opt/fzf")"
+  if [[ -x "${fzf_prefix}/install" ]]; then
+    "${fzf_prefix}/install" --key-bindings --completion --no-update-rc --no-bash --no-fish
+    info "fzf keybindings installed"
+  else
+    warn "fzf install script not found — keybindings may need manual setup"
+  fi
+
+  # --- Plugin list ---
+  section "Antidote plugins"
+  local plugins_file="${HOME}/.zshplugins"
+  cat > "$plugins_file" << 'PLUGINS'
+# Zsh users essentials
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zsh-users/zsh-history-substring-search
+zsh-users/zsh-syntax-highlighting
+
+# Async support
+mafredri/zsh-async
+
+# Alias tips (fast Go rewrite)
+decayofmind/zsh-fast-alias-tips
+PLUGINS
+  info "Plugin list written to ${plugins_file}"
+
+  # --- Generate static plugin file ---
+  if command -v antidote &>/dev/null; then
+    antidote bundle < "$plugins_file" > "${HOME}/.zsh_plugins.sh"
+    info "Antidote plugins bundled to ~/.zsh_plugins.sh"
+  else
+    warn "antidote not in PATH — run 'antidote bundle < ~/.zshplugins > ~/.zsh_plugins.sh' after restarting"
+  fi
+
+  # --- .zshrc ---
+  section "Configuring .zshrc"
+  local zshrc="${HOME}/.zshrc"
+
+  # Back up existing .zshrc
+  if [[ -f "$zshrc" ]]; then
+    cp "$zshrc" "${zshrc}.backup.$(date +%Y%m%d%H%M%S)"
+    info "Backed up existing .zshrc"
+  fi
+
+  cat > "$zshrc" << 'ZSHRC'
+# ---------------------------------------------------------------------------
+# Zsh core settings
+# ---------------------------------------------------------------------------
+autoload -U compinit && compinit
+autoload -U zmv
+
+# History
+HISTFILE="${HOME}/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+
+# ---------------------------------------------------------------------------
+# Antidote (plugin manager)
+# ---------------------------------------------------------------------------
+source <(antidote init)
+source "${HOME}/.zsh_plugins.sh"
+
+# ---------------------------------------------------------------------------
+# Tools
+# ---------------------------------------------------------------------------
+
+# fzf (fuzzy finder — Ctrl-R for history, Ctrl-T for files)
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# zoxide (fast directory jumper — use `z` to cd)
+eval "$(zoxide init zsh)"
+
+# direnv (per-directory env vars)
+eval "$(direnv hook zsh)"
+
+# eza aliases (modern ls with git status)
+alias ls="eza"
+alias l="eza -la --git"
+alias ll="eza -la --git --tree --level=2"
+alias lt="eza -la --git --sort=modified"
+
+# ---------------------------------------------------------------------------
+# Starship prompt (loaded last)
+# ---------------------------------------------------------------------------
+eval "$(starship init zsh)"
+ZSHRC
+  info ".zshrc written"
+
+  # --- Set zsh as default shell ---
+  if [[ "$SHELL" != */zsh ]]; then
+    section "Default shell"
+    if confirm "Set zsh as default shell?"; then
+      chsh -s "$(command -v zsh)"
+      info "Default shell set to zsh"
+    else
+      warn "Skipped changing default shell"
+    fi
+  fi
+
+  info "Zsh setup complete — restart your terminal or run 'source ~/.zshrc'"
+}
+
 # ===========================================================================
 # Main menu
 # ===========================================================================
@@ -588,6 +732,7 @@ main() {
   echo "  3) macOS security hardening"
   echo "  4) macOS UX preferences"
   echo "  5) Homecall blocking"
+  echo "  6) Zsh setup (antidote, starship, fzf, zoxide, eza)"
   echo "  a) All of the above"
   echo "  q) Quit"
   echo ""
@@ -599,7 +744,7 @@ main() {
   fi
 
   if [[ "$choices" == *"a"* ]]; then
-    choices="1,2,3,4,5"
+    choices="1,2,3,4,5,6"
   fi
 
   IFS=',' read -ra selected <<< "$choices"
@@ -611,6 +756,7 @@ main() {
       3) run_security ;;
       4) run_macos_prefs ;;
       5) run_homecall ;;
+      6) run_zsh_setup ;;
       *) warn "Unknown selection: ${choice}" ;;
     esac
   done
