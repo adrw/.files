@@ -116,6 +116,7 @@ CASK_FONTS=(
 
 CASK_BACKUP=(
   synology-drive
+  synology-surveillance-station-client
 )
 
 # ---------------------------------------------------------------------------
