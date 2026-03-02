@@ -1,4 +1,4 @@
-# Andrew's .files
+# adrw's .files
 
 The Ansible-based provisioning system in `v1/` is **unmaintained as of macOS 14 (Sonoma)**. It may still work for reference but is no longer tested or updated.
 
