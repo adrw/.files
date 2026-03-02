@@ -764,8 +764,13 @@ setopt SHARE_HISTORY
 setopt APPEND_HISTORY
 
 # Antidote (plugin manager)
-source <(antidote init)
-source "${HOME}/.zsh_plugins.sh"
+if [[ -r "$(brew --prefix 2>/dev/null)/opt/antidote/share/antidote/antidote.zsh" ]]; then
+  source "$(brew --prefix)/opt/antidote/share/antidote/antidote.zsh"
+  if [[ ! "${HOME}/.zsh_plugins.sh" -nt "${HOME}/.zshplugins" ]]; then
+    antidote bundle < "${HOME}/.zshplugins" > "${HOME}/.zsh_plugins.sh"
+  fi
+  source "${HOME}/.zsh_plugins.sh"
+fi
 
 # fzf (fuzzy finder — Ctrl-R for history, Ctrl-T for files)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
