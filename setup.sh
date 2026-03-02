@@ -209,6 +209,32 @@ confirm() {
   [[ "$response" =~ ^[Yy]$ ]]
 }
 
+# ensure_block FILE MARKER_ID CONTENT
+# Inserts or replaces a marked block in FILE. Idempotent — safe to call
+# repeatedly without duplicating content. Content outside the markers is
+# preserved.
+ensure_block() {
+  local file="$1" marker="$2" content="$3"
+  local begin="### BEGIN ${marker}"
+  local end="### END ${marker}"
+  if [[ -f "$file" ]] && grep -qF "$begin" "$file" 2>/dev/null; then
+    # Replace existing block
+    local tmp
+    tmp="$(mktemp)"
+    awk -v b="$begin" -v e="$end" -v c="$content" '
+      $0 == b  { print b; print c; skip=1; next }
+      $0 == e  { skip=0; print e; next }
+      !skip    { print }
+    ' "$file" > "$tmp" && mv "$tmp" "$file"
+  elif [[ -f "$file" ]]; then
+    # Append new block
+    printf '\n%s\n%s\n%s\n' "$begin" "$content" "$end" >> "$file"
+  else
+    # Create file with block
+    printf '%s\n%s\n%s\n' "$begin" "$content" "$end" > "$file"
+  fi
+}
+
 install_homebrew() {
   if command -v brew &>/dev/null; then
     info "Homebrew already installed"
@@ -647,16 +673,10 @@ PLUGINS
   section "Configuring .zshrc"
   local zshrc="${HOME}/.zshrc"
 
-  # Back up existing .zshrc
-  if [[ -f "$zshrc" ]]; then
-    cp "$zshrc" "${zshrc}.backup.$(date +%Y%m%d%H%M%S)"
-    info "Backed up existing .zshrc"
-  fi
-
-  cat > "$zshrc" << 'ZSHRC'
-# ---------------------------------------------------------------------------
+  # Build the managed block content
+  local zshrc_block
+  zshrc_block="$(cat << 'ZSHRC'
 # Zsh core settings
-# ---------------------------------------------------------------------------
 autoload -U compinit && compinit
 autoload -U zmv
 
@@ -669,15 +689,9 @@ setopt HIST_FIND_NO_DUPS
 setopt SHARE_HISTORY
 setopt APPEND_HISTORY
 
-# ---------------------------------------------------------------------------
 # Antidote (plugin manager)
-# ---------------------------------------------------------------------------
 source <(antidote init)
 source "${HOME}/.zsh_plugins.sh"
-
-# ---------------------------------------------------------------------------
-# Tools
-# ---------------------------------------------------------------------------
 
 # fzf (fuzzy finder — Ctrl-R for history, Ctrl-T for files)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -694,12 +708,13 @@ alias l="eza -la --git"
 alias ll="eza -la --git --tree --level=2"
 alias lt="eza -la --git --sort=modified"
 
-# ---------------------------------------------------------------------------
 # Starship prompt (loaded last)
-# ---------------------------------------------------------------------------
 eval "$(starship init zsh)"
 ZSHRC
-  info ".zshrc written"
+  )"
+
+  ensure_block "$zshrc" "adrw-dotfiles" "$zshrc_block"
+  info ".zshrc managed block updated (content between ### BEGIN/END adrw-dotfiles)"
 
   # --- Set zsh as default shell ---
   if [[ "$SHELL" != */zsh ]]; then
