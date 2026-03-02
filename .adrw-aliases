@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+# SOURCE https://github.com/adrw/.files
+# https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
+
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+
+#Functions
+alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
+# alias l="ls -la" || "k -a" => adrw-functions::l()
+alias l="safe_k"
+alias ka="killall"
+
+# Applications
+alias jn="jupyter notebook"
+alias mw="miskweb"
+alias p="polyrepo"
+# alias npm="yarn"
+alias st="syncthing"
+alias c="code ."
+alias yb="yarn build"
+alias ys="yarn start"
+
+# Gatsby
+alias gd="gatsby develop"
+
+#Git
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gclean="git clean -fdX"
+alias gco="git checkout"
+alias gra="git remote add"
+alias gram="git remote add me"
+alias grsu="git remote set-url"
+alias gcam="git commit --amend"
+alias gpm="git push me"
+alias gpmf="git push me -f"
+alias gpo="git push origin"
+alias gpof="git push origin -f"
+alias gpom="git pull origin master"
+alias gl="git log --oneline"
+alias gg="git grep"
+alias git_rm="git reset --hard HEAD~1"  # delete most recent commit
+alias git_undo="git reset HEAD~" # unstages most recent commit but keeps changes
+alias gfap='echo "Use a separate commit, you have Github now!"'
+alias gfapf='gfa; git push -f'
+alias gdiff="git diff | cat"
+
+# Docker
+alias dc="docker-compose"
+alias dvp="docker volume prune"
+alias dct="docker compose exec" # use terminal inside running docker-compose service dct {container name} sh
+
+# zmv                     # rename all ext1 -> ext2   zmv '*.ext1' '$(basename $f .ext1).ext2'
+alias zmv="zmv -n"        # test mode
+alias zm4b="zmv '*.m4a' '\$(basename \$f .m4a).m4b'"   # test mode all *.m4a -> *.m4b audiobooks. Real: \zm4b
+
+# Disk utility
+alias shrink_sparseimage="hdiutil compact"
+alias resize_sparseimage="hdiutil resize -size"
+
+# fasd
+alias fa='fasd -a'        # any
+alias s='fasd -si'        # show / search / select
+alias d='fasd -d'         # directory
+alias f='fasd -f'         # file
+alias sd='fasd -sid'      # interactive directory selection
+alias sf='fasd -sif'      # interactive file selection
+alias z='fasd_cd -d'      # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i'  # cd with interactive selection
+alias jj='fasd_cd -i'
+alias j='fasd_cd -i -1'
+
+# Java
+JAVA_HOME=$(/usr/libexec/java_home -v 11)
+export JAVA_HOME
+alias java12="export JAVA_HOME=\$(/usr/libexec/java_home -v 12) && java -version"
+alias java11="export JAVA_HOME=\$(/usr/libexec/java_home -v 11) && java -version"
+alias java10="export JAVA_HOME=\$(/usr/libexec/java_home -v 10) && java -version"
+alias java9="export JAVA_HOME=\$(/usr/libexec/java_home -v 9) && java -version"
+alias java8="export JAVA_HOME=\$(/usr/libexec/java_home -v 1.8) && java -version"
+alias java7="export JAVA_HOME=\$(/usr/libexec/java_home -v 1.7) && java -version"
+
+#Web Download files off of a webpage
+# - Every file: wd ""  {url}
+# - Only with extension: wd pdf {url}
+# - -N is timestamp and won't overwrite previously downloaded files
+alias wd="wget -r -l 1 -nd -nH -N -A"
+
+# Paste terminal output to a link
+alias tb="nc termbin.com 9999"
+
+# Always enable colored `grep` output
+# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+
+# Empty the Trash on all mounted volumes and the main HDD.
+# Also, clear Apple’s System Logs to improve shell startup speed.
+# Finally, clear download history from quarantine. https://mths.be/bum
+# Clear Homebrew cache
+# Determine platform
+case "$(uname)" in
+    Darwin)   et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'; rm -rf $(brew --cache)" ;;
+    Linux|*)  et="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash"  ;;
+esac
+alias emptytrash='$et'
+
+# Show/hide hidden files in Finder
+alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+# Disable Spotlight
+alias spotoff="sudo mdutil -a -i off"
+# Enable Spotlight
+alias spoton="sudo mdutil -a -i on"
+
+# Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
+# (useful when executing time-consuming commands)
+alias badge="tput bel"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload='exec $SHELL -l'
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
