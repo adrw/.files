@@ -57,7 +57,9 @@ BREW_CORE=(
 )
 
 CASK_DEVELOPMENT=(
+  copilot-cli
   docker
+  ghostty
   # insomnia         # DEPRECATED? — acquired by Kong, many users migrated to Bruno or Hoppscotch
   jetbrains-toolbox
   # ngrok
@@ -68,26 +70,37 @@ CASK_DEVELOPMENT=(
 CASK_PRODUCTIVITY=(
   # barrier          # DEPRECATED? — project has had minimal maintenance since 2022, consider input-leap (the active fork)
   # basecamp         # DEPRECATED? — Basecamp no longer ships a native Mac app, web-only now
-  brave-browser-dev
+  brave-browser
   google-chrome
+  obsidian
   signal
   slack
+  telegram
+  zoom
 )
 
 CASK_TOOLS=(
+  1password
   alfred
   appcleaner
+  bisq
   bitwarden
   bitwarden-cli
+  caffeine
   # charles
+  conductor
   karabiner-elements
   keymapp
+  little-snitch
   meetingbar
   # monitorcontrol
   protonvpn
+  raycast
   rectangle
+  superwhisper
   thaw
   the-unarchiver
+  utm
   utc-menu-clock
   viscosity
   xbar
@@ -398,12 +411,11 @@ run_security() {
   # --- Firewall ---
   section "Firewall"
   sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
-  sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
   sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
   sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
   sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
   sudo pkill -HUP socketfilterfw 2>/dev/null || true
-  info "Firewall enabled with stealth mode, logging on, auto-whitelist off"
+  info "Firewall enabled with stealth mode, auto-whitelist off"
 
   # --- Hostname ---
   section "Hostname"
