@@ -10,6 +10,7 @@ homebrew_apps_development:
   - visual-studio-code
 # Packages included in other roles
 # - atom
+- ghostty
 # - iterm2
 # - macdown
 # - sublime-text
