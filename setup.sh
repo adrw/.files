@@ -26,19 +26,19 @@ section() { echo -e "\n${BOLD}${BLUE}==> $*${NC}"; }
 BREW_CORE=(
   act
   bat
-  certbot          # DEPRECATED? — rarely needed on personal machines, more for servers
-  cheat            # DEPRECATED? — community cheatsheets; tldr is similar and more maintained
+  # certbot          # DEPRECATED? — rarely needed on personal machines, more for servers
+  # cheat            # DEPRECATED? — community cheatsheets; tldr is similar and more maintained
   coreutils
   exiftool
   figlet
   git-quick-stats
   gh
-  hub              # DEPRECATED — gh (GitHub CLI) has replaced hub's functionality
+  # hub              # DEPRECATED — gh (GitHub CLI) has replaced hub's functionality
   htop
   jhead
-  jo               # DEPRECATED? — jq alone covers most JSON needs
+  # jo               # DEPRECATED? — jq alone covers most JSON needs
   jq
-  neofetch         # DEPRECATED — archived by author in 2024, consider fastfetch
+  # neofetch         # DEPRECATED — archived by author in 2024, consider fastfetch
   node
   openssl
   pngquant
@@ -46,17 +46,17 @@ BREW_CORE=(
   python3            # `python` and `python3` are the same formula now
   ripgrep
   shellcheck
-  speedtest-cli    # DEPRECATED? — Ookla now has an official `speedtest` brew package
+  # speedtest-cli    # DEPRECATED? — Ookla now has an official `speedtest` brew package
   tldr
-  travis           # DEPRECATED — Travis CI has declined significantly since 2020
+  # travis           # DEPRECATED — Travis CI has declined significantly since 2020
   tree
   wget
-  yarn             # DEPRECATED? — modern Node ships with corepack/pnpm, yarn classic is legacy
+  # yarn             # DEPRECATED? — modern Node ships with corepack/pnpm, yarn classic is legacy
 )
 
 CASK_DEVELOPMENT=(
   docker
-  insomnia         # DEPRECATED? — acquired by Kong, many users migrated to Bruno or Hoppscotch
+  # insomnia         # DEPRECATED? — acquired by Kong, many users migrated to Bruno or Hoppscotch
   jetbrains-toolbox
   ngrok
   postico
@@ -65,8 +65,8 @@ CASK_DEVELOPMENT=(
 
 CASK_PRODUCTIVITY=(
   adobe-acrobat-reader
-  barrier          # DEPRECATED? — project has had minimal maintenance since 2022, consider input-leap (the active fork)
-  basecamp         # DEPRECATED? — Basecamp no longer ships a native Mac app, web-only now
+  # barrier          # DEPRECATED? — project has had minimal maintenance since 2022, consider input-leap (the active fork)
+  # basecamp         # DEPRECATED? — Basecamp no longer ships a native Mac app, web-only now
   brave-browser-dev
   firefox-developer-edition
   google-chrome
@@ -83,24 +83,24 @@ CASK_TOOLS=(
   bitwarden
   bitwarden-cli
   charles
-  gfxcardstatus    # DEPRECATED — only useful on older Macs with dual GPUs (pre-M1), no Apple Silicon support
-  hiddenbar        # DEPRECATED — unmaintained since 2022, consider ice (actively maintained)
+  # gfxcardstatus    # DEPRECATED — only useful on older Macs with dual GPUs (pre-M1), no Apple Silicon support
+  # hiddenbar        # DEPRECATED — unmaintained since 2022, consider ice (actively maintained)
   karabiner-elements
   keymapp
   meetingbar
   monitorcontrol
   protonvpn
-  quitter          # DEPRECATED? — last updated 2019 by Marco Arment, still works but unmaintained
+  # quitter          # DEPRECATED? — last updated 2019 by Marco Arment, still works but unmaintained
   rectangle
   the-unarchiver
-  utc-menu-clock   # DEPRECATED? — macOS now natively supports showing seconds/UTC in menu bar clock
+  # utc-menu-clock   # DEPRECATED? — macOS now natively supports showing seconds/UTC in menu bar clock
   viscosity
   xbar
 )
 
 CASK_MEDIA=(
   calibre
-  imagealpha       # DEPRECATED? — pngquant CLI does the same thing, imagealpha is just a GUI wrapper
+  # imagealpha       # DEPRECATED? — pngquant CLI does the same thing, imagealpha is just a GUI wrapper
   openaudible
   mediahuman-audio-converter
   musicbrainz-picard
@@ -111,11 +111,11 @@ CASK_MEDIA=(
 
 CASK_FONTS=(
   font-fira-code
-  font-fira-mono-for-powerline  # DEPRECATED? — Nerd Fonts patches are more common now
+  # font-fira-mono-for-powerline  # DEPRECATED? — Nerd Fonts patches are more common now
   font-fontawesome
   font-jetbrains-mono
   font-poppins
-  font-poppins-latin             # DEPRECATED? — font-poppins already includes latin glyphs
+  # font-poppins-latin             # DEPRECATED? — font-poppins already includes latin glyphs
   font-sans-forgetica
 )
 
