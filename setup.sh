@@ -770,6 +770,8 @@ if [[ -r "$(brew --prefix 2>/dev/null)/opt/antidote/share/antidote/antidote.zsh"
     antidote bundle < "${HOME}/.zshplugins" > "${HOME}/.zsh_plugins.sh"
   fi
   source "${HOME}/.zsh_plugins.sh"
+else
+  echo >&2 "antidote: not found — install with 'brew install antidote'"
 fi
 
 # fzf (fuzzy finder — Ctrl-R for history, Ctrl-T for files)
