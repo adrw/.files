@@ -230,6 +230,26 @@ ensure_block() {
   fi
 }
 
+install_xcode_cli_tools() {
+  section "Xcode Command Line Tools"
+  if xcode-select -p &>/dev/null; then
+    info "Xcode Command Line Tools already installed ($(xcode-select -p))"
+  else
+    echo "Xcode Command Line Tools are required for git, compilers, and Homebrew."
+    echo "A system dialog will appear to guide installation."
+    xcode-select --install 2>/dev/null || true
+    echo ""
+    echo -e "${YELLOW}Waiting for Xcode Command Line Tools installation to complete...${NC}"
+    echo "Please follow the system dialog, then press Enter here when done."
+    read -r -p "Press Enter to continue after installation finishes..."
+    if xcode-select -p &>/dev/null; then
+      info "Xcode Command Line Tools installed"
+    else
+      err "Xcode Command Line Tools installation not detected — some steps may fail"
+    fi
+  fi
+}
+
 install_homebrew() {
   if command -v brew &>/dev/null; then
     info "Homebrew already installed"
@@ -780,6 +800,8 @@ ZSHRC
 # ===========================================================================
 
 main() {
+  install_xcode_cli_tools
+
   echo ""
   echo -e "${BOLD}========================================${NC}"
   echo -e "${BOLD}  ADRW .files — macOS Setup${NC}"
