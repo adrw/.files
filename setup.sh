@@ -590,6 +590,41 @@ run_homecall() {
   info "Homecall blocking complete — restart your computer to apply changes"
 }
 
+run_hermit() {
+  section "Hermit (cashapp/hermit)"
+  echo "Hermit is a tool that manages per-project isolated toolchains."
+  echo ""
+  echo "This will:"
+  echo "  - Install Hermit to ~/bin"
+  echo "  - Add shell hooks to .zshrc for auto-activation"
+  echo ""
+  if ! confirm "Install Hermit?"; then
+    warn "Skipped Hermit"
+    return
+  fi
+
+  # --- Install Hermit ---
+  if command -v hermit &>/dev/null || [[ -x "${HOME}/bin/hermit" ]]; then
+    info "Hermit already installed"
+  else
+    section "Installing Hermit"
+    curl -fsSL https://github.com/cashapp/hermit/releases/download/stable/install.sh | /bin/bash
+    info "Hermit installed to ~/bin"
+  fi
+
+  # --- Shell hooks ---
+  section "Hermit shell hooks"
+  local hermit_block
+  hermit_block='# Hermit (cashapp/hermit)
+PATH=~/bin:$PATH
+eval "$(hermit shell-hooks --zsh)"'
+
+  ensure_block "${HOME}/.zshrc" "hermit" "$hermit_block"
+  info ".zshrc Hermit block updated (### BEGIN/END hermit)"
+
+  info "Hermit setup complete — restart your terminal or run 'source ~/.zshrc'"
+}
+
 run_zsh_setup() {
   section "Zsh Setup (lightweight)"
   echo "Sets up a fast, modern Zsh environment without Oh My Zsh."
@@ -741,6 +776,7 @@ main() {
   echo "  4) macOS UX preferences"
   echo "  5) Homecall blocking"
   echo "  6) Zsh setup (antidote, starship, fzf, zoxide, eza)"
+  echo "  7) Hermit (cashapp/hermit — per-project toolchains)"
   echo "  a) All of the above"
   echo "  q) Quit"
   echo ""
@@ -752,7 +788,7 @@ main() {
   fi
 
   if [[ "$choices" == *"a"* ]]; then
-    choices="1,2,3,4,5,6"
+    choices="1,2,3,4,5,6,7"
   fi
 
   IFS=',' read -ra selected <<< "$choices"
@@ -765,6 +801,7 @@ main() {
       4) run_macos_prefs ;;
       5) run_homecall ;;
       6) run_zsh_setup ;;
+      7) run_hermit ;;
       *) warn "Unknown selection: ${choice}" ;;
     esac
   done
