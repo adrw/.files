@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # ---------------------------------------------------------------------------
 # Colors
 # ---------------------------------------------------------------------------
@@ -697,6 +699,17 @@ PLUGINS
     warn "antidote not in PATH — run 'antidote bundle < ~/.zshplugins > ~/.zsh_plugins.sh' after restarting"
   fi
 
+  # --- Shell aliases & functions ---
+  section "Shell aliases & functions"
+  for dotfile in .adrw-aliases .adrw-functions; do
+    if [[ -f "${SCRIPT_DIR}/${dotfile}" ]]; then
+      cp "${SCRIPT_DIR}/${dotfile}" "${HOME}/${dotfile}"
+      info "Installed ~/${dotfile}"
+    else
+      warn "${dotfile} not found in ${SCRIPT_DIR}"
+    fi
+  done
+
   # --- .zshrc ---
   section "Configuring .zshrc"
   local zshrc="${HOME}/.zshrc"
@@ -735,6 +748,10 @@ alias ls="eza"
 alias l="eza -la --git"
 alias ll="eza -la --git --tree --level=2"
 alias lt="eza -la --git --sort=modified"
+
+# Custom aliases & functions
+[ -f "${HOME}/.adrw-functions" ] && source "${HOME}/.adrw-functions"
+[ -f "${HOME}/.adrw-aliases" ] && source "${HOME}/.adrw-aliases"
 
 # Starship prompt (loaded last)
 eval "$(starship init zsh)"

@@ -1,0 +1,635 @@
+#!/usr/bin/env bash
+# SOURCE  https://github.com/adrw/.files
+
+# ADRW Bootstrap Standard Methods
+package="adrw"
+
+# ADRW Logging
+Reset="$(tput sgr0)"            # Text Reset
+Red="$(tput setaf 1)"           # Red
+Green="$(tput setaf 2)"         # Green
+Yellow="$(tput setaf 3)"        # Yellow
+Blue="$(tput setaf 4)"          # Blue
+LBlue="$(tput setaf 14)"        # Light Blue
+Purple="$(tput setaf 5)"        # Purple
+_start=""
+_end="$Blue|>$Reset"
+
+# Levels
+readonly ADRWL_ALL=0
+readonly ADRWL_FATAL=10
+readonly ADRWL_ERROR=9
+readonly ADRWL_WARN=7
+readonly ADRWL_NOTICE=7
+readonly ADRWL_INFO=5
+readonly ADRWL_DEBUG=3
+readonly ADRWL_TRACE=1
+readonly ADRWL_LOG=10
+
+ADRWL_LEVEL=$ADRWL_ALL
+ADRWL_PREFIX=""
+ADRWL_TIMESTAMP="$(date +'%Y-%m-%d %T')"
+ADRWL_CONTENT=""
+
+function ADRWL {
+  case "$#" in
+    3)    ADRWL_TIMESTAMP=$1 && ADRWL_PREFIX=$2 ;;
+    2)    ADRWL_PREFIX=$1    ;;
+    1)    ;;
+    0)    ADRWL_PREFIX="" && ADRWL_TIMESTAMP="[$(date +'%Y-%m-%d %T')]" ;;
+  esac
+  ADRWL_CONTENT="${@: -1}"        # Content is the last argument string
+}
+
+function FATAL {
+  if [ $ADRWL_LEVEL -le $ADRWL_FATAL ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}FATAL ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function ERROR {
+  if [ $ADRWL_LEVEL -le $ADRWL_ERROR ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}ERROR ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function WARN {
+  if [ $ADRWL_LEVEL -le $ADRWL_WARN ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Yellow} WARN ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function NOTICE {
+  if [ $ADRWL_LEVEL -le $ADRWL_NOTICE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Purple}NOTICE${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function INFO {
+  if [ $ADRWL_LEVEL -le $ADRWL_INFO ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Green} INFO ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function DEBUG {
+  if [ $ADRWL_LEVEL -le $ADRWL_DEBUG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Blue}DEBUG ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function TRACE {
+  if [ $ADRWL_LEVEL -le $ADRWL_TRACE ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${LBlue}TRACE ${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function LOG {
+  if [ $ADRWL_LEVEL -le $ADRWL_LOG ]; then ADRWL "$@" && echo "${_start}${ADRWL_TIMESTAMP}[${Red}status${Reset}]${ADRWL_PREFIX}${_end}${ADRWL_CONTENT}"; fi
+}
+
+function PROGRESS {
+  ADRWL "$@" && printf "%s%s[${Red}status${Reset}]${ADRWL_PREFIX}${_end} ${ADRWL_CONTENT}" "$_start" "$ADRWL_TIMESTAMP"
+}
+
+function stayalive {
+  if [[ $# == 0 ]]; then
+    time=540    # 9 minutes
+  else
+    time=$1
+  fi
+  while 'true'; do
+    sleep ${time}
+    TRACE "[STAY_ALIVE]" "" && ADRWL
+  done
+}
+
+# safe_download ./local/path/file.sh https://remote.com/path/file.sh
+function safe_download {
+  timestamp="$(date '+%Y%m%d-%H%M%S')"
+  if [ ! -f "$1" ]; then
+    DEBUG "Download ${1}"
+    curl -s -o "$1" "$2"
+    INFO "Download ${1}"
+  else
+    DEBUG "Update ${1}"
+    mv "$1" "$1.$timestamp"
+    curl -s -o "$1" "$2"
+    if diff -q "$1" "$1.$timestamp" > /dev/null; then rm "$1.$timestamp"; fi
+    INFO "Update ${1}"
+  fi
+}
+
+# safe_source ./path/file.sh ~/.bashrc
+function safe_source {
+  if ! grep -q "$1" "$2"; then echo "source $1" >> "$2"; fi
+}
+
+# runs script with bumper ADRW Logging output
+function run_script {
+  exec="$*"
+  script="$1"
+  name=$(basename "${script}")
+  DEBUG "${name}"
+  ${exec}
+  INFO "${name}"
+}
+
+function getUserGroup {
+  id -Gn "$1" | cut -d " " -f1
+}
+
+function numberToBoolean {
+  (($1)) && echo "true"
+  ((!$1)) && echo "false"
+}
+
+# use ~/.zshplugins -> supercrabtree/k with fallback to ls -la
+function safe_k {
+  if type k &> /dev/null; then
+    k -a "$@"
+  else
+    ls -la "$@"
+  fi
+}
+
+# Killall Process from search
+function killall {
+  if [ $# -eq 0 ]; then
+    FATAL "Usage: killall <grep process search team>"
+  else
+		for pid in $(pgrep "${1}" | awk '{print $2}') ; do kill "$pid" ; done
+	fi
+}
+
+# Decapitate git repo – headless – (disregard all local changes, reset back to master)
+function decap {
+  branch=$(gmb)
+  git stash
+  git fetch --all
+  if [ $# -eq 0 ]; then
+    git reset --hard "origin/$branch"
+  else
+    git reset --hard "$1"
+  fi
+}
+
+# Determine the master branch for a repo
+function gmb {
+  git remote show origin | grep 'HEAD' | cut -d':' -f2 | sed -e 's/^ *//g' -e 's/ *$//g'
+}
+
+# git checkout master / main / trunk
+function gcom {
+  git checkout $(gmb)
+}
+
+# git new branch
+function gcob {
+  githubRemotePrefix=$(git remote -v | head -n 1 | cut -d ":" -f 1 | cut -d "-" -f 2)
+
+  userPrefix=""
+  if [[ "$githubRemotePrefix" == "origin"*"git@github.com" ]]; then
+    userPrefix="adrw"
+  else
+    userPrefix="$githubRemotePrefix"
+  fi
+
+  if [[ $# == 0 ]]; then
+    git checkout -b "$(date +"$userPrefix.%Y-%m-%d.WIP%H%M%S")"
+  else
+    git checkout -b "$(date +"$userPrefix.%Y-%m-%d.$*")"
+  fi
+}
+
+# merge git commits
+function gri {
+  if [[ $# == 0 ]]; then
+    WARN "No arguments for git rebase -i"
+  fi
+  case $@ in
+    ''|*[!0-9]*) git rebase -i "$@" ;;
+    *) git rebase -i HEAD~"$*" ;;
+  esac
+}
+
+# merge git commits to master branch
+function grim {
+  if [[ $# == 0 ]]; then
+    git rebase -i $(gmb)
+  fi
+  case $@ in
+    ''|*[!0-9]*) git rebase -i "$@" ;;
+    *) git rebase -i HEAD~"$*" ;;
+  esac
+}
+
+# merge current changes into previous commit
+function gfa() {
+  branch=$(gmb)
+  ref="$(git rev-parse --abbrev-ref HEAD)"
+  base="$(git merge-base $ref $branch)"
+  head="$(git rev-parse HEAD)"
+  if [ "$base" = "$head" ]; then
+    echo "No commits from $branch found!"
+  else
+    if [ "$#" -eq 0 ]
+    then
+      git commit --amend -a --no-edit
+    else
+      git commit --amend --no-edit "$@"
+    fi
+  fi
+}
+
+# fast forward git branch to latest master
+function ff() {
+  CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  MASTER_BRANCH=$(gmb)
+
+  if [ "$CURRENT_BRANCH" = "$MASTER_BRANCH" ]; then
+    echo "Already on $MASTER_BRANCH. Exiting."
+  else
+    set -ex
+    git co $MASTER_BRANCH
+    git pull && git submodule sync && git submodule update --init --recursive
+    git co "$CURRENT_BRANCH"
+    git rebase -i $MASTER_BRANCH
+  fi
+}
+
+# update etchosts. has bias towards maintaining the default (locked down) state
+function etc {
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
+  hosts="/etc/hosts"
+  default_hosts=".no-social.hosts"
+  default_hosts_dir="${HOME}/.files/ansible/roles/etchosts/files/"
+  alt_hosts=".raw-ads.hosts"
+  wait=10
+  function usage {
+    cat << EOF
+    Usage: default dir dhr = ${default_hosts_dir}
+     etc              toggles dhr/${default_hosts} <-> dhr/${alt_hosts}
+     etc {new}        installs dhr/{new}
+     etc {dir} {new}  installs {dir}{new}
+     etc {dir} \"\"     installs {new}
+
+    Valid Host Files
+    - .clean.hosts
+    - .no-social.hosts (no media)
+    - .raw-ads.hosts
+    - .raw-social.hosts
+    - default.hosts
+    - facebook.hosts
+    - media.hosts
+EOF
+  }
+
+  if [ $# -eq 0 ]; then
+    hosts_dir="$default_hosts_dir"; new_hosts="$default_hosts"
+  elif [ $# -eq 1 ]; then
+    hosts_dir="$default_hosts_dir"; new_hosts="$1"
+  elif [ $# -eq 2 ]; then
+    hosts_dir="$1"; new_hosts="$2"
+  else
+    ERROR "Invalid operation."
+    usage
+    return
+  fi
+
+  # determine if default hosts is currently installed at /etc/hosts
+  etc_default_diff=$(diff ${hosts} "${default_hosts_dir}${default_hosts}" | wc | awk '{print $1}')
+  etc_new_diff=$(diff ${hosts} "${hosts_dir}${new_hosts}" | wc | awk '{print $1}')
+
+  if [[ $etc_new_diff -eq 0 && $etc_default_diff -ne 0 ]]; then
+    INFO "🍺  ${hosts} already = ${new_hosts}"
+    sudo -k
+    return
+  elif [[ $etc_new_diff -eq 0 && $etc_default_diff -eq 0 ]]; then
+    updated_hosts="${alt_hosts}"
+    etc_new_diff=$(diff ${hosts} "${hosts_dir}${alt_hosts}" | wc | awk '{print $1}')
+    WARN "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
+    sleep ${wait}
+  elif [[ $etc_new_diff -ne 0 && $etc_default_diff -eq 0 ]]; then
+    updated_hosts="${new_hosts}"
+    WARN "Updating ${hosts} => ${updated_hosts} in ${wait} seconds..."
+    sleep ${wait}
+  else
+    updated_hosts="${new_hosts}"
+  fi
+
+  DEBUG "Update ${hosts} => ${updated_hosts}"
+  sudo cp "${hosts_dir}${updated_hosts}" /etc/hosts
+
+  etc_new_diff=$(diff ${hosts} "${hosts_dir}${updated_hosts}" | wc | awk '{print $1}')
+
+  if [ "$etc_new_diff" -eq 0 ]; then
+    sudo dscacheutil -flushcache  # flush dns cache
+    sudo bash -c "killall -HUP mDNSResponder"
+    INFO "🍺  Fin. ${hosts} = ${updated_hosts}"
+  else
+    ERROR "${hosts} update failed."
+  fi
+  sudo -k # remove sudo permissions
+}
+
+# Rename all files to their first line
+# in_dir/123431.txt that has first line of "Notes for Dec 16 2010"
+# in_dir/123431.txt => out_dir/Notes for Dec 16 2010.txt
+function rename_first_line {
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
+  if [ $# -ne 2 ]; then
+    FATAL "Usage: rename_first_line <in_dir> <out_dir>"
+  else
+    in_dir=$1
+    out_dir=$2
+    mkdir -p "$out_dir"
+
+    DEBUG "$in_dir/filename.ext => $out_dir/first_line.ext"
+
+    for file in "$in_dir"/*; do
+      first_line=$(head -n 1 $file | cut -c-40 | awk '$1=$1')
+      extension="${file##*.}"
+      cp_err=$(cp "$file" "${out_dir}/${first_line}.${extension}" 2>&1)
+      if [[ $cp_err != "" || $(diff -q $file ${out_dir}/${first_line}.${extension}) ]]; then
+        ERROR "$file : $cp_err"
+      # else
+        # INFO "$file => ${out_dir}/${first_line}.${extension}"
+      fi
+    done
+    INFO "${in_dir}/filename.ext => ${out_dir}/first_line.ext"
+  fi
+  INFO "🍺  Fin. ${in_dir} => ${out_dir}"
+}
+
+# Makes new User
+function mk_user {
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
+  TYPE=
+  NAME=
+  while getopts "h?a:s:" opt; do
+    case "$opt" in
+      a)    TYPE="admin" && NAME="${OPTARG}" ;;
+      h|/?) INFO "" ;;
+      s)    TYPE="standard" && NAME="${OPTARG}" ;;
+    esac
+  done
+  WARN "Make user ${NAME} with ${TYPE} permissions."
+
+}
+
+# Removes admin privileges
+# Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
+# Find GeneratedUID of account with
+#   $ dscl . -read /Users/<username> GeneratedUID
+# Remove from admin with
+#   $ sudo dscl . -delete /Groups/admin GroupMembers <GeneratedUID>
+function chmod_admin {
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
+  if [ $# -ne 1 ]; then
+    ERROR "Usage: chmod_admin <username>"
+  elif [[ "$(uname)" != "Darwin"  ]]; then
+    ERROR "Usage: only run this command on macOS"
+  else
+    user=${1}
+    DEBUG "Remove '${user}' admin privileges"
+    # Check user is valid
+    if ! dscl . list /users | grep -q "${user}"; then
+      ERROR "'${user}' is not a user"
+    elif [[ "${user}" == "admin" ]]; then
+      ERROR "'${user}' should keep admin privileges"
+    else
+      WARN "Removing '${user}' admin privileges in 3 seconds..."
+      sleep 3
+      DEBUG "Remove '${user}' from admin"
+      sudo dscl . -delete /Groups/admin GroupMembership ${user}
+      INFO "Delete '${user}' membership in /Groups/admin"
+      user_UID=$(dscl . -read /Users/${user} GeneratedUID | cut -d ' ' -f 2)
+      sudo dscl . -delete /Groups/admin GroupMembers ${user_UID}
+      INFO "Delete '${user_UID}' member in /Groups/admin"
+      sudo -k
+      INFO "🍺  Fin. '${user}' = standard"
+    fi
+  fi
+  ADRWL
+}
+
+# Hide / unhide use profile from login screens and moves home directory to /var/
+# Follows macOS-Security-and-Privacy-Guide – @drduh guidelines
+# https://support.apple.com/en-us/HT203998
+# Hide from login screen
+#   $ sudo dscl . create /Users/hiddenuser IsHidden 1
+# Hide home directory and share point
+#   $ sudo mv /Users/hiddenuser /var/hiddenuser
+#   $ sudo dscl . -create /Users/hiddenuser NFSHomeDirectory /var/hiddenuser
+#   $ sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
+function mv_user {
+  ADRWL "[${package}::${0}]" "Register Logging Prefix"
+  if [ $# -ne 1 ]; then
+    ERROR "Usage: hide_user <username>"
+  elif [[ "$(uname)" != "Darwin"  ]]; then
+    ERROR "Usage: only run this command on macOS"
+  else
+    user=${1}
+    DEBUG "Hide/Restore '${user}' from login & Finder"
+
+    # Check user is valid
+    if ! dscl . list /users | grep -q "${user}"; then
+      ERROR "'${user}' is not a user"
+    elif [[ "${user}" == "$(whoami)" ]]; then
+      ERROR "'${user}' should not hide oneself"
+    else
+      userStatus=$(dscl . read /Users/${user} IsHidden | cut -f 2 -d " ")
+      visible="0"
+      if [ "${userStatus}" = "${visible}" ]; then
+        WARN "Hiding '${user}' from login & Finder in 3 seconds..."
+        sleep 3
+        DEBUG "Hide '${user}' from login & Finder"
+        sudo dscl . create /Users/${user} IsHidden 1
+        INFO "Hide '${user}' from login"
+        sudo mv /Users/${user} /var/${user}
+        INFO "Move home directory to /var/${user}"
+        sudo dscl . -create /Users/${user} NFSHomeDirectory /var/${user}
+        INFO "Update ${user} record with home directory /var/${user}"
+        sudo dscl . -delete "/SharePoints/${user}'s Public Folder"
+        INFO "Remove ${user} Public Folder"
+        result="hidden"
+      else
+        WARN "Restoring '${user}' to login & Finder in 3 seconds..."
+        sleep 3
+        DEBUG "Restore '${user}' to login & Finder"
+        sudo dscl . create /Users/${user} IsHidden 0
+        INFO "Restore '${user}' to login"
+        sudo mv /var/${user} /Users/${user}
+        INFO "Move home directory to /Users/${user}"
+        sudo dscl . -create /Users/${user} NFSHomeDirectory /Users/${user}
+        INFO "Update ${user} record with home directory /Users/${user}"
+        sudo dscl . -create "/SharePoints/${user}'s Public Folder"
+        INFO "Restore ${user} Public Folder"
+        result="restored"
+      fi
+
+      sudo -k
+      INFO "🍺  Fin. '${user}' = ${result}"
+    fi
+  fi
+}
+
+# Docker
+function dka {
+  docker kill "$(docker ps -q)"
+}
+function drmc {
+  docker rm -f "$(docker ps -a -q)"
+}
+function drmi {
+  docker rmi -f "$(docker images -q)"
+}
+function dbup {
+  docker run -d --rm --name "$(basename "$(pwd)")-mysql-8" -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:8 --sql-mode=""
+}
+
+# zmv
+function zm4b {
+  \zmv '*.m4a' '$(basename $f .m4a).m4b'   # all *.m4a -> *.m4b bookmarkable audiobooks
+}
+
+
+# Other Sources
+# https://github.com/mathiasbynens/dotfiles/blob/master/.functions
+# https://github.com/oieduardorabelo/dotfiles/blob/master/functions.sh
+
+# Reload Antibody
+function antiup {
+	rm -rf "$(antibody home)"
+	bash -c "antibody bundle < ~/.zshplugins > ~/.zsh_plugins.sh"
+	cat ~/.zsh_plugins.sh
+	reload
+}
+
+# Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
+function targz {
+  ADRWL "[${0}]" "Register Logging Prefix"
+	local tmpFile="${*%/}.tar";
+	tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
+
+	size=$(
+		stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
+		stat -c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
+	);
+
+	local cmd="";
+	if (( size < 52428800 )) && hash zopfli 2> /dev/null; then
+		# the .tar file is smaller than 50 MB and Zopfli is available; use it
+		cmd="zopfli";
+	else
+		if hash pigz 2> /dev/null; then
+			cmd="pigz";
+		else
+			cmd="gzip";
+		fi;
+	fi;
+
+	DEBUG "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
+	"${cmd}" -v "${tmpFile}" || return 1;
+	[ -f "${tmpFile}" ] && rm "${tmpFile}";
+
+	zippedSize=$(
+		stat -f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
+		stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
+	);
+
+	INFO "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
+}
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server {
+	local port="${1:-8000}";
+	sleep 1 && open "http://localhost:${port}/" &
+	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+}
+
+
+# Syntax-highlight JSON strings or files
+# Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
+function json {
+	if [ -t 0 ]; then # argument
+		python -mjson.tool <<< "$*" | pygmentize -l javascript;
+	else # pipe
+		python -mjson.tool | pygmentize -l javascript;
+	fi;
+}
+
+
+# `s` with no arguments opens the current directory in Sublime Text, otherwise
+# opens the given location
+function s {
+	if [ $# -eq 0 ]; then
+		subl .;
+	else
+		subl "$@";
+	fi;
+}
+
+# `a` with no arguments opens the current directory in Atom Editor, otherwise
+# opens the given location
+function a {
+	if [ $# -eq 0 ]; then
+		atom .;
+	else
+		atom "$@";
+	fi;
+}
+
+# `c` with no arguments opens the current directory, otherwise opens the given
+# location
+function c {
+  if [ $# -eq 0 ]; then
+    code .;
+  else
+    code "$@";
+  fi;
+}
+
+
+# `v` with no arguments opens the current directory in Vim, otherwise opens the
+# given location
+function v {
+	if [ $# -eq 0 ]; then
+		vim .;
+	else
+		vim "$@";
+	fi;
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o {
+	if [ $# -eq 0 ]; then
+		open .;
+	else
+		open "$@";
+	fi;
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+# Usage: extract <file>
+# Description: extracts archived files / mounts disk images
+# Note: .dmg/hdiutil is Mac OS X-specific.
+# credit: http://nparikh.org/notes/zshrc.txt
+function extract {
+  if [ -f "$1" ]; then
+    case "$1" in
+      *.tar.bz2)  tar -jxvf "$1"                        ;;
+      *.tar.gz)   tar -zxvf "$1"                        ;;
+      *.bz2)      bunzip2 "$1"                          ;;
+      *.dmg)      hdiutil mount "$1"                    ;;
+      *.gz)       gunzip "$1"                           ;;
+      *.tar)      tar -xvf "$1"                         ;;
+      *.tbz2)     tar -jxvf "$1"                        ;;
+      *.tgz)      tar -zxvf "$1"                        ;;
+      *.zip)      unzip "$1"                            ;;
+      *.ZIP)      unzip "$1"                            ;;
+      *.pax)      pax -r < "$1"                         ;;
+      *.pax.Z)    uncompress "$1" --stdout | pax -r     ;;
+      *.Z)        uncompress "$1"                       ;;
+      *)          FATAL "'$1' cannot be extracted/mounted via extract()" ;;
+    esac
+  else
+    FATAL "'$1' is not a valid file"
+	fi
+}
