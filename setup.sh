@@ -675,7 +675,7 @@ run_zsh_setup() {
   echo "Zsh plugins (via antidote):"
   echo "  - zsh-autosuggestions, zsh-syntax-highlighting, zsh-completions"
   echo "  - zsh-history-substring-search, zsh-async"
-  echo "  - alias-tips (fast), zmv"
+  echo "  - alias-tips, zmv"
   echo ""
   if ! confirm "Install Zsh setup?"; then
     warn "Skipped Zsh setup"
@@ -719,8 +719,8 @@ zsh-users/zsh-syntax-highlighting
 # Async support
 mafredri/zsh-async
 
-# Alias tips (fast Go rewrite)
-decayofmind/zsh-fast-alias-tips
+# Alias tips
+djui/alias-tips
 PLUGINS
   info "Plugin list written to ${plugins_file}"
 
