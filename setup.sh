@@ -135,48 +135,13 @@ CASK_BACKUP=(
 # ---------------------------------------------------------------------------
 # /etc/hosts blocklist URLs (Steven Black)
 # ---------------------------------------------------------------------------
-HOSTS_URL="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts"
+HOSTS_BASE_URL="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts"
+HOSTS_SOCIAL_URL="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts"
 
-CUSTOM_FACEBOOK_HOSTS="
-# Facebook (custom — blocks main site, allows messenger.com)
+CUSTOM_FACEBOOK_HOSTS="# Facebook (custom — blocks main site, allows messenger.com)
 0.0.0.0 facebook.com
 0.0.0.0 m.facebook.com
-0.0.0.0 www.facebook.com
-"
-
-CUSTOM_MEDIA_HOSTS="
-# Media
-0.0.0.0 youtube.com
-0.0.0.0 www.youtube.com
-0.0.0.0 netflix.com
-0.0.0.0 www.netflix.com
-
-# Reddit
-0.0.0.0 reddit.com
-0.0.0.0 www.reddit.com
-
-# News
-0.0.0.0 9to5mac.com
-0.0.0.0 arstechnica.com
-0.0.0.0 appleinsider.com
-0.0.0.0 www.cnn.com
-0.0.0.0 www.dailywire.com
-0.0.0.0 financialpost.com
-0.0.0.0 gizmodo.com
-0.0.0.0 nationalpost.com
-0.0.0.0 www.nytimes.com
-0.0.0.0 www.macrumors.com
-0.0.0.0 theglobeandmail.com
-0.0.0.0 www.theglobeandmail.com
-0.0.0.0 beta.theglobeandmail.com
-0.0.0.0 www.beta.theglobeandmail.com
-0.0.0.0 theoutline.com
-0.0.0.0 www.theverge.com
-0.0.0.0 www.zerohedge.com
-
-# Shopping
-0.0.0.0 www.realtor.ca
-"
+0.0.0.0 www.facebook.com"
 
 # ---------------------------------------------------------------------------
 # Homecall daemons/agents to disable
@@ -343,27 +308,84 @@ run_homebrew() {
 
 run_etchosts() {
   section "/etc/hosts ad-blocking"
-  echo "This will download Steven Black's unified hosts list (ads + gambling + porn + social)"
-  echo "and append custom Facebook/media blocks, then install to /etc/hosts."
+  echo "Downloads Steven Black's unified hosts list and installs to /etc/hosts."
+  echo "Any custom host entries above '# Start StevenBlack' are preserved."
   echo ""
-  if ! confirm "Install /etc/hosts blocklist?"; then
-    warn "Skipped /etc/hosts"
-    return
+  echo "Base list always includes: ads, malware, gambling, and porn blocklists."
+  echo ""
+  echo "Optional add-ons:"
+  echo "  s) Social media blocking (Facebook, Twitter, Instagram, TikTok, etc.)"
+  echo "     NOTE: LinkedIn is always excluded from social blocking."
+  echo "  n) None — base blocklist only"
+  echo ""
+  read -r -p "Include social media blocking? [s/N] " social_choice
+
+  local use_social=false
+  if [[ "$social_choice" =~ ^[Ss]$ ]]; then
+    use_social=true
   fi
 
-  local tmpfile
-  tmpfile="$(mktemp)"
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  trap 'rm -rf "$tmpdir"' RETURN
 
-  echo "Downloading hosts list..."
-  if ! curl -fsSL "$HOSTS_URL" -o "$tmpfile"; then
+  local url="$HOSTS_BASE_URL"
+  $use_social && url="$HOSTS_SOCIAL_URL"
+
+  local label="ads + gambling + porn"
+  $use_social && label="${label} + social"
+
+  echo "Downloading hosts list (${label})..."
+  if ! curl -fsSL "$url" -o "$tmpdir/downloaded.hosts"; then
     err "Failed to download hosts list"
-    rm -f "$tmpfile"
     return 1
   fi
 
-  # Append custom blocks
-  echo "$CUSTOM_FACEBOOK_HOSTS" >> "$tmpfile"
-  echo "$CUSTOM_MEDIA_HOSTS" >> "$tmpfile"
+  if $use_social; then
+    # Strip LinkedIn social block (keep ad tracker entries from base list)
+    echo "Stripping LinkedIn from social blocklist..."
+    sed '/^# LinkedIn$/,/^# [A-Z]/{
+      /^# LinkedIn$/d
+      /^# [A-Z]/!d
+    }' "$tmpdir/downloaded.hosts" > "$tmpdir/blocklist.hosts"
+
+    # Replace full Facebook block with curated subset (allows Messenger)
+    echo "Replacing Facebook block with curated subset..."
+    sed -i '' '/^# Facebook$/,/^# Twitter$/{
+      /^# Facebook$/d
+      /^# Twitter$/!d
+    }' "$tmpdir/blocklist.hosts"
+    sed -i '' "/^# Twitter$/i\\
+\\
+${CUSTOM_FACEBOOK_HOSTS}\\
+" "$tmpdir/blocklist.hosts"
+    label="${label} (minus LinkedIn)"
+  else
+    cp "$tmpdir/downloaded.hosts" "$tmpdir/blocklist.hosts"
+  fi
+
+  # Preserve custom entries above "# Start StevenBlack" from current /etc/hosts,
+  # then append the fresh blocklist below.
+  if [[ -f /etc/hosts ]] && grep -qn "^# Start StevenBlack" /etc/hosts; then
+    local marker_line
+    marker_line=$(grep -n "^# Start StevenBlack" /etc/hosts | head -1 | cut -d: -f1)
+    head -n "$((marker_line - 1))" /etc/hosts > "$tmpdir/final.hosts"
+  else
+    # No existing marker — use a minimal default header
+    cat > "$tmpdir/final.hosts" << 'HEADER'
+127.0.0.1 localhost
+127.0.0.1 localhost.localdomain
+255.255.255.255 broadcasthost
+::1 localhost
+
+# Custom host records are listed here.
+
+# End of custom host records.
+HEADER
+  fi
+
+  # Append the blocklist (which already starts with "# Start StevenBlack")
+  cat "$tmpdir/blocklist.hosts" >> "$tmpdir/final.hosts"
 
   # Backup existing hosts file
   if [[ -f /etc/hosts ]]; then
@@ -371,14 +393,13 @@ run_etchosts() {
     info "Backed up /etc/hosts"
   fi
 
-  sudo cp "$tmpfile" /etc/hosts
-  rm -f "$tmpfile"
+  sudo cp "$tmpdir/final.hosts" /etc/hosts
 
   # Flush DNS cache
   sudo dscacheutil -flushcache
   sudo killall -HUP mDNSResponder 2>/dev/null || true
 
-  info "/etc/hosts installed with ad-blocking ($(wc -l < /etc/hosts | xargs) lines)"
+  info "/etc/hosts installed: ${label} ($(wc -l < /etc/hosts | xargs) lines)"
 }
 
 run_security() {
