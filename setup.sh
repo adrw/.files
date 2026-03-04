@@ -327,7 +327,6 @@ run_etchosts() {
 
   local tmpdir
   tmpdir="$(mktemp -d)"
-  trap 'rm -rf "$tmpdir"' RETURN
 
   local url="$HOSTS_BASE_URL"
   $use_social && url="$HOSTS_SOCIAL_URL"
@@ -398,6 +397,8 @@ HEADER
   # Flush DNS cache
   sudo dscacheutil -flushcache
   sudo killall -HUP mDNSResponder 2>/dev/null || true
+
+  rm -rf "$tmpdir"
 
   info "/etc/hosts installed: ${label} ($(wc -l < /etc/hosts | xargs) lines)"
 }
