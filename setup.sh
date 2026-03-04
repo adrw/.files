@@ -327,7 +327,7 @@ run_etchosts() {
 
   local tmpdir
   tmpdir="$(mktemp -d)"
-  trap 'rm -rf "$tmpdir"' RETURN
+  trap 'rm -rf "$tmpdir"; trap - RETURN' RETURN
 
   local url="$HOSTS_BASE_URL"
   $use_social && url="$HOSTS_SOCIAL_URL"
