@@ -52,6 +52,9 @@ alias gfap='echo "Use a separate commit, you have Github now!"'
 alias gfapf='gfa; git push -f'
 alias gdiff="git diff | cat"
 
+# Google Cloud
+alias gpat="gcloud auth print-access-token | pbcopy"
+
 # Docker
 alias dc="docker-compose"
 alias dvp="docker volume prune"
