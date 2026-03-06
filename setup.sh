@@ -414,7 +414,6 @@ run_security() {
   echo "  - Show all file extensions"
   echo "  - Disable iCloud as default save location"
   echo "  - Disable crash reporter dialog"
-  echo "  - Disable Bonjour multicast advertising"
   echo "  - Show hidden files and ~/Library in Finder"
   echo "  - Disable Spotlight/Siri suggestions and web search"
   echo "  - Disable Captive Portal assistant"
@@ -477,10 +476,6 @@ run_security() {
   # --- Crash reporter ---
   defaults write com.apple.CrashReporter DialogType none
   info "Crash reporter dialog disabled"
-
-  # --- Bonjour ---
-  sudo defaults write /Library/Preferences/com.apple.mDNSResponder.plist NoMulticastAdvertisements -bool YES
-  info "Bonjour multicast advertising disabled"
 
   # --- Captive Portal ---
   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
