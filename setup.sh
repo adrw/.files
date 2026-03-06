@@ -565,6 +565,13 @@ run_macos_prefs() {
   sudo systemsetup -settimezone "America/Toronto" > /dev/null 2>&1 || true
   info "Locale: en_CA, timezone: America/Toronto"
 
+  # --- Dock ---
+  defaults write com.apple.dock persistent-apps -array
+  defaults write com.apple.dock persistent-others -array
+  defaults write com.apple.dock recent-apps -array
+  killall Dock 2>/dev/null || true
+  info "Dock: removed all existing items"
+
   # --- Hot corners ---
   # Top left → Put display to sleep
   defaults write com.apple.dock wvous-tl-corner -int 10
