@@ -81,7 +81,7 @@ CASK_PRODUCTIVITY=(
 
 CASK_TOOLS=(
   1password
-  alfred
+  # alfred
   appcleaner
   bisq
   bitwarden
@@ -560,12 +560,24 @@ run_macos_prefs() {
   sudo systemsetup -settimezone "America/Toronto" > /dev/null 2>&1 || true
   info "Locale: en_CA, timezone: America/Toronto"
 
+  # --- Appearance ---
+  # Dark mode
+  defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
+  info "Dark mode enabled"
+
+  # --- Accessibility ---
+  defaults write com.apple.universalaccess increaseContrast -bool true
+  defaults write com.apple.universalaccess differentiateWithoutColor -bool true
+  defaults write com.apple.universalaccess reduceTransparency -bool true
+  info "Accessibility: Increase Contrast, Differentiate without Color, and Reduce Transparency enabled"
+
   # --- Dock ---
   defaults write com.apple.dock persistent-apps -array
   defaults write com.apple.dock persistent-others -array
   defaults write com.apple.dock recent-apps -array
+  defaults write com.apple.dock autohide -bool true
   killall Dock 2>/dev/null || true
-  info "Dock: removed all existing items"
+  info "Dock: removed all existing items, auto-hide enabled"
 
   # --- Hot corners ---
   # Top left → Put display to sleep
