@@ -414,7 +414,6 @@ run_security() {
   echo "  - Show all file extensions"
   echo "  - Disable iCloud as default save location"
   echo "  - Disable crash reporter dialog"
-  echo "  - Disable Bonjour multicast advertising"
   echo "  - Show hidden files and ~/Library in Finder"
   echo "  - Disable Spotlight/Siri suggestions and web search"
   echo "  - Disable Captive Portal assistant"
@@ -477,10 +476,6 @@ run_security() {
   # --- Crash reporter ---
   defaults write com.apple.CrashReporter DialogType none
   info "Crash reporter dialog disabled"
-
-  # --- Bonjour ---
-  sudo defaults write /Library/Preferences/com.apple.mDNSResponder.plist NoMulticastAdvertisements -bool YES
-  info "Bonjour multicast advertising disabled"
 
   # --- Captive Portal ---
   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
@@ -564,6 +559,13 @@ run_macos_prefs() {
   defaults write NSGlobalDomain AppleMetricUnits -bool true
   sudo systemsetup -settimezone "America/Toronto" > /dev/null 2>&1 || true
   info "Locale: en_CA, timezone: America/Toronto"
+
+  # --- Dock ---
+  defaults write com.apple.dock persistent-apps -array
+  defaults write com.apple.dock persistent-others -array
+  defaults write com.apple.dock recent-apps -array
+  killall Dock 2>/dev/null || true
+  info "Dock: removed all existing items"
 
   # --- Hot corners ---
   # Top left → Put display to sleep
