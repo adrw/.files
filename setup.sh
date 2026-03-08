@@ -192,14 +192,19 @@ ensure_block() {
   local begin="### BEGIN ${marker}"
   local end="### END ${marker}"
   if [[ -f "$file" ]] && grep -qF "$begin" "$file" 2>/dev/null; then
-    # Replace existing block
+    # Replace existing block: find line numbers, extract before/after, and reassemble
     local tmp
     tmp="$(mktemp)"
-    awk -v b="$begin" -v e="$end" -v c="$content" '
-      $0 == b  { print b; print c; skip=1; next }
-      $0 == e  { skip=0; print e; next }
-      !skip    { print }
-    ' "$file" > "$tmp" && mv "$tmp" "$file"
+    local begin_line end_line
+    begin_line=$(grep -n "^${begin}$" "$file" | head -1 | cut -d: -f1)
+    end_line=$(grep -n "^${end}$" "$file" | tail -1 | cut -d: -f1)
+    # Get lines before the begin marker
+    head -n $((begin_line - 1)) "$file" > "$tmp"
+    # Add the new content
+    printf '%s\n' "$content" >> "$tmp"
+    # Add lines after the end marker
+    tail -n +$((end_line + 1)) "$file" >> "$tmp"
+    mv "$tmp" "$file"
   elif [[ -f "$file" ]]; then
     # Append new block
     printf '\n%s\n%s\n%s\n' "$begin" "$content" "$end" >> "$file"
