@@ -192,14 +192,23 @@ ensure_block() {
   local begin="### BEGIN ${marker}"
   local end="### END ${marker}"
   if [[ -f "$file" ]] && grep -qF "$begin" "$file" 2>/dev/null; then
-    # Replace existing block
+    # Replace existing block using line-by-line shell processing
     local tmp
     tmp="$(mktemp)"
-    awk -v b="$begin" -v e="$end" -v c="$content" '
-      $0 == b  { print b; print c; skip=1; next }
-      $0 == e  { skip=0; print e; next }
-      !skip    { print }
-    ' "$file" > "$tmp" && mv "$tmp" "$file"
+    local in_block=false
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      if [[ "$line" == "$begin" ]]; then
+        in_block=true
+        echo "$begin" >> "$tmp"
+        printf '%s\n' "$content" >> "$tmp"
+      elif [[ "$line" == "$end" ]]; then
+        in_block=false
+        echo "$end" >> "$tmp"
+      elif ! $in_block; then
+        echo "$line" >> "$tmp"
+      fi
+    done < "$file"
+    mv "$tmp" "$file"
   elif [[ -f "$file" ]]; then
     # Append new block
     printf '\n%s\n%s\n%s\n' "$begin" "$content" "$end" >> "$file"
