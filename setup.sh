@@ -191,15 +191,24 @@ ensure_block() {
   local file="$1" marker="$2" content="$3"
   local begin="### BEGIN ${marker}"
   local end="### END ${marker}"
+
+  # Create a temp file for content to avoid shell/awk newline issues
+  local content_file
+  content_file="$(mktemp)"
+  printf '%s\n' "$content" > "$content_file"
+
   if [[ -f "$file" ]] && grep -qF "$begin" "$file" 2>/dev/null; then
     # Replace existing block
-    local tmp
-    tmp="$(mktemp)"
-    awk -v b="$begin" -v e="$end" -v c="$content" '
-      $0 == b  { print b; print c; skip=1; next }
+    local tmp="$(mktemp)"
+
+    awk -v b="$begin" -v e="$end" '
+      BEGIN { while ((getline line < cf) > 0) content = content (NR>1 ? "\n" : "") line; close(cf) }
+      $0 == b  { print b; print content; skip=1; next }
       $0 == e  { skip=0; print e; next }
       !skip    { print }
-    ' "$file" > "$tmp" && mv "$tmp" "$file"
+    ' cf="$content_file" "$file" > "$tmp" && mv "$tmp" "$file"
+
+    rm -f "$content_file"
   elif [[ -f "$file" ]]; then
     # Append new block
     printf '\n%s\n%s\n%s\n' "$begin" "$content" "$end" >> "$file"
