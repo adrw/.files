@@ -58,7 +58,7 @@ BREW_CORE=(
 
 CASK_DEVELOPMENT=(
   copilot-cli
-  docker
+  docker-desktop
   ghostty
   # insomnia         # DEPRECATED? — acquired by Kong, many users migrated to Bruno or Hoppscotch
   jetbrains-toolbox
