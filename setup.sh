@@ -192,14 +192,17 @@ ensure_block() {
   local begin="### BEGIN ${marker}"
   local end="### END ${marker}"
   if [[ -f "$file" ]] && grep -qF "$begin" "$file" 2>/dev/null; then
-    # Replace existing block
-    local tmp
+    # Replace existing block (use temp files to avoid awk -v newline issues on macOS)
+    local tmp content_file
     tmp="$(mktemp)"
-    awk -v b="$begin" -v e="$end" -v c="$content" '
-      $0 == b  { print b; print c; skip=1; next }
+    content_file="$(mktemp)"
+    printf '%s\n' "$content" > "$content_file"
+    awk -v b="$begin" -v e="$end" -v cf="$content_file" '
+      $0 == b  { print b; while ((getline line < cf) > 0) print line; close(cf); skip=1; next }
       $0 == e  { skip=0; print e; next }
       !skip    { print }
     ' "$file" > "$tmp" && mv "$tmp" "$file"
+    rm -f "$content_file"
   elif [[ -f "$file" ]]; then
     # Append new block
     printf '\n%s\n%s\n%s\n' "$begin" "$content" "$end" >> "$file"
