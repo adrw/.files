@@ -136,6 +136,10 @@ BREW_HIGHBEAM=(
   # Add Highbeam-specific homebrew packages here, e.g.:
   # awscli
   # terraform
+  google-cloud-sdk
+  hashicorp/tap/terraform
+  kubectl
+  pgcli
 )
 
 # ---------------------------------------------------------------------------

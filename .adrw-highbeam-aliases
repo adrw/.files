@@ -3,14 +3,21 @@
 # SOURCE https://github.com/adrw/.files
 # Highbeam-specific aliases
 
-# General
-# alias hb="..."
+export HIGHBEAM_STAGING_POSTGRES_PORT=5433
+export HIGHBEAM_STAGING_POSTGRES_JDBC_URL=jdbc:postgresql://localhost:$HIGHBEAM_STAGING_POSTGRES_PORT/highbeam
+export HIGHBEAM_STAGING_POSTGRES_USERNAME=adrw@highbeam.co
 
-# Git
-# alias gphm="git pull highbeam main"
+export HIGHBEAM_PRODUCTION_POSTGRES_PORT=5434
+export HIGHBEAM_PRODUCTION_POSTGRES_JDBC_URL=jdbc:postgresql://localhost:$HIGHBEAM_PRODUCTION_POSTGRES_PORT/highbeam
+export HIGHBEAM_PRODUCTION_POSTGRES_USERNAME=adrw@highbeam.co
+export ISOLATED_DATA_VIEW_SQL_USERNAME=highbeam
 
-# CLI tools
-# alias hbctl="..."
+export HIGHBEAM_POSTGRES_JDBC_URL=$HIGHBEAM_STAGING_POSTGRES_JDBC_URL
+export HIGHBEAM_POSTGRES_USERNAME=$HIGHBEAM_STAGING_POSTGRES_USERNAME
 
-# VPN / networking
-# alias killvpn="..."
+export HIGHBEAM_SQL_INSTANCE_NAME=highbeam-production:us-central1:highbeam
+export HIGHBEAM_SQL_JDBC_URL=jdbc:postgresql://localhost:5434/highbeam
+export HIGHBEAM_SQL_USERNAME=adrw@highbeam.co
+
+alias highbeam_staging_db='PGPASSWORD=$(gcloud auth print-access-token) pgcli --host=localhost --port=$HIGHBEAM_STAGING_POSTGRES_PORT --username=$HIGHBEAM_STAGING_POSTGRES_USERNAME --dbname=highbeam'
+alias highbeam_production_db='PGPASSWORD=$(gcloud auth print-access-token) pgcli --host=localhost --port=$HIGHBEAM_PRODUCTION_POSTGRES_PORT --username=$HIGHBEAM_PRODUCTION_POSTGRES_USERNAME --dbname=highbeam'
