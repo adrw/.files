@@ -132,6 +132,12 @@ CASK_BACKUP=(
   synology-surveillance-station-client
 )
 
+BREW_HIGHBEAM=(
+  # Add Highbeam-specific homebrew packages here, e.g.:
+  # awscli
+  # terraform
+)
+
 # ---------------------------------------------------------------------------
 # /etc/hosts blocklist URLs (Steven Black)
 # ---------------------------------------------------------------------------
@@ -772,7 +778,7 @@ PLUGINS
 
   # --- Shell aliases & functions ---
   section "Shell aliases & functions"
-  for dotfile in .adrw-aliases .adrw-functions; do
+  for dotfile in .adrw-aliases .adrw-functions .adrw-highbeam-aliases; do
     if [[ -f "${SCRIPT_DIR}/${dotfile}" ]]; then
       cp "${SCRIPT_DIR}/${dotfile}" "${HOME}/${dotfile}"
       info "Installed ~/${dotfile}"
@@ -830,6 +836,7 @@ alias lt="eza -la --git --sort=modified"
 # Custom aliases & functions
 [ -f "${HOME}/.adrw-functions" ] && source "${HOME}/.adrw-functions"
 [ -f "${HOME}/.adrw-aliases" ] && source "${HOME}/.adrw-aliases"
+[ -f "${HOME}/.adrw-highbeam-aliases" ] && source "${HOME}/.adrw-highbeam-aliases"
 
 # Starship prompt (loaded last)
 eval "$(starship init zsh)"
@@ -853,6 +860,25 @@ ZSHRC
   info "Zsh setup complete — restart your terminal or run 'source ~/.zshrc'"
 }
 
+run_highbeam() {
+  section "Highbeam setup"
+  install_homebrew
+
+  if [[ ${#BREW_HIGHBEAM[@]} -gt 0 ]]; then
+    brew_install_list "Highbeam packages" "${BREW_HIGHBEAM[@]}"
+  else
+    warn "BREW_HIGHBEAM array is empty — add packages to setup.sh"
+  fi
+
+  local dotfile=".adrw-highbeam-aliases"
+  if [[ -f "${SCRIPT_DIR}/${dotfile}" ]]; then
+    cp "${SCRIPT_DIR}/${dotfile}" "${HOME}/${dotfile}"
+    info "Installed ~/${dotfile}"
+  else
+    warn "${dotfile} not found in ${SCRIPT_DIR}"
+  fi
+}
+
 # ===========================================================================
 # Main menu
 # ===========================================================================
@@ -874,6 +900,7 @@ main() {
   echo "  5) Homecall blocking"
   echo "  6) Zsh setup (antidote, starship, fzf, zoxide, eza)"
   echo "  7) Hermit (cashapp/hermit — per-project toolchains)"
+  echo "  8) Highbeam setup (packages & aliases)"
   echo "  a) All of the above"
   echo "  q) Quit"
   echo ""
@@ -885,7 +912,7 @@ main() {
   fi
 
   if [[ "$choices" == *"a"* ]]; then
-    choices="1,2,3,4,5,6,7"
+    choices="1,2,3,4,5,6,7,8"
   fi
 
   IFS=',' read -ra selected <<< "$choices"
@@ -899,6 +926,7 @@ main() {
       5) run_homecall ;;
       6) run_zsh_setup ;;
       7) run_hermit ;;
+      8) run_highbeam ;;
       *) warn "Unknown selection: ${choice}" ;;
     esac
   done

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# SOURCE https://github.com/adrw/.files
+# Highbeam-specific aliases
+
+# General
+# alias hb="..."
+
+# Git
+# alias gphm="git pull highbeam main"
+
+# CLI tools
+# alias hbctl="..."
+
+# VPN / networking
+# alias killvpn="..."
