@@ -881,6 +881,13 @@ run_highbeam() {
   else
     warn "${dotfile} not found in ${SCRIPT_DIR}"
   fi
+
+  # Ensure .zshrc sources the aliases file even if run_zsh_setup was not run
+  local zshrc="${HOME}/.zshrc"
+  local highbeam_block='# Highbeam aliases
+[ -f "${HOME}/.adrw-highbeam-aliases" ] && source "${HOME}/.adrw-highbeam-aliases"'
+  ensure_block "$zshrc" "highbeam" "$highbeam_block"
+  info ".zshrc Highbeam block updated (### BEGIN/END highbeam)"
 }
 
 # ===========================================================================
