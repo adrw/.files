@@ -87,6 +87,7 @@ CASK_TOOLS=(
   bitwarden
   bitwarden-cli
   caffeine
+  steipete/tap/codexbar
   # charles
   conductor
   karabiner-elements
